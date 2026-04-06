@@ -23,11 +23,11 @@
 - [x] Results and statistics pages
 
 ## Sub-Project 3: AI Vision Model
-- [ ] Model loader (Qwen2.5-VL-3B with 4-bit quantization)
-- [ ] OCR pipeline for handwriting extraction
-- [ ] Answer evaluator with prompt templates
-- [ ] RAG feedback loop with ai_corrections table
-- [ ] Confidence threshold and teacher review flow
+- [x] Model loader (Qwen2.5-VL-3B with 4-bit quantization)
+- [x] OCR pipeline for handwriting extraction
+- [x] Answer evaluator with prompt templates
+- [x] RAG feedback loop with ai_corrections table
+- [x] Confidence threshold and teacher review flow
 
 ## Sub-Project 4: Academic Documentation
 - [ ] Chapter 1: General Introduction
