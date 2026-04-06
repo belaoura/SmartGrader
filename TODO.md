@@ -1,18 +1,18 @@
 # TODO
 
-## Sub-Project 1: Code Restructuring (Current)
+## Sub-Project 1: Code Restructuring (Complete)
 - [x] Project scaffolding and tooling
-- [ ] Configuration system
-- [ ] Custom exceptions and logging
-- [ ] SQLAlchemy models
-- [ ] Database migration from legacy
-- [ ] Exam service layer
-- [ ] Grading service layer
-- [ ] Scanner consolidation
-- [ ] Sheet generator service
-- [ ] Flask routes (API)
-- [ ] Test suite
-- [ ] Entry point and smoke test
+- [x] Configuration system
+- [x] Custom exceptions and logging
+- [x] SQLAlchemy models
+- [x] Database migration from legacy
+- [x] Exam service layer
+- [x] Grading service layer
+- [x] Scanner consolidation
+- [x] Sheet generator service
+- [x] Flask routes (API)
+- [x] Test suite (40 tests passing)
+- [x] Entry point and smoke test
 
 ## Sub-Project 2: Web UI
 - [ ] Flask backend with blueprints
