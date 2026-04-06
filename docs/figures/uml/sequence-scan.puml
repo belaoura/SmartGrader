@@ -1,0 +1,34 @@
+@startuml sequence-scan
+actor Teacher
+participant "React Frontend" as FE
+participant "Flask API" as API
+participant "ScannerService" as SS
+participant "MarkerFinder" as MF
+participant "BubbleDetector" as BD
+participant "GridMapper" as GM
+participant "AnswerReader" as AR
+participant "GradingService" as GS
+database "SQLite" as DB
+
+Teacher -> FE : Upload scanned sheet\n+ select exam
+FE -> API : POST /api/scan/upload\n(file + exam_id)
+API -> SS : scan_and_grade(file, exam_id)
+SS -> SS : load_image(file)
+SS -> DB : get exam questions
+SS -> MF : find_triangles(image)
+MF --> SS : triangles
+SS -> MF : find_section_boundaries(triangles)
+MF --> SS : top_y, bottom_y
+SS -> BD : detect(image, top_y, bottom_y)
+BD --> SS : bubbles[]
+SS -> GM : map_bubbles_to_questions(bubbles, questions)
+GM --> SS : mapped_bubbles
+SS -> AR : read_answers(image, mapped, questions)
+AR --> SS : detected_answers
+SS -> GS : grade_mcq_answers(exam_id, answers)
+GS -> DB : fetch correct choices
+GS --> SS : grading result
+SS --> API : result JSON
+API --> FE : {obtained_marks, percentage, details[]}
+FE --> Teacher : Display score + breakdown
+@enduml

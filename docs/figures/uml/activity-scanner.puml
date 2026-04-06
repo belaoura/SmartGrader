@@ -1,0 +1,60 @@
+@startuml activity-scanner
+start
+
+:Load image (PDF/PNG/JPG);
+
+if (File is PDF?) then (yes)
+  :Convert PDF to image\nvia PyMuPDF;
+else (no)
+  :Read image via OpenCV;
+endif
+
+:Fetch exam questions\nfrom database;
+
+partition "Preprocessing" {
+  :Convert to grayscale;
+  :Apply Gaussian blur;
+  :Adaptive threshold;
+}
+
+partition "Marker Detection" {
+  :Find triangle markers;
+  if (4 triangles found?) then (yes)
+    :Calculate section boundaries\n(top_y, bottom_y);
+  else (no)
+    #pink:Raise DetectionError;
+    stop
+  endif
+}
+
+partition "Bubble Detection" {
+  :Detect contours in section;
+  :Filter by area, circularity,\naspect ratio;
+  :Remove duplicates;
+  :Remove outliers;
+}
+
+partition "Grid Mapping" {
+  :Sort bubbles by column (L/R);
+  :Assign to questions\nby choice count;
+}
+
+partition "Answer Reading" {
+  :Check fill percentage\nper bubble;
+  :Select darkest bubble\nper question;
+  if (Fill >= threshold?) then (yes)
+    :Record detected answer;
+  else (no)
+    :Mark as unanswered;
+  endif
+}
+
+partition "Grading" {
+  :Compare detected vs correct;
+  :Calculate score + percentage;
+}
+
+:Return grading result;
+
+stop
+@enduml

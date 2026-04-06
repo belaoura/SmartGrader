@@ -1,0 +1,44 @@
+@startuml deployment
+skinparam nodeStyle rectangle
+
+node "Client Browser" as browser {
+  artifact "React SPA" as react
+  artifact "Tailwind + shadcn/ui" as tw
+}
+
+node "Application Server" as appserver {
+  artifact "Flask API\n(Port 5001)" as flask
+  artifact "SQLAlchemy ORM" as orm
+
+  package "Services" {
+    artifact "ExamService" as es
+    artifact "GradingService" as gs
+    artifact "ScannerService" as ss
+    artifact "AIService" as ais
+  }
+
+  package "Scanner Pipeline" {
+    artifact "OpenCV\nPreprocessor" as cv
+    artifact "BubbleDetector" as bd
+  }
+}
+
+node "GPU Server" as gpu {
+  artifact "Qwen2.5-VL-3B\n(4-bit quantized)" as model
+  artifact "PyTorch + transformers" as torch
+}
+
+database "SQLite" as db
+
+browser --> flask : HTTP/JSON\n(REST API)
+flask --> orm
+orm --> db
+flask --> es
+flask --> gs
+flask --> ss
+flask --> ais
+ss --> cv
+ss --> bd
+ais --> model
+model --> torch
+@enduml

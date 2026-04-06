@@ -1,0 +1,77 @@
+@startuml er-diagram
+skinparam linetype ortho
+
+entity "exams" as exams {
+  *id : INTEGER <<PK>>
+  --
+  title : VARCHAR(200) <<NOT NULL>>
+  subject : VARCHAR(100)
+  date : VARCHAR(20)
+  total_marks : FLOAT
+}
+
+entity "questions" as questions {
+  *id : INTEGER <<PK>>
+  --
+  *exam_id : INTEGER <<FK>>
+  question_text : TEXT <<NOT NULL>>
+  question_choices_number : INTEGER <<NOT NULL>>
+  marks : FLOAT <<NOT NULL>>
+}
+
+entity "choices" as choices {
+  *id : INTEGER <<PK>>
+  --
+  *question_id : INTEGER <<FK>>
+  choice_label : VARCHAR(5) <<NOT NULL>>
+  choice_text : TEXT <<NOT NULL>>
+  is_correct : INTEGER
+}
+
+entity "students" as students {
+  *id : INTEGER <<PK>>
+  --
+  name : VARCHAR(200) <<NOT NULL>>
+  matricule : VARCHAR(50) <<UNIQUE>>
+  email : VARCHAR(200)
+}
+
+entity "student_answers" as sa {
+  *id : INTEGER <<PK>>
+  --
+  *student_id : INTEGER <<FK>>
+  *question_id : INTEGER <<FK>>
+  selected_choice_id : INTEGER <<FK>>
+}
+
+entity "results" as results {
+  *id : INTEGER <<PK>>
+  --
+  *student_id : INTEGER <<FK>>
+  *exam_id : INTEGER <<FK>>
+  score : FLOAT <<NOT NULL>>
+  percentage : FLOAT
+  graded_at : VARCHAR(30)
+}
+
+entity "ai_corrections" as aic {
+  *id : INTEGER <<PK>>
+  --
+  *question_id : INTEGER <<FK>>
+  student_text : TEXT <<NOT NULL>>
+  ai_score : FLOAT <<NOT NULL>>
+  ai_feedback : TEXT
+  teacher_score : FLOAT <<NOT NULL>>
+  teacher_feedback : TEXT
+  created_at : VARCHAR(30)
+}
+
+exams ||--o{ questions
+questions ||--o{ choices
+exams ||--o{ results
+students ||--o{ results
+students ||--o{ sa
+questions ||--o{ sa
+choices ||--o| sa
+questions ||--o{ aic
+@enduml

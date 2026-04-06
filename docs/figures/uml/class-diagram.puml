@@ -1,0 +1,143 @@
+@startuml class-diagram
+skinparam classAttributeIconSize 0
+
+package "Models" {
+  class Exam {
+    +id: Integer
+    +title: String
+    +subject: String
+    +date: String
+    +total_marks: Float
+    +to_dict()
+  }
+
+  class Question {
+    +id: Integer
+    +exam_id: Integer
+    +question_text: Text
+    +question_choices_number: Integer
+    +marks: Float
+    +to_dict(include_choices)
+  }
+
+  class Choice {
+    +id: Integer
+    +question_id: Integer
+    +choice_label: String
+    +choice_text: Text
+    +is_correct: Integer
+    +to_dict()
+  }
+
+  class Student {
+    +id: Integer
+    +name: String
+    +matricule: String
+    +email: String
+    +to_dict()
+  }
+
+  class Result {
+    +id: Integer
+    +student_id: Integer
+    +exam_id: Integer
+    +score: Float
+    +percentage: Float
+    +to_dict()
+  }
+
+  class AICorrection {
+    +id: Integer
+    +question_id: Integer
+    +student_text: Text
+    +ai_score: Float
+    +teacher_score: Float
+    +to_dict()
+  }
+}
+
+package "Services" {
+  class ExamService {
+    +create_exam()
+    +get_all_exams()
+    +get_exam_by_id()
+    +create_question_with_choices()
+    +get_exam_statistics()
+  }
+
+  class GradingService {
+    +grade_mcq_answers()
+    +save_result()
+    +get_results_for_exam()
+  }
+
+  class ScannerService {
+    +load_image()
+    +scan_and_grade()
+  }
+
+  class AIService {
+    +run_ocr()
+    +run_evaluation()
+    +save_correction()
+  }
+}
+
+package "Scanner" {
+  class ImagePreprocessor {
+    +load_image()
+    +to_grayscale()
+    +threshold()
+    +deskew()
+    +full_preprocess()
+  }
+
+  class BubbleDetector {
+    +detect()
+    -_filter_contours()
+    -_remove_duplicates()
+    -_remove_outliers()
+  }
+
+  class MarkerFinder {
+    +find_triangles()
+    +find_section_boundaries()
+  }
+}
+
+package "AI" {
+  class ModelLoader {
+    +get_model()
+    +generate()
+    +is_loaded()
+    +get_status()
+  }
+
+  class OCRPipeline {
+    +extract_answers()
+    +parse_ocr_response()
+  }
+
+  class AnswerEvaluator {
+    +evaluate_answer()
+    +build_rag_context()
+    +parse_grade_response()
+  }
+}
+
+Exam "1" -- "*" Question
+Question "1" -- "*" Choice
+Exam "1" -- "*" Result
+Student "1" -- "*" Result
+Question "1" -- "*" AICorrection
+
+ExamService --> Exam
+GradingService --> Result
+ScannerService --> BubbleDetector
+ScannerService --> MarkerFinder
+ScannerService --> ImagePreprocessor
+AIService --> ModelLoader
+AIService --> OCRPipeline
+AIService --> AnswerEvaluator
+AnswerEvaluator --> AICorrection
+@enduml

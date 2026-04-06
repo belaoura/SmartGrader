@@ -1,0 +1,48 @@
+@startuml sequence-ai-grade
+actor Teacher
+participant "React Frontend" as FE
+participant "Flask API" as API
+participant "AIService" as AIS
+participant "ModelLoader" as ML
+participant "OCRPipeline" as OCR
+participant "AnswerEvaluator" as AE
+database "SQLite" as DB
+
+== Stage 1: OCR ==
+Teacher -> FE : Upload exam page\n+ select exam
+FE -> API : POST /api/ai/ocr\n(file + question_ids)
+API -> AIS : run_ocr(file, question_ids)
+AIS -> ML : get_model()
+ML --> AIS : model + processor
+AIS -> OCR : extract_answers(image, question_ids)
+OCR -> ML : generate(image, OCR_PROMPT)
+ML --> OCR : raw JSON text
+OCR -> OCR : parse_ocr_response()
+OCR --> AIS : {q_id: text, ...}
+AIS --> API : answers[]
+API --> FE : Display extracted text
+FE --> Teacher : Review/edit OCR results
+
+== Stage 2: Evaluate ==
+Teacher -> FE : Confirm answers\n+ click "Grade All"
+FE -> API : POST /api/ai/evaluate\n(answers + references)
+API -> AIS : run_evaluation(answers_data)
+loop for each question
+  AIS -> DB : fetch RAG corrections
+  AIS -> AE : evaluate_answer(q_id, text, ref, mode)
+  AE -> ML : generate(None, EVAL_PROMPT)
+  ML --> AE : raw JSON grade
+  AE -> AE : parse + check confidence
+  AE --> AIS : {score, feedback, confidence}
+end
+AIS --> API : grades[]
+API --> FE : Display grades + confidence
+FE --> Teacher : Review, correct if needed
+
+== Stage 3: Correction (optional) ==
+Teacher -> FE : Correct a grade
+FE -> API : POST /api/ai/correct\n(correction data)
+API -> AIS : save_correction()
+AIS -> DB : INSERT ai_corrections
+API --> FE : Confirmation
+@enduml
