@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>QCM Answer Sheet</title>
+<style>
+/* EXACT A4 DIMENSIONS */
+@page {
+    size: A4;
+    margin: 0;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Times New Roman", serif;
+    background: white;
+    width: 210mm;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+/* PAGE CONTAINER - EXACT A4 */
+.page {
+    width: 210mm;
+    height: 297mm;
+    position: relative;
+    background: white;
+    page-break-after: always;
+    break-after: page;
+    margin: 0 auto;
+    padding: 8mm 12mm 8mm 12mm;
+    overflow: hidden;
+}
+
+/* COMPACT MODES */
+.page.compact .question {
+    margin-bottom: 1.8mm;
+    padding-bottom: 0.8mm;
+}
+
+.page.compact .options {
+    gap: 0.4mm;
+}
+
+.page.compact .option {
+    gap: 1mm;
+    font-size: 9pt;
+}
+
+.page.ultra-compact .question {
+    margin-bottom: 1.5mm;
+    padding-bottom: 0.5mm;
+}
+
+.page.ultra-compact .options {
+    gap: 0.3mm;
+}
+
+.page.ultra-compact .option {
+    gap: 0.8mm;
+    font-size: 8.5pt;
+}
+
+.page.ultra-compact .q-text {
+    font-size: 9pt;
+    margin-bottom: 0.3mm;
+}
+
+/* PAGE CONTENT */
+.page-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* HEADER */
+.header {
+    border: 1pt solid black;
+    padding: 2mm 3mm;
+    margin-bottom: 2mm;
+    background: white;
+    width: 100%;
+    flex-shrink: 0;
+}
+
+.header-row {
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 1.5mm;
+    height: 4.5mm;
+    width: 100%;
+}
+
+.header-label {
+    font-weight: bold;
+    min-width: 25mm;
+    margin-right: 2mm;
+    font-size: 9pt;
+    letter-spacing: 0.2px;
+}
+
+.underline {
+    flex: 1;
+    border-bottom: 0.5pt solid black;
+    height: 3.5mm;
+    margin-bottom: 0.5mm;
+}
+
+/* STUDENT INFO */
+.student-section {
+    border: 1pt solid black;
+    padding: 2.5mm 3mm;
+    margin-bottom: 1.5mm;
+    position: relative;
+    min-height: 36mm;
+    background: white;
+    width: 100%;
+    flex-shrink: 0;
+}
+
+.qr-area {
+    position: absolute;
+    top: 2.5mm;
+    right: 3mm;
+    width: 17mm;
+    height: 17mm;
+    border: 0.5pt solid black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 8pt;
+    font-weight: bold;
+    background: white;
+    z-index: 2;
+}
+
+/* NAME BOXES */
+.info-row {
+    margin-bottom: 2mm;
+    width: calc(100% - 21mm);
+    max-width: 140mm;
+}
+
+.info-label {
+    font-weight: bold;
+    margin-bottom: 0.3mm;
+    font-size: 8.5pt;
+    text-transform: uppercase;
+}
+
+.box-row {
+    display: flex;
+    gap: 0.5mm;
+    flex-wrap: wrap;
+}
+
+.name-box {
+    width: 3.8mm;
+    height: 3.8mm;
+    border: 0.5pt solid black;
+    display: inline-block;
+    background: white;
+}
+
+.id-box {
+    width: 4.3mm;
+    height: 4.3mm;
+    border: 0.5pt solid black;
+    display: inline-block;
+    background: white;
+}
+
+/* INSTRUCTION TEXT - NEW */
+.instruction-text {
+    text-align: center;
+    font-size: 9pt;
+    font-weight: bold;
+    font-style: italic;
+    margin-bottom: 2mm;
+    padding: 1mm;
+    background-color: #f9f9f9;
+    border-left: 2pt solid #333;
+    border-right: 2pt solid #333;
+    color: #333;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    flex-shrink: 0;
+}
+
+/* QUESTIONS GRID */
+.questions-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5mm;
+    position: relative;
+    width: 100%;
+    flex: 1;
+    min-height: 0;
+}
+
+/* VERTICAL DIVIDER */
+.vertical-divider {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0.5pt;
+    background: black;
+    z-index: 1;
+}
+
+.column {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* QUESTION STYLES */
+.question {
+    margin-bottom: 2mm;
+    break-inside: avoid;
+    page-break-inside: avoid;
+    padding-bottom: 1mm;
+    border-bottom: 1px dotted #aaa;
+    width: 100%;
+}
+
+.question:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+/* MULTI-LINE QUESTION */
+.q-text.multi-line {
+    margin-bottom: 1.2mm;
+}
+
+.q-text {
+    font-weight: bold;
+    margin-bottom: 0.8mm;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+    text-align: left;
+    max-width: 100%;
+    line-height: 1.3;
+    font-size: 9pt;
+    display: flex;
+    gap: 1.5mm;
+    align-items: flex-start;
+}
+
+.q-number {
+    font-weight: bold;
+    min-width: 6.5mm;
+    flex-shrink: 0;
+    display: inline-block;
+    white-space: nowrap;
+    color: #000;
+    font-size: 9pt;
+}
+
+.q-text-content {
+    flex: 1;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+    display: inline-block;
+}
+
+/* OPTIONS STYLES */
+.options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5mm;
+    margin-left: 8mm;
+    width: calc(100% - 8mm);
+}
+
+.option.multi-line {
+    margin-bottom: 0.3mm;
+}
+
+.option {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.2mm;
+    font-size: 9pt;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    width: 100%;
+}
+
+.circle {
+    min-width: 2.8mm;
+    width: 2.8mm;
+    height: 2.8mm;
+    border: 0.5pt solid black;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 6pt;
+    font-weight: bold;
+    flex-shrink: 0;
+    background: white;
+    margin-top: 0.3mm;
+}
+
+.option-text {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+    flex: 1;
+    min-width: 0;
+    line-height: 1.3;
+    font-size: 9pt;
+}
+
+/* ALIGNMENT MARKS */
+.align {
+    position: absolute;
+    width: 3mm;
+    height: 3mm;
+    background: black;
+    z-index: 10;
+}
+.top-left { top: 2mm; left: 2mm; }
+.top-right { top: 2mm; right: 2mm; }
+.bottom-left { bottom: 2mm; left: 2mm; }
+.bottom-right { bottom: 2mm; right: 2mm; }
+
+/* PAGE NUMBER */
+.page-number {
+    text-align: center;
+    font-size: 7pt;
+    margin-top: 1.5mm;
+    color: #333;
+    font-family: Arial, sans-serif;
+    border-top: 0.2pt dotted #999;
+    padding-top: 0.8mm;
+    flex-shrink: 0;
+}
+
+/* LONG TEXT HANDLING */
+* {
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+
+/* PRINT STYLES */
+@media print {
+    @page {
+        size: A4;
+        margin: 0;
+    }
+    
+    body {
+        width: 210mm;
+    }
+    
+    .page {
+        width: 210mm;
+        height: 297mm;
+        padding: 8mm 12mm 8mm 12mm;
+        page-break-after: always;
+        break-after: page;
+        overflow: hidden;
+    }
+    
+    /* Force borders */
+    .header, .student-section, .qr-area, 
+    .name-box, .id-box, .circle {
+        border: 0.5pt solid black !important;
+        background: white !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    
+    .instruction-text {
+        border-left: 2pt solid black !important;
+        border-right: 2pt solid black !important;
+        background-color: #f9f9f9 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    
+    .vertical-divider {
+        background: black !important;
+    }
+    
+    .align {
+        background: black !important;
+    }
+    
+    .underline {
+        border-bottom: 0.5pt solid black !important;
+    }
+}
+
+/* SCREEN PREVIEW */
+@media screen {
+    body {
+        background: #e0e0e0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px 0;
+    }
+    
+    .page {
+        box-shadow: 0 0 15px rgba(0,0,0,0.3);
+        margin-bottom: 25px;
+        background: white;
+        border: 1px solid #ccc;
+    }
+}
+
+/* EMPTY STATE */
+.no-questions {
+    text-align: center;
+    padding: 60mm 0;
+    color: #666;
+    font-style: italic;
+    font-size: 14pt;
+}
+
+/* CLEAR FIX */
+.student-section::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/* ENSURE NO EXTRA SPACE */
+.questions-grid:last-child {
+    margin-bottom: 0;
+}
+
+.column:last-child .question:last-child {
+    margin-bottom: 0;
+}
+</style>
+</head>
+<body>
+    
+    <div class="page">
+        <!-- Printer Alignment Marks -->
+        <div class="align top-left"></div>
+        <div class="align top-right"></div>
+        <div class="align bottom-left"></div>
+        <div class="align bottom-right"></div>
+        
+        <!-- Smart Grading Markers -->
+        
+        <div class="omr-marker top-left"></div>
+        <div class="omr-marker top-right"></div>
+        <div class="omr-marker bottom-left"></div>
+        <div class="omr-marker bottom-right"></div>
+        
+        
+        <div class="page-content">
+            <!-- Header -->
+            
+        <div class="header">
+            <div class="header-row">
+                <div class="header-label">INSTITUTION:</div>
+                <div class="underline">___________________________</div>
+            </div>
+            <div class="header-row">
+                <div class="header-label">DEPARTMENT:</div>
+                <div class="underline">___________________________</div>
+            </div>
+            <div class="header-row">
+                <div class="header-label">EXAM:</div>
+                <div class="underline">exam1</div>
+            </div>
+            <div class="header-row">
+                <div class="header-label">SUBJECT:</div>
+                <div class="underline">EXAM</div>
+            </div>
+            <div class="header-row">
+                <div class="header-label">DATE:</div>
+                <div class="underline">2026-02-21</div>
+            </div>
+        </div>
+        
+            
+            <!-- Student Section -->
+            
+    <div class="student-section">
+        <div class="qr-area">
+            <div class="qr-placeholder">
+                <div class="qr-corner"></div>
+                <div class="qr-corner"></div>
+                <div class="qr-corner"></div>
+                <div class="qr-corner"></div>
+                <div class="qr-label">ID</div>
+            </div>
+        </div>
+        
+        <div class="info-row">
+            <div class="info-label">LAST NAME:</div>
+            <div class="box-row">
+                <span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span>
+            </div>
+        </div>
+        
+        <div class="info-row">
+            <div class="info-label">FIRST NAME:</div>
+            <div class="box-row">
+                <span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span>
+            </div>
+        </div>
+        
+        <div class="info-row">
+            <div class="info-label">STUDENT ID:</div>
+            <div class="box-row">
+                <span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span>
+            </div>
+        </div>
+    </div>
+    
+            
+            <!-- Instruction Text -->
+            
+        <div class="instruction-text">✦ CHOOSE THE CORRECT ANSWER FOR EACH QUESTION ✦</div>
+        
+            
+            <!-- Questions Grid -->
+            <div class="questions-grid">
+                <div class="vertical-divider"></div>
+                <div class="column left-column">
+                    
+    <div class="question" data-question-id="21" data-question-number="1">
+        <div class="q-text multi-line">
+            <span class="q-number">1.</span>
+            <span class="q-text-content">In the context of computer architecture, what does the term CPU (Central Processing Unit) mainly refer to?</span>
+        </div>
+        <div class="options">
+            
+        <div class="option" data-qid="21" data-opt="A" data-correct="0">
+            <div class="circle">A</div>
+            <div class="option-text">The physical case that contains all computer components</div>
+        </div>
+        
+        <div class="option multi-line" data-qid="21" data-opt="B" data-correct="1" data-correct-answer="true">
+            <div class="circle">B</div>
+            <div class="option-text">The main processing unit responsible for executing instructions and controlling operations</div>
+        </div>
+        
+        <div class="option" data-qid="21" data-opt="C" data-correct="0">
+            <div class="circle">C</div>
+            <div class="option-text">A secondary storage device used to save data permanently</div>
+        </div>
+        
+        <div class="option" data-qid="21" data-opt="D" data-correct="0">
+            <div class="circle">D</div>
+            <div class="option-text">A software application used to manage system resource</div>
+        </div>
+        
+        </div>
+    </div>
+    
+    <div class="question" data-question-id="22" data-question-number="2">
+        <div class="q-text multi-line">
+            <span class="q-number">2.</span>
+            <span class="q-text-content">Which of the following devices is considered an input device, meaning it allows the user to enter data or commands into the computer system?</span>
+        </div>
+        <div class="options">
+            
+        <div class="option" data-qid="22" data-opt="A" data-correct="0">
+            <div class="circle">A</div>
+            <div class="option-text">Monitor, which displays visual output to the user</div>
+        </div>
+        
+        <div class="option" data-qid="22" data-opt="B" data-correct="0">
+            <div class="circle">B</div>
+            <div class="option-text">Printer, which produces paper copies of digital documents</div>
+        </div>
+        
+        <div class="option" data-qid="22" data-opt="C" data-correct="1" data-correct-answer="true">
+            <div class="circle">C</div>
+            <div class="option-text">Keyboard, which allows the user to type text and commands</div>
+        </div>
+        
+        <div class="option" data-qid="22" data-opt="D" data-correct="0">
+            <div class="circle">D</div>
+            <div class="option-text">Speaker, which outputs sound from the computer</div>
+        </div>
+        
+        <div class="option" data-qid="22" data-opt="E" data-correct="0">
+            <div class="circle">E</div>
+            <div class="option-text">Projector, which displays images on a large screen</div>
+        </div>
+        
+        </div>
+    </div>
+    
+    <div class="question" data-question-id="23" data-question-number="3">
+        <div class="q-text multi-line">
+            <span class="q-number">3.</span>
+            <span class="q-text-content">Which programming or markup language is primarily used to define the structure and content of web pages displayed in a web browser?</span>
+        </div>
+        <div class="options">
+            
+        <div class="option" data-qid="23" data-opt="A" data-correct="0">
+            <div class="circle">A</div>
+            <div class="option-text">Python, commonly used for data analysis and automation</div>
+        </div>
+        
+        <div class="option" data-qid="23" data-opt="B" data-correct="0">
+            <div class="circle">B</div>
+            <div class="option-text">Java, widely used for desktop and enterprise applications</div>
+        </div>
+        
+        <div class="option" data-qid="23" data-opt="C" data-correct="1" data-correct-answer="true">
+            <div class="circle">C</div>
+            <div class="option-text">HTML, which defines the structure of web content using tags</div>
+        </div>
+        
+        <div class="option" data-qid="23" data-opt="D" data-correct="0">
+            <div class="circle">D</div>
+            <div class="option-text">C++, mainly used for system and performance-critical software</div>
+        </div>
+        
+        </div>
+    </div>
+    
+    <div class="question" data-question-id="24" data-question-number="4">
+        <div class="q-text multi-line">
+            <span class="q-number">4.</span>
+            <span class="q-text-content">What is the main role of an operating system in a modern computer system?</span>
+        </div>
+        <div class="options">
+            
+        <div class="option" data-qid="24" data-opt="A" data-correct="0">
+            <div class="circle">A</div>
+            <div class="option-text">Writing and editing text documents for users</div>
+        </div>
+        
+        <div class="option multi-line" data-qid="24" data-opt="B" data-correct="1" data-correct-answer="true">
+            <div class="circle">B</div>
+            <div class="option-text">Managing hardware resources and providing services to application software</div>
+        </div>
+        
+        <div class="option" data-qid="24" data-opt="C" data-correct="0">
+            <div class="circle">C</div>
+            <div class="option-text">Designing websites and graphical interfaces</div>
+        </div>
+        
+        <div class="option" data-qid="24" data-opt="D" data-correct="1" data-correct-answer="true">
+            <div class="circle">D</div>
+            <div class="option-text">Translating high-level programming languages into machine code</div>
+        </div>
+        
+        <div class="option" data-qid="24" data-opt="E" data-correct="0">
+            <div class="circle">E</div>
+            <div class="option-text">Playing audio and video files</div>
+        </div>
+        
+        </div>
+    </div>
+    
+    <div class="question" data-question-id="25" data-question-number="5">
+        <div class="q-text multi-line">
+            <span class="q-number">5.</span>
+            <span class="q-text-content">Which of the following software systems is specifically designed to create, manage, and manipulate databases efficiently?</span>
+        </div>
+        <div class="options">
+            
+        <div class="option" data-qid="25" data-opt="A" data-correct="0">
+            <div class="circle">A</div>
+            <div class="option-text">Microsoft Word, used for document creation</div>
+        </div>
+        
+        <div class="option" data-qid="25" data-opt="B" data-correct="0">
+            <div class="circle">B</div>
+            <div class="option-text">Linux, an operating system for computers and servers</div>
+        </div>
+        
+        <div class="option" data-qid="25" data-opt="C" data-correct="1" data-correct-answer="true">
+            <div class="circle">C</div>
+            <div class="option-text">MySQL, a database management system used for storing structured data</div>
+        </div>
+        
+        <div class="option" data-qid="25" data-opt="D" data-correct="0">
+            <div class="circle">D</div>
+            <div class="option-text">Python, a general-purpose programming language</div>
+        </div>
+        
+        </div>
+    </div>
+    
+                </div>
+                <div class="column right-column">
+                    
+    <div class="question" data-question-id="26" data-question-number="6">
+        <div class="q-text">
+            <span class="q-number">6.</span>
+            <span class="q-text-content">What does RAM (Random Access Memory) represent in a computer system?</span>
+        </div>
+        <div class="options">
+            
+        <div class="option" data-qid="26" data-opt="A" data-correct="0">
+            <div class="circle">A</div>
+            <div class="option-text">A type of permanent storage used to archive files</div>
+        </div>
+        
+        <div class="option" data-qid="26" data-opt="B" data-correct="1" data-correct-answer="true">
+            <div class="circle">B</div>
+            <div class="option-text">A temporary memory that stores data and programs currently in use</div>
+        </div>
+        
+        <div class="option" data-qid="26" data-opt="C" data-correct="0">
+            <div class="circle">C</div>
+            <div class="option-text">A processing unit that performs arithmetic operations</div>
+        </div>
+        
+        <div class="option" data-qid="26" data-opt="D" data-correct="0">
+            <div class="circle">D</div>
+            <div class="option-text">A device used for backing up system data</div>
+        </div>
+        
+        <div class="option" data-qid="26" data-opt="E" data-correct="0">
+            <div class="circle">E</div>
+            <div class="option-text">A network component used for data transmission</div>
+        </div>
+        
+        </div>
+    </div>
+    
+    <div class="question" data-question-id="27" data-question-number="7">
+        <div class="q-text multi-line">
+            <span class="q-number">7.</span>
+            <span class="q-text-content">In the Python programming language, which symbol is used to write single-line comments that are ignored during program execution?</span>
+        </div>
+        <div class="options">
+            
+        <div class="option" data-qid="27" data-opt="A" data-correct="0">
+            <div class="circle">A</div>
+            <div class="option-text">// used mainly in C and C++</div>
+        </div>
+        
+        <div class="option" data-qid="27" data-opt="B" data-correct="0">
+            <div class="circle">B</div>
+            <div class="option-text">&lt;!-- --&gt; used in HTML documents</div>
+        </div>
+        
+        <div class="option" data-qid="27" data-opt="C" data-correct="1" data-correct-answer="true">
+            <div class="circle">C</div>
+            <div class="option-text"># used to add explanatory comments in Python code</div>
+        </div>
+        
+        <div class="option" data-qid="27" data-opt="D" data-correct="0">
+            <div class="circle">D</div>
+            <div class="option-text">** used for exponentiation operations</div>
+        </div>
+        
+        </div>
+    </div>
+    
+    <div class="question" data-question-id="28" data-question-number="8">
+        <div class="q-text multi-line">
+            <span class="q-number">8.</span>
+            <span class="q-text-content">Which of the following is a programming language commonly used to develop web, desktop, and mobile applications?</span>
+        </div>
+        <div class="options">
+            
+        <div class="option" data-qid="28" data-opt="A" data-correct="0">
+            <div class="circle">A</div>
+            <div class="option-text">Microsoft Excel, a spreadsheet application</div>
+        </div>
+        
+        <div class="option" data-qid="28" data-opt="B" data-correct="0">
+            <div class="circle">B</div>
+            <div class="option-text">PowerPoint, presentation software</div>
+        </div>
+        
+        <div class="option" data-qid="28" data-opt="C" data-correct="1" data-correct-answer="true">
+            <div class="circle">C</div>
+            <div class="option-text">Java, an object-oriented programming language</div>
+        </div>
+        
+        <div class="option" data-qid="28" data-opt="D" data-correct="0">
+            <div class="circle">D</div>
+            <div class="option-text">Windows, an operating system developed by Microsoft</div>
+        </div>
+        
+        </div>
+    </div>
+    
+    <div class="question" data-question-id="29" data-question-number="9">
+        <div class="q-text multi-line">
+            <span class="q-number">9.</span>
+            <span class="q-text-content">In problem-solving and computer science, what is meant by an algorithm?</span>
+        </div>
+        <div class="options">
+            
+        <div class="option" data-qid="29" data-opt="A" data-correct="0">
+            <div class="circle">A</div>
+            <div class="option-text">A specific computer hardware component</div>
+        </div>
+        
+        <div class="option" data-qid="29" data-opt="B" data-correct="0">
+            <div class="circle">B</div>
+            <div class="option-text">A programming language used to write software</div>
+        </div>
+        
+        <div class="option" data-qid="29" data-opt="C" data-correct="1" data-correct-answer="true">
+            <div class="circle">C</div>
+            <div class="option-text">A well-defined, step-by-step procedure for solving a problem</div>
+        </div>
+        
+        <div class="option" data-qid="29" data-opt="D" data-correct="0">
+            <div class="circle">D</div>
+            <div class="option-text">A graphical user interface of an application</div>
+        </div>
+        
+        <div class="option" data-qid="29" data-opt="E" data-correct="0">
+            <div class="circle">E</div>
+            <div class="option-text">A database system used to store information</div>
+        </div>
+        
+        </div>
+    </div>
+    
+    <div class="question" data-question-id="30" data-question-number="10">
+        <div class="q-text multi-line">
+            <span class="q-number">10.</span>
+            <span class="q-text-content">Which of the following hardware components is used to store data permanently, even when the computer is powered off?</span>
+        </div>
+        <div class="options">
+            
+        <div class="option" data-qid="30" data-opt="A" data-correct="1" data-correct-answer="true">
+            <div class="circle">A</div>
+            <div class="option-text">RAM, which loses its content when power is turned off</div>
+        </div>
+        
+        <div class="option" data-qid="30" data-opt="B" data-correct="0">
+            <div class="circle">B</div>
+            <div class="option-text">Cache memory, which is very fast but temporary</div>
+        </div>
+        
+        <div class="option" data-qid="30" data-opt="C" data-correct="0">
+            <div class="circle">C</div>
+            <div class="option-text">Hard disk, used for long-term storage of data and programs</div>
+        </div>
+        
+        <div class="option" data-qid="30" data-opt="D" data-correct="0">
+            <div class="circle">D</div>
+            <div class="option-text">CPU, which performs processing operations</div>
+        </div>
+        
+        </div>
+    </div>
+    
+                </div>
+            </div>
+            
+            <!-- Page Number -->
+            <div class="page-number">Page 1 of 1</div>
+        </div>
+    </div>
+    
+</body>
+</html>

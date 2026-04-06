@@ -1,0 +1,30 @@
+{
+  "exam_id": 4,
+  "exam_title": "exam30",
+  "subject": "MOREC",
+  "date": "2026-03-28",
+  "total_questions": 3,
+  "total_marks": 100.0,
+  "answers": {
+    "42": {
+      "question_number": 1,
+      "correct_answer": "B",
+      "question_text": "La modélisation des connaissances consiste principalement à"
+    },
+    "43": {
+      "question_number": 2,
+      "correct_answer": "B",
+      "question_text": "Dans la logique propositionnelle, une proposition est"
+    },
+    "44": {
+      "question_number": 3,
+      "correct_answer": "B",
+      "question_text": "La logique des prédicats permet de représenter"
+    }
+  },
+  "metadata": {
+    "generated": "2026-04-04T18:19:04.732632",
+    "version": "1.0",
+    "format": "smart_grader_v1"
+  }
+}

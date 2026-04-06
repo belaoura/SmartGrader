@@ -1,0 +1,65 @@
+{
+  "exam_id": 2,
+  "exam_title": "exam1",
+  "subject": "EXAM",
+  "date": "2026-02-21",
+  "total_questions": 10,
+  "total_marks": 20.0,
+  "answers": {
+    "21": {
+      "question_number": 1,
+      "correct_answer": "B",
+      "question_text": "In the context of computer architecture, what does the term CPU (Central Processing Unit) mainly ref..."
+    },
+    "22": {
+      "question_number": 2,
+      "correct_answer": "C",
+      "question_text": "Which of the following devices is considered an input device, meaning it allows the user to enter da..."
+    },
+    "23": {
+      "question_number": 3,
+      "correct_answer": "C",
+      "question_text": "Which programming or markup language is primarily used to define the structure and content of web pa..."
+    },
+    "24": {
+      "question_number": 4,
+      "correct_answer": "B",
+      "question_text": "What is the main role of an operating system in a modern computer system?"
+    },
+    "25": {
+      "question_number": 5,
+      "correct_answer": "C",
+      "question_text": "Which of the following software systems is specifically designed to create, manage, and manipulate d..."
+    },
+    "26": {
+      "question_number": 6,
+      "correct_answer": "B",
+      "question_text": "What does RAM (Random Access Memory) represent in a computer system?"
+    },
+    "27": {
+      "question_number": 7,
+      "correct_answer": "C",
+      "question_text": "In the Python programming language, which symbol is used to write single-line comments that are igno..."
+    },
+    "28": {
+      "question_number": 8,
+      "correct_answer": "C",
+      "question_text": "Which of the following is a programming language commonly used to develop web, desktop, and mobile a..."
+    },
+    "29": {
+      "question_number": 9,
+      "correct_answer": "C",
+      "question_text": "In problem-solving and computer science, what is meant by an algorithm?"
+    },
+    "30": {
+      "question_number": 10,
+      "correct_answer": "A",
+      "question_text": "Which of the following hardware components is used to store data permanently, even when the computer..."
+    }
+  },
+  "metadata": {
+    "generated": "2026-04-04T18:19:44.084564",
+    "version": "1.0",
+    "format": "smart_grader_v1"
+  }
+}

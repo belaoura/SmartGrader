@@ -1,0 +1,8 @@
+2026-04-06 21:11:14 [INFO] smartgrader: SmartGrader app created [development]
+2026-04-06 21:11:14 [INFO] smartgrader.services.exam: Created exam 1: Mathematics - Algebra
+2026-04-06 21:11:14 [INFO] smartgrader.services.exam: Created question 1 for exam 1 with 4 choices
+2026-04-06 21:11:14 [INFO] smartgrader.services.exam: Created question 2 for exam 1 with 3 choices
+2026-04-06 21:11:14 [INFO] smartgrader.services.exam: Created question 3 for exam 1 with 4 choices
+2026-04-06 21:11:14 [INFO] smartgrader.services.exam: Created question 4 for exam 1 with 3 choices
+2026-04-06 21:11:19 [INFO] smartgrader: SmartGrader app created [development]
+2026-04-06 21:11:42 [INFO] smartgrader: SmartGrader app created [development]

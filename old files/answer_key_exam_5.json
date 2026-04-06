@@ -1,0 +1,85 @@
+{
+  "exam_id": 5,
+  "exam_title": "testing1",
+  "subject": "life",
+  "date": "2026-04-04",
+  "total_questions": 14,
+  "total_marks": 14.0,
+  "answers": {
+    "45": {
+      "question_number": 1,
+      "correct_answer": "B",
+      "question_text": "which numberis a prime number ?"
+    },
+    "46": {
+      "question_number": 2,
+      "correct_answer": "B",
+      "question_text": "photosynthesis occurs in which part of the plant ?"
+    },
+    "47": {
+      "question_number": 3,
+      "correct_answer": "B",
+      "question_text": "which senttence is grammatically correct ?"
+    },
+    "48": {
+      "question_number": 4,
+      "correct_answer": "C",
+      "question_text": "the fastest land animal is ?"
+    },
+    "49": {
+      "question_number": 5,
+      "correct_answer": "A",
+      "question_text": "in computing , RAM stands for ?"
+    },
+    "50": {
+      "question_number": 6,
+      "correct_answer": "C",
+      "question_text": "what is the boiling point of water at sea level"
+    },
+    "51": {
+      "question_number": 7,
+      "correct_answer": "A",
+      "question_text": "which ine is a renewable energy source ?"
+    },
+    "52": {
+      "question_number": 8,
+      "correct_answer": "B",
+      "question_text": "the synonym of rapid is ?"
+    },
+    "53": {
+      "question_number": 9,
+      "correct_answer": "A",
+      "question_text": "what is the largest organ of the human body"
+    },
+    "54": {
+      "question_number": 10,
+      "correct_answer": "C",
+      "question_text": "which year did world war 2 end?"
+    },
+    "55": {
+      "question_number": 11,
+      "correct_answer": "A",
+      "question_text": "the square root of 169 is ?"
+    },
+    "56": {
+      "question_number": 12,
+      "correct_answer": "B",
+      "question_text": "which planet is known as the red planet ?"
+    },
+    "57": {
+      "question_number": 13,
+      "correct_answer": "A",
+      "question_text": "what is H2O ?"
+    },
+    "58": {
+      "question_number": 14,
+      "correct_answer": "A",
+      "question_text": "which of the following is a programming language ?"
+    }
+  },
+  "metadata": {
+    "generated": "2026-04-04T18:18:45.548023",
+    "version": "1.0",
+    "format": "smart_grader_v1"
+  }
+}

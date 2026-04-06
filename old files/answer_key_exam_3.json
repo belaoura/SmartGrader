@@ -1,0 +1,65 @@
+{
+  "exam_id": 3,
+  "exam_title": "terminologie",
+  "subject": "tic",
+  "date": "2026-03-27",
+  "total_questions": 10,
+  "total_marks": 100.0,
+  "answers": {
+    "32": {
+      "question_number": 1,
+      "correct_answer": "A",
+      "question_text": "comment on appelle la giraffe"
+    },
+    "33": {
+      "question_number": 2,
+      "correct_answer": "D",
+      "question_text": "comment je mappelle"
+    },
+    "34": {
+      "question_number": 3,
+      "correct_answer": "C",
+      "question_text": "tu sort quand"
+    },
+    "35": {
+      "question_number": 4,
+      "correct_answer": "B",
+      "question_text": "taimes qui"
+    },
+    "36": {
+      "question_number": 5,
+      "correct_answer": "D",
+      "question_text": "il fait beau ?"
+    },
+    "37": {
+      "question_number": 6,
+      "correct_answer": "B",
+      "question_text": "on est quelle jou de la semaine ?"
+    },
+    "38": {
+      "question_number": 7,
+      "correct_answer": "B",
+      "question_text": "quelles sont tes origines"
+    },
+    "39": {
+      "question_number": 8,
+      "correct_answer": "B",
+      "question_text": "t major de promo ?"
+    },
+    "40": {
+      "question_number": 9,
+      "correct_answer": "B",
+      "question_text": "quelles saison tu prefere"
+    },
+    "41": {
+      "question_number": 10,
+      "correct_answer": "B",
+      "question_text": "c quoi ta spécialité"
+    }
+  },
+  "metadata": {
+    "generated": "2026-04-04T18:19:25.152211",
+    "version": "1.0",
+    "format": "smart_grader_v1"
+  }
+}

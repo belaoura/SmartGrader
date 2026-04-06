@@ -1,0 +1,120 @@
+{
+  "exam_id": 1,
+  "exam_title": "ssss",
+  "subject": "ssss",
+  "date": "",
+  "total_questions": 21,
+  "total_marks": "",
+  "answers": {
+    "1": {
+      "question_number": 1,
+      "correct_answer": "A",
+      "question_text": "sssssssssssssssssssssssssssssssEEEEEEEEEEEEEEEEEEEEE"
+    },
+    "2": {
+      "question_number": 2,
+      "correct_answer": "A",
+      "question_text": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    "3": {
+      "question_number": 3,
+      "correct_answer": "A",
+      "question_text": "zzzzzzzzzzzzzz"
+    },
+    "4": {
+      "question_number": 4,
+      "correct_answer": "A",
+      "question_text": "ZZZZZZZZZZZZ"
+    },
+    "5": {
+      "question_number": 5,
+      "correct_answer": "A",
+      "question_text": "VVVVVVVVVVVVVVVVVVVVVVVV"
+    },
+    "6": {
+      "question_number": 6,
+      "correct_answer": "A",
+      "question_text": "AAAAAAAAAAAAAAA"
+    },
+    "7": {
+      "question_number": 7,
+      "correct_answer": "A",
+      "question_text": "EEEEEEEEEEEE"
+    },
+    "8": {
+      "question_number": 8,
+      "correct_answer": "A",
+      "question_text": "SSSSSSSSSSSSSSSSSSSSS"
+    },
+    "9": {
+      "question_number": 9,
+      "correct_answer": "A",
+      "question_text": "AAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "10": {
+      "question_number": 10,
+      "correct_answer": "A",
+      "question_text": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+    },
+    "11": {
+      "question_number": 11,
+      "correct_answer": "A",
+      "question_text": "AAAAAAAAAAAAAAAA"
+    },
+    "12": {
+      "question_number": 12,
+      "correct_answer": "A",
+      "question_text": "RRRRRRRRRRRRRRRRRRRRRRRRRRRRFFFFFFFFFFFFFFF"
+    },
+    "13": {
+      "question_number": 13,
+      "correct_answer": "A",
+      "question_text": "CCCCCCCCCCCCCCCCCCCCCCCCVVVFFFFFFFFFFFFF"
+    },
+    "14": {
+      "question_number": 14,
+      "correct_answer": "B",
+      "question_text": "DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDSSSSSSSSSSSSSSSSSS"
+    },
+    "15": {
+      "question_number": 15,
+      "correct_answer": "A",
+      "question_text": "AAAAAAAAAAAAAAAAAAAAAAAAZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ"
+    },
+    "16": {
+      "question_number": 16,
+      "correct_answer": "A",
+      "question_text": "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"
+    },
+    "17": {
+      "question_number": 17,
+      "correct_answer": "A",
+      "question_text": "CXXXXXXXXXXDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD"
+    },
+    "18": {
+      "question_number": 18,
+      "correct_answer": "A",
+      "question_text": "CCCCCCCCCCCCCGGGGGGGGGGGGGGGVVVVVVVVVVVV"
+    },
+    "19": {
+      "question_number": 19,
+      "correct_answer": "A",
+      "question_text": "BBBBBBBBBBBBBHBJJJJJJJJJJJJJJJJJJJJJ"
+    },
+    "20": {
+      "question_number": 20,
+      "correct_answer": "C",
+      "question_text": "azertyuioop^^$"
+    },
+    "31": {
+      "question_number": 21,
+      "correct_answer": "A",
+      "question_text": "XXXXXX"
+    }
+  },
+  "metadata": {
+    "generated": "2026-04-04T18:20:07.879831",
+    "version": "1.0",
+    "format": "smart_grader_v1"
+  }
+}

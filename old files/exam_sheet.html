@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Exam Paper</title>
+<style>
+@page { size: A4; margin: 0; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: "Times New Roman", serif;
+    font-size: 9pt;
+    width: 210mm;
+    height: 297mm;
+}
+.page {
+    width: 210mm;
+    height: 297mm;
+    padding: 10mm 12mm;
+}
+.align {
+    position: absolute;
+    width: 3mm;
+    height: 3mm;
+    background: black;
+}
+.top-left { top: 3mm; left: 3mm; }
+.top-right { top: 3mm; right: 3mm; }
+.bottom-left { bottom: 3mm; left: 3mm; }
+.bottom-right { bottom: 3mm; right: 3mm; }
+
+.header {
+    border: 1pt solid black;
+    padding: 2mm;
+    margin-bottom: 4mm;
+}
+.header-row {
+    display: flex;
+    margin-bottom: 1mm;
+}
+.header-label {
+    width: 30mm;
+    font-weight: bold;
+}
+.underline {
+    flex: 1;
+    border-bottom: 0.5pt solid black;
+}
+
+.student-section {
+    border: 1pt solid black;
+    padding: 3mm;
+    margin-bottom: 5mm;
+    min-height: 35mm;
+}
+
+.questions-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8mm;
+    position: relative;
+}
+.vertical-divider {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 0.3pt;
+    background: black;
+}
+
+.question {
+    margin-bottom: 3mm;
+}
+.q-text {
+    font-weight: bold;
+    font-size: 8.5pt;
+    margin-bottom: 1mm;
+}
+.options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5mm 2mm;
+    margin-left: 3mm;
+}
+.option {
+    display: flex;
+    align-items: center;
+    font-size: 8pt;
+}
+.circle {
+    width: 3.5mm;
+    height: 3.5mm;
+    border: 0.5pt solid black;
+    border-radius: 50%;
+    margin-right: 1.5mm;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 7pt;
+    font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+<div class="page">
+    <div class="align top-left"></div>
+    <div class="align top-right"></div>
+    <div class="align bottom-left"></div>
+    <div class="align bottom-right"></div>
+
+    <div class="header">
+        <div class="header-row">
+            <div class="header-label">EXAM:</div>
+            <div class="underline">ssss</div>
+        </div>
+        <div class="header-row">
+            <div class="header-label">SUBJECT:</div>
+            <div class="underline">ssss</div>
+        </div>
+        <div class="header-row">
+            <div class="header-label">DATE:</div>
+            <div class="underline">None</div>
+        </div>
+    </div>
+
+    <div class="student-section"></div>
+
+    <div class="questions-grid">
+        <div class="vertical-divider"></div>
+        <div>
+            <div class="question">
+                <div class="q-text">1. sssssssssssssssssssssssssssssssEEEEEEEEEEEEEEEEEEEEE</div>
+                <div class="options">
+            
+                    <div class="option">
+                        <div class="circle">A</div>
+                        SSSSSSSSSSSSSSSSSSSSS
+                    </div>
+                
+                    <div class="option">
+                        <div class="circle">B</div>
+                        SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
+                    </div>
+                
+                    <div class="option">
+                        <div class="circle">C</div>
+                        SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
+                    </div>
+                
+                    <div class="option">
+                        <div class="circle">D</div>
+                        SSSSSSSSSSSSSSSSSSSSSDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+                    </div>
+                
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="q-text">2. DEDSDDDDDDDDDDDDDDDDDDDDDDDSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS</div>
+                <div class="options">
+            
+                    <div class="option">
+                        <div class="circle">A</div>
+                        44444444444444444444444444444444444444444444444444444444444444444444444EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+                    </div>
+                
+                    <div class="option">
+                        <div class="circle">B</div>
+                        EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
+                    </div>
+                
+                    <div class="option">
+                        <div class="circle">C</div>
+                        DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+                    </div>
+                
+                    <div class="option">
+                        <div class="circle">D</div>
+                        TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+                    </div>
+                
+                </div>
+            </div>
+            </div>
+        <div></div>
+    </div>
+</div>
+</body>
+</html>

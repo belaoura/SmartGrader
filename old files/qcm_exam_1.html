@@ -1,0 +1,1326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>QCM Answer Sheet</title>
+<style>
+/* EXACT A4 DIMENSIONS */
+@page {
+    size: A4;
+    margin: 0;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Times New Roman", serif;
+    background: white;
+    width: 210mm;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+/* PAGE CONTAINER - EXACT A4 */
+.page {
+    width: 210mm;
+    height: 297mm;
+    position: relative;
+    background: white;
+    page-break-after: always;
+    break-after: page;
+    margin: 0 auto;
+    padding: 8mm 12mm 8mm 12mm;
+    overflow: hidden;
+}
+
+/* COMPACT MODES */
+.page.compact .question {
+    margin-bottom: 1.8mm;
+    padding-bottom: 0.8mm;
+}
+
+.page.compact .options {
+    gap: 0.4mm;
+}
+
+.page.compact .option {
+    gap: 1mm;
+    font-size: 9pt;
+}
+
+.page.ultra-compact .question {
+    margin-bottom: 1.5mm;
+    padding-bottom: 0.5mm;
+}
+
+.page.ultra-compact .options {
+    gap: 0.3mm;
+}
+
+.page.ultra-compact .option {
+    gap: 0.8mm;
+    font-size: 8.5pt;
+}
+
+.page.ultra-compact .q-text {
+    font-size: 9pt;
+    margin-bottom: 0.3mm;
+}
+
+/* PAGE CONTENT */
+.page-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* HEADER */
+.header {
+    border: 1pt solid black;
+    padding: 2mm 3mm;
+    margin-bottom: 2mm;
+    background: white;
+    width: 100%;
+    flex-shrink: 0;
+}
+
+.header-row {
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 1.5mm;
+    height: 4.5mm;
+    width: 100%;
+}
+
+.header-label {
+    font-weight: bold;
+    min-width: 25mm;
+    margin-right: 2mm;
+    font-size: 9pt;
+    letter-spacing: 0.2px;
+}
+
+.underline {
+    flex: 1;
+    border-bottom: 0.5pt solid black;
+    height: 3.5mm;
+    margin-bottom: 0.5mm;
+}
+
+/* STUDENT INFO */
+.student-section {
+    border: 1pt solid black;
+    padding: 2.5mm 3mm;
+    margin-bottom: 1.5mm;
+    position: relative;
+    min-height: 36mm;
+    background: white;
+    width: 100%;
+    flex-shrink: 0;
+}
+
+.qr-area {
+    position: absolute;
+    top: 2.5mm;
+    right: 3mm;
+    width: 17mm;
+    height: 17mm;
+    border: 0.5pt solid black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 8pt;
+    font-weight: bold;
+    background: white;
+    z-index: 2;
+}
+
+/* NAME BOXES */
+.info-row {
+    margin-bottom: 2mm;
+    width: calc(100% - 21mm);
+    max-width: 140mm;
+}
+
+.info-label {
+    font-weight: bold;
+    margin-bottom: 0.3mm;
+    font-size: 8.5pt;
+    text-transform: uppercase;
+}
+
+.box-row {
+    display: flex;
+    gap: 0.5mm;
+    flex-wrap: wrap;
+}
+
+.name-box {
+    width: 3.8mm;
+    height: 3.8mm;
+    border: 0.5pt solid black;
+    display: inline-block;
+    background: white;
+}
+
+.id-box {
+    width: 4.3mm;
+    height: 4.3mm;
+    border: 0.5pt solid black;
+    display: inline-block;
+    background: white;
+}
+
+/* INSTRUCTION TEXT - NEW */
+.instruction-text {
+    text-align: center;
+    font-size: 9pt;
+    font-weight: bold;
+    font-style: italic;
+    margin-bottom: 2mm;
+    padding: 1mm;
+    background-color: #f9f9f9;
+    border-left: 2pt solid #333;
+    border-right: 2pt solid #333;
+    color: #333;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    flex-shrink: 0;
+}
+
+/* QUESTIONS GRID */
+.questions-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5mm;
+    position: relative;
+    width: 100%;
+    flex: 1;
+    min-height: 0;
+}
+
+/* VERTICAL DIVIDER */
+.vertical-divider {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0.5pt;
+    background: black;
+    z-index: 1;
+}
+
+.column {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* QUESTION STYLES */
+.question {
+    margin-bottom: 2mm;
+    break-inside: avoid;
+    page-break-inside: avoid;
+    padding-bottom: 1mm;
+    border-bottom: 1px dotted #aaa;
+    width: 100%;
+}
+
+.question:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+/* MULTI-LINE QUESTION */
+.q-text.multi-line {
+    margin-bottom: 1.2mm;
+}
+
+.q-text {
+    font-weight: bold;
+    margin-bottom: 0.8mm;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+    text-align: left;
+    max-width: 100%;
+    line-height: 1.3;
+    font-size: 9pt;
+    display: flex;
+    gap: 1.5mm;
+    align-items: flex-start;
+}
+
+.q-number {
+    font-weight: bold;
+    min-width: 6.5mm;
+    flex-shrink: 0;
+    display: inline-block;
+    white-space: nowrap;
+    color: #000;
+    font-size: 9pt;
+}
+
+.q-text-content {
+    flex: 1;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+    display: inline-block;
+}
+
+/* OPTIONS STYLES */
+.options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5mm;
+    margin-left: 8mm;
+    width: calc(100% - 8mm);
+}
+
+.option.multi-line {
+    margin-bottom: 0.3mm;
+}
+
+.option {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.2mm;
+    font-size: 9pt;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    width: 100%;
+}
+
+.circle {
+    min-width: 2.8mm;
+    width: 2.8mm;
+    height: 2.8mm;
+    border: 0.5pt solid black;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 6pt;
+    font-weight: bold;
+    flex-shrink: 0;
+    background: white;
+    margin-top: 0.3mm;
+}
+
+.option-text {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+    flex: 1;
+    min-width: 0;
+    line-height: 1.3;
+    font-size: 9pt;
+}
+
+/* ALIGNMENT MARKS */
+.align {
+    position: absolute;
+    width: 3mm;
+    height: 3mm;
+    background: black;
+    z-index: 10;
+}
+.top-left { top: 2mm; left: 2mm; }
+.top-right { top: 2mm; right: 2mm; }
+.bottom-left { bottom: 2mm; left: 2mm; }
+.bottom-right { bottom: 2mm; right: 2mm; }
+
+/* PAGE NUMBER */
+.page-number {
+    text-align: center;
+    font-size: 7pt;
+    margin-top: 1.5mm;
+    color: #333;
+    font-family: Arial, sans-serif;
+    border-top: 0.2pt dotted #999;
+    padding-top: 0.8mm;
+    flex-shrink: 0;
+}
+
+/* LONG TEXT HANDLING */
+* {
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+
+/* PRINT STYLES */
+@media print {
+    @page {
+        size: A4;
+        margin: 0;
+    }
+    
+    body {
+        width: 210mm;
+    }
+    
+    .page {
+        width: 210mm;
+        height: 297mm;
+        padding: 8mm 12mm 8mm 12mm;
+        page-break-after: always;
+        break-after: page;
+        overflow: hidden;
+    }
+    
+    /* Force borders */
+    .header, .student-section, .qr-area, 
+    .name-box, .id-box, .circle {
+        border: 0.5pt solid black !important;
+        background: white !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    
+    .instruction-text {
+        border-left: 2pt solid black !important;
+        border-right: 2pt solid black !important;
+        background-color: #f9f9f9 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    
+    .vertical-divider {
+        background: black !important;
+    }
+    
+    .align {
+        background: black !important;
+    }
+    
+    .underline {
+        border-bottom: 0.5pt solid black !important;
+    }
+}
+
+/* SCREEN PREVIEW */
+@media screen {
+    body {
+        background: #e0e0e0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px 0;
+    }
+    
+    .page {
+        box-shadow: 0 0 15px rgba(0,0,0,0.3);
+        margin-bottom: 25px;
+        background: white;
+        border: 1px solid #ccc;
+    }
+}
+
+/* EMPTY STATE */
+.no-questions {
+    text-align: center;
+    padding: 60mm 0;
+    color: #666;
+    font-style: italic;
+    font-size: 14pt;
+}
+
+/* CLEAR FIX */
+.student-section::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/* ENSURE NO EXTRA SPACE */
+.questions-grid:last-child {
+    margin-bottom: 0;
+}
+
+.column:last-child .question:last-child {
+    margin-bottom: 0;
+}
+</style>
+</head>
+<body>
+    
+    <div class="page">
+        <!-- Printer Alignment Marks -->
+        <div class="align top-left"></div>
+        <div class="align top-right"></div>
+        <div class="align bottom-left"></div>
+        <div class="align bottom-right"></div>
+        
+        <div class="page-content">
+            <!-- Header (full on first page, minimal on others) -->
+            
+        <div class="header">
+            <div class="header-row">
+                <div class="header-label">INSTITUTION:</div>
+                <div class="underline">___________________________</div>
+            </div>
+            <div class="header-row">
+                <div class="header-label">DEPARTMENT:</div>
+                <div class="">___________________________</div>
+            </div>
+            <div class="header-row">
+                <div class="header-label">EXAM:</div>
+                <div class="">ssss</div>
+            </div>
+            <div class="header-row">
+                <div class="header-label">SUBJECT:</div>
+                <div class="">ssss</div>
+            </div>
+            <div class="header-row">
+                <div class="header-label">DATE:</div>
+                <div class=""></div>
+            </div>
+        </div>
+        
+            
+            <!-- Student Section (on ALL pages) -->
+            
+    <div class="student-section">
+        <div class="qr-area">
+            <div class="qr-placeholder">
+                <div class="qr-corner"></div>
+                <div class="qr-corner"></div>
+                <div class="qr-corner"></div>
+                <div class="qr-corner"></div>
+                <div class="qr-label">ID</div>
+            </div>
+        </div>
+        
+        <div class="info-row">
+            <div class="info-label">LAST NAME:</div>
+            <div class="box-row">
+                <span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span>
+            </div>
+        </div>
+        
+        <div class="info-row">
+            <div class="info-label">FIRST NAME:</div>
+            <div class="box-row">
+                <span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span>
+            </div>
+        </div>
+        
+        <div class="info-row">
+            <div class="info-label">STUDENT ID:</div>
+            <div class="box-row">
+                <span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span>
+            </div>
+        </div>
+    </div>
+    
+            
+            <!-- Instruction Text (only on first page) -->
+            
+        <div class="instruction-text">✦ CHOOSE THE CORRECT ANSWER FOR EACH QUESTION ✦</div>
+        
+            
+            <!-- Questions Grid -->
+            <div class="questions-grid">
+                <div class="vertical-divider"></div>
+                <div class="column">
+                    
+    <div class="question">
+        <div class="q-text">
+            <span class="q-number">1.</span>
+            <span class="q-text-content">aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</span>
+        </div>
+        <div class="options">
+            
+        <div class="option multi-line">
+            <div class="circle">A</div>
+            <div class="option-text">44444444444444444444444444444444444444444444444444444444444444444444444EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE</div>
+        </div>
+        
+        <div class="option multi-line">
+            <div class="circle">B</div>
+            <div class="option-text">EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR</div>
+        </div>
+        
+        <div class="option multi-line">
+            <div class="circle">C</div>
+            <div class="option-text">DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF</div>
+        </div>
+        
+        <div class="option multi-line">
+            <div class="circle">D</div>
+            <div class="option-text">TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG</div>
+        </div>
+        
+        </div>
+    </div>
+    
+    <div class="question">
+        <div class="q-text">
+            <span class="q-number">2.</span>
+            <span class="q-text-content">zzzzzzzzzzzzzz</span>
+        </div>
+        <div class="options">
+            
+        <div class="option">
+            <div class="circle">A</div>
+            <div class="option-text">AAAAAAA</div>
+        </div>
+        
+        <div class="option">
+            <div class="circle">B</div>
+            <div class="option-text">SSSSSSSSS</div>
+        </div>
+        
+        <div class="option">
+            <div class="circle">C</div>
+            <div class="option-text">XXXXXXXXXXX</div>
+        </div>
+        
+        <div class="option">
+            <div class="circle">D</div>
+            <div class="option-text">CCCCCCCC</div>
+        </div>
+        
+        </div>
+    </div>
+    
+    <div class="question">
+        <div class="q-text">
+            <span class="q-number">3.</span>
+            <span class="q-text-content">VVVVVVVVVVVVVVVVVVVVVVVV</span>
+        </div>
+        <div class="options">
+            
+        <div class="option">
+            <div class="circle">A</div>
+            <div class="option-text">DDDDDDDDDDD</div>
+        </div>
+        
+        <div class="option">
+            <div class="circle">B</div>
+            <div class="option-text">FFFFFFFFFF</div>
+        </div>
+        
+        <div class="option">
+            <div class="circle">C</div>
+            <div class="option-text">CCCCCCC</div>
+        </div>
+        
+        <div class="option">
+            <div class="circle">D</div>
+            <div class="option-text">CCCCCCCC</div>
+        </div>
+        
+        </div>
+    </div>
+    
+    <div class="question">
+        <div class="q-text">
+            <span class="q-number">4.</span>
+            <span class="q-text-content">EEEEEEEEEEEE</span>
+        </div>
+        <div class="options">
+            
+        <div class="option">
+            <div class="circle">A</div>
+            <div class="option-text">SSSSSSSSSSS</div>
+        </div>
+        
+        <div class="option">
+            <div class="circle">B</div>
+            <div class="option-text">SSSSSSSSSSSS</div>
+        </div>
+        
+        <div class="option">
+            <div class="circle">C</div>
+            <div class="option-text">DDDDDDDDDDD</div>
+        </div>
+        
+        <div class="option">
+            <div class="circle">D</div>
+            <div class="option-text">SSSSSSSSSSSSSSSS</div>
+        </div>
+        
+        </div>
+    </div>
+    
+                </div>
+                <div class="column">
+                    
+    <div class="question">
+        <div class="q-text">
+            <span class="q-number">5.</span>
+            <span class="q-text-content">sssssssssssssssssssssssssssssssEEEEEEEEEEEEEEEEEEEEE</span>
+        </div>
+        <div class="options">
+            
+        <div class="option">
+            <div class="circle">A</div>
+            <div class="option-text">SSSSSSSSSSSSSSSSSSSSS</div>
+        </div>
+        
+        <div class="option">
+            <div class="circle">B</div>
+            <div class="option-text">SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS</div>
+        </div>
+        
+        <div class="option">
+            <div class="circle">C</div>
+            <div class="option-text">SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS</div>
+        </div>
+        
+        <div class="option multi-line">
+            <div class="circle">D</div>
+            <div class="option-text">SSSSSSSSSSSSSSSSSSSSSDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE</div>
+        </div>
+        
+        </div>
+    </div>
+    
+    <div class="question">
+        <div class="q-text">
+            <span class="q-number">6.</span>
+            <span class="q-text-content">ZZZZZZZZZZZZ</span>
+        </div>
+        <div class="options">
+            
+        <div class="option">
+            <div class="circle">A</div>
+            <div class="option-text">33333333</div>
+        </div>
+        
+        <div class="option">
+            <div class="circle">B</div>
+            <div class="option-text">RRRRRR</div>
+        </div>
+        
+        <div class="option">
+            <div class="circle">C</div>
+            <div class="option-text">FFFFFFFF</div>
+        </div>
+        
+        <div class="option">
+            <div class="circle">D</div>
+            <div class="option-text">VVVVVVVVVVV</div>
+        </div>
+        
+        </div>
+    </div>
+    
+    <div class="question">
+        <div class="q-text">
+            <span class="q-number">7.</span>
+            <span class="q-text-content">AAAAAAAAAAAAAAA</span>
+        </div>
+        <div class="options">
+            
+        <div class="option">
+            <div class="circle">A</div>
+            <div class="option-text">EEEEEEEEEEEEEEEEEEEEE</div>
+        </div>
+        
+        <div class="option">
+            <div class="circle">B</div>
+            <div class="option-text">EEEEEEEEEEEEEEEEEEE</div>
+        </div>
+        
+        <div class="option">
+            <div class="circle">C</div>
+            <div class="option-text">EEEEEEEEEEEEEEEEEEEEE</div>
+        </div>
+        
+        <div class="option">
+            <div class="circle">D</div>
+            <div class="option-text">EEEEEEEEEEEEEEEEEEEEE</div>
+        </div>
+        
+        </div>
+    </div>
+    
+    <div class="question">
+        <div class="q-text">
+            <span class="q-number">8.</span>
+            <span class="q-text-content">SSSSSSSSSSSSSSSSSSSSS</span>
+        </div>
+        <div class="options">
+            
+        <div class="option">
+            <div class="circle">A</div>
+            <div class="option-text">SSSSSSSSSSSSS</div>
+        </div>
+        
+        <div class="option">
+            <div class="circle">B</div>
+            <div class="option-text">SSSSSSSSSSSSS</div>
+        </div>
+        
+        <div class="option">
+            <div class="circle">C</div>
+            <div class="option-text">WWWWWWWWWW</div>
+        </div>
+        
+        <div class="option">
+            <div class="circle">D</div>
+            <div class="option-text">XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</div>
+        </div>
+        
+        </div>
+    </div>
+    
+    <div class="question">
+        <div class="q-text">
+            <span class="q-number">9.</span>
+            <span class="q-text-content">AAAAAAAAAAAAAAAAAAAAAAAAAAA</span>
+        </div>
+        <div class="options">
+            
+        <div class="option">
+            <div class="circle">A</div>
+            <div class="option-text">QQQQQQQQQQQQQQQQQQQQQQQQQQQQQ</div>
+        </div>
+        
+        <div class="option">
+            <div class="circle">B</div>
+            <div class="option-text">QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ</div>
+        </div>
+        
+        <div class="option multi-line">
+            <div class="circle">C</div>
+            <div class="option-text">SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS</div>
+        </div>
+        
+        <div class="option multi-line">
+            <div class="circle">D</div>
+            <div class="option-text">XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC</div>
+        </div>
+        
+        </div>
+    </div>
+    
+                </div>
+            </div>
+            
+            <!-- Page Number -->
+            <div class="page-number">Page 1 of 3</div>
+        </div>
+    </div>
+    
+    <div class="page">
+        <!-- Printer Alignment Marks -->
+        <div class="align top-left"></div>
+        <div class="align top-right"></div>
+        <div class="align bottom-left"></div>
+        <div class="align bottom-right"></div>
+        
+        <div class="page-content">
+            <!-- Header (full on first page, minimal on others) -->
+            
+        <div class="header minimal">
+            <div class="header-row">
+                <div class="header-label">EXAM CONTINUED - PAGE 2</div>
+                <div class="underline"></div>
+            </div>
+        </div>
+        
+            
+            <!-- Student Section (on ALL pages) -->
+            
+    <div class="student-section">
+        <div class="qr-area">
+            <div class="qr-placeholder">
+                <div class="qr-corner"></div>
+                <div class="qr-corner"></div>
+                <div class="qr-corner"></div>
+                <div class="qr-corner"></div>
+                <div class="qr-label">ID</div>
+            </div>
+        </div>
+        
+        <div class="info-row">
+            <div class="info-label">LAST NAME:</div>
+            <div class="box-row">
+                <span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span>
+            </div>
+        </div>
+        
+        <div class="info-row">
+            <div class="info-label">FIRST NAME:</div>
+            <div class="box-row">
+                <span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span>
+            </div>
+        </div>
+        
+        <div class="info-row">
+            <div class="info-label">STUDENT ID:</div>
+            <div class="box-row">
+                <span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span>
+            </div>
+        </div>
+    </div>
+    
+            
+            <!-- Instruction Text (only on first page) -->
+            
+            
+            <!-- Questions Grid -->
+            <div class="questions-grid">
+                <div class="vertical-divider"></div>
+                <div class="column">
+                    
+    <div class="question">
+        <div class="q-text multi-line">
+            <span class="q-number">10.</span>
+            <span class="q-text-content">XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</span>
+        </div>
+        <div class="options">
+            
+        <div class="option">
+            <div class="circle">A</div>
+            <div class="option-text">EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE</div>
+        </div>
+        
+        <div class="option">
+            <div class="circle">B</div>
+            <div class="option-text">FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF</div>
+        </div>
+        
+        <div class="option">
+            <div class="circle">C</div>
+            <div class="option-text">FFXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</div>
+        </div>
+        
+        <div class="option">
+            <div class="circle">D</div>
+            <div class="option-text">VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV</div>
+        </div>
+        
+        </div>
+    </div>
+    
+    <div class="question">
+        <div class="q-text">
+            <span class="q-number">11.</span>
+            <span class="q-text-content">CCCCCCCCCCCCCCCCCCCCCCCCVVVFFFFFFFFFFFFF</span>
+        </div>
+        <div class="options">
+            
+        <div class="option">
+            <div class="circle">A</div>
+            <div class="option-text">EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEDDDDDDDDDDDD</div>
+        </div>
+        
+        <div class="option">
+            <div class="circle">B</div>
+            <div class="option-text">FFFFFFFFFFFFFFFFFFFFFFFFFFFDDDDDDDDDDDDDD</div>
+        </div>
+        
+        <div class="option">
+            <div class="circle">C</div>
+            <div class="option-text">RRRRRRRRRRRRRFFFFFFFFFFFFFFF</div>
+        </div>
+        
+        <div class="option">
+            <div class="circle">D</div>
+            <div class="option-text">CCCCCCCCCCCCCCCCCCCCCCCCCCCCCTTTTTTTTTTTTT</div>
+        </div>
+        
+        </div>
+    </div>
+    
+    <div class="question">
+        <div class="q-text">
+            <span class="q-number">12.</span>
+            <span class="q-text-content">AAAAAAAAAAAAAAAAAAAAAAAAZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ</span>
+        </div>
+        <div class="options">
+            
+        <div class="option">
+            <div class="circle">A</div>
+            <div class="option-text">RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRFFFFFFFFFFFFFFFFFFFFFFFFF</div>
+        </div>
+        
+        <div class="option">
+            <div class="circle">B</div>
+            <div class="option-text">DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDSSSSSSSSSSSSSSSSSSSSS</div>
+        </div>
+        
+        <div class="option">
+            <div class="circle">C</div>
+            <div class="option-text">XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXSSSSSSSSSSSSSSSSS</div>
+        </div>
+        
+        <div class="option">
+            <div class="circle">D</div>
+            <div class="option-text">CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCFFFFFFFFFFFFFFFFFF</div>
+        </div>
+        
+        </div>
+    </div>
+    
+    <div class="question">
+        <div class="q-text">
+            <span class="q-number">13.</span>
+            <span class="q-text-content">CXXXXXXXXXXDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD</span>
+        </div>
+        <div class="options">
+            
+        <div class="option">
+            <div class="circle">A</div>
+            <div class="option-text">EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE</div>
+        </div>
+        
+        <div class="option">
+            <div class="circle">B</div>
+            <div class="option-text">DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD</div>
+        </div>
+        
+        <div class="option">
+            <div class="circle">C</div>
+            <div class="option-text">SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS</div>
+        </div>
+        
+        <div class="option">
+            <div class="circle">D</div>
+            <div class="option-text">CCCCCCCCCCCCCCCCCCCCCCCCCC</div>
+        </div>
+        
+        </div>
+    </div>
+    
+    <div class="question">
+        <div class="q-text">
+            <span class="q-number">14.</span>
+            <span class="q-text-content">BBBBBBBBBBBBBHBJJJJJJJJJJJJJJJJJJJJJ</span>
+        </div>
+        <div class="options">
+            
+        <div class="option">
+            <div class="circle">A</div>
+            <div class="option-text">SSSSSSSSSSSSSSSSSSSSSSSSSSSSDDDDDDXXXXXXXXXXX</div>
+        </div>
+        
+        <div class="option">
+            <div class="circle">B</div>
+            <div class="option-text">WWWWWWWWWWWWWWWWWDDDDDDDDDDDDDDDDDDDD</div>
+        </div>
+        
+        <div class="option">
+            <div class="circle">C</div>
+            <div class="option-text">FFFFFFFFFFFFFFFFFFFFFFFFFFFFGGGGGGGGGGGGGGGG</div>
+        </div>
+        
+        <div class="option">
+            <div class="circle">D</div>
+            <div class="option-text">CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCVVVVVVVVVVVVVVVVV</div>
+        </div>
+        
+        </div>
+    </div>
+    
+                </div>
+                <div class="column">
+                    
+    <div class="question">
+        <div class="q-text">
+            <span class="q-number">15.</span>
+            <span class="q-text-content">AAAAAAAAAAAAAAAA</span>
+        </div>
+        <div class="options">
+            
+        <div class="option">
+            <div class="circle">A</div>
+            <div class="option-text">ZZZZZZZZZZZZZZZ</div>
+        </div>
+        
+        <div class="option">
+            <div class="circle">B</div>
+            <div class="option-text">DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD</div>
+        </div>
+        
+        <div class="option">
+            <div class="circle">C</div>
+            <div class="option-text">DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD</div>
+        </div>
+        
+        <div class="option">
+            <div class="circle">D</div>
+            <div class="option-text">XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</div>
+        </div>
+        
+        </div>
+    </div>
+    
+    <div class="question">
+        <div class="q-text">
+            <span class="q-number">16.</span>
+            <span class="q-text-content">RRRRRRRRRRRRRRRRRRRRRRRRRRRRFFFFFFFFFFFFFFF</span>
+        </div>
+        <div class="options">
+            
+        <div class="option">
+            <div class="circle">A</div>
+            <div class="option-text">EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEDDDDDDDDDDDDDD</div>
+        </div>
+        
+        <div class="option">
+            <div class="circle">B</div>
+            <div class="option-text">RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRREEEEEEEEEEEEEEE</div>
+        </div>
+        
+        <div class="option">
+            <div class="circle">C</div>
+            <div class="option-text">SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSCCCCCCCCCCCCC</div>
+        </div>
+        
+        <div class="option">
+            <div class="circle">D</div>
+            <div class="option-text">RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRTTTTTTTTTTTT</div>
+        </div>
+        
+        </div>
+    </div>
+    
+    <div class="question">
+        <div class="q-text">
+            <span class="q-number">17.</span>
+            <span class="q-text-content">DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDSSSSSSSSSSSSSSSSSS</span>
+        </div>
+        <div class="options">
+            
+        <div class="option">
+            <div class="circle">A</div>
+            <div class="option-text">SSSSSSSSSSSSSSSSSSSSSSSSSSDDDDDDDDDDDDDDD</div>
+        </div>
+        
+        <div class="option">
+            <div class="circle">B</div>
+            <div class="option-text">DDDDDDDDDDDDDDDDDDDDDDDDDDDCCCCCCCCCCCCCCC</div>
+        </div>
+        
+        <div class="option">
+            <div class="circle">C</div>
+            <div class="option-text">XXXXXXXXXXXXXXXXXXXXXXXXTTTTTTTTTTT</div>
+        </div>
+        
+        <div class="option">
+            <div class="circle">D</div>
+            <div class="option-text">FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFDDDDDDDDDDD</div>
+        </div>
+        
+        </div>
+    </div>
+    
+    <div class="question">
+        <div class="q-text">
+            <span class="q-number">18.</span>
+            <span class="q-text-content">BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB</span>
+        </div>
+        <div class="options">
+            
+        <div class="option">
+            <div class="circle">A</div>
+            <div class="option-text">EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE</div>
+        </div>
+        
+        <div class="option">
+            <div class="circle">B</div>
+            <div class="option-text">RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR</div>
+        </div>
+        
+        <div class="option">
+            <div class="circle">C</div>
+            <div class="option-text">YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY</div>
+        </div>
+        
+        <div class="option">
+            <div class="circle">D</div>
+            <div class="option-text">UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU</div>
+        </div>
+        
+        </div>
+    </div>
+    
+    <div class="question">
+        <div class="q-text">
+            <span class="q-number">19.</span>
+            <span class="q-text-content">CCCCCCCCCCCCCGGGGGGGGGGGGGGGVVVVVVVVVVVV</span>
+        </div>
+        <div class="options">
+            
+        <div class="option">
+            <div class="circle">A</div>
+            <div class="option-text">CCCCCCCCCCCCCCCCCC</div>
+        </div>
+        
+        <div class="option">
+            <div class="circle">B</div>
+            <div class="option-text">HHHHHHHHHHHHHHHHHHHHHHHHHHHHHH</div>
+        </div>
+        
+        <div class="option">
+            <div class="circle">C</div>
+            <div class="option-text">NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN</div>
+        </div>
+        
+        <div class="option">
+            <div class="circle">D</div>
+            <div class="option-text">BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB</div>
+        </div>
+        
+        </div>
+    </div>
+    
+                </div>
+            </div>
+            
+            <!-- Page Number -->
+            <div class="page-number">Page 2 of 3</div>
+        </div>
+    </div>
+    
+    <div class="page">
+        <!-- Printer Alignment Marks -->
+        <div class="align top-left"></div>
+        <div class="align top-right"></div>
+        <div class="align bottom-left"></div>
+        <div class="align bottom-right"></div>
+        
+        <div class="page-content">
+            <!-- Header (full on first page, minimal on others) -->
+            
+        <div class="header minimal">
+            <div class="header-row">
+                <div class="header-label">EXAM CONTINUED - PAGE 3</div>
+                <div class="underline"></div>
+            </div>
+        </div>
+        
+            
+            <!-- Student Section (on ALL pages) -->
+            
+    <div class="student-section">
+        <div class="qr-area">
+            <div class="qr-placeholder">
+                <div class="qr-corner"></div>
+                <div class="qr-corner"></div>
+                <div class="qr-corner"></div>
+                <div class="qr-corner"></div>
+                <div class="qr-label">ID</div>
+            </div>
+        </div>
+        
+        <div class="info-row">
+            <div class="info-label">LAST NAME:</div>
+            <div class="box-row">
+                <span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span>
+            </div>
+        </div>
+        
+        <div class="info-row">
+            <div class="info-label">FIRST NAME:</div>
+            <div class="box-row">
+                <span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span>
+            </div>
+        </div>
+        
+        <div class="info-row">
+            <div class="info-label">STUDENT ID:</div>
+            <div class="box-row">
+                <span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span>
+            </div>
+        </div>
+    </div>
+    
+            
+            <!-- Instruction Text (only on first page) -->
+            
+            
+            <!-- Questions Grid -->
+            <div class="questions-grid">
+                <div class="vertical-divider"></div>
+                <div class="column">
+                    
+    <div class="question">
+        <div class="q-text">
+            <span class="q-number">20.</span>
+            <span class="q-text-content">azertyuioop^^$</span>
+        </div>
+        <div class="options">
+            
+        <div class="option">
+            <div class="circle">A</div>
+            <div class="option-text">asedr</div>
+        </div>
+        
+        <div class="option">
+            <div class="circle">B</div>
+            <div class="option-text">aqzerf</div>
+        </div>
+        
+        <div class="option">
+            <div class="circle">C</div>
+            <div class="option-text">derffgg</div>
+        </div>
+        
+        <div class="option">
+            <div class="circle">D</div>
+            <div class="option-text">cddrfg</div>
+        </div>
+        
+        </div>
+    </div>
+    
+                </div>
+                <div class="column">
+                    
+    <div class="question">
+        <div class="q-text">
+            <span class="q-number">21.</span>
+            <span class="q-text-content">XXXXXX</span>
+        </div>
+        <div class="options">
+            
+        <div class="option">
+            <div class="circle">A</div>
+            <div class="option-text">XXXXX</div>
+        </div>
+        
+        <div class="option">
+            <div class="circle">B</div>
+            <div class="option-text">XXXXXXXXXXX</div>
+        </div>
+        
+        <div class="option">
+            <div class="circle">C</div>
+            <div class="option-text">XXXXX</div>
+        </div>
+        
+        <div class="option">
+            <div class="circle">D</div>
+            <div class="option-text">XXXXXX</div>
+        </div>
+        
+        </div>
+    </div>
+    
+                </div>
+            </div>
+            
+            <!-- Page Number -->
+            <div class="page-number">Page 3 of 3</div>
+        </div>
+    </div>
+    
+</body>
+</html>

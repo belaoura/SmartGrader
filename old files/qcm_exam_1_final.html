@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>QCM Answer Sheet</title>
+<style>
+@page { size: A4; margin: 0; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: "Times New Roman", serif;
+    background: white;
+    width: 210mm;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+/* ── PAGE ─────────────────────────────────────── */
+.page {
+    width: 210mm;
+    height: 297mm;
+    position: relative;
+    background: white;
+    page-break-after: always;
+    break-after: page;
+    margin: 0 auto;
+    /* Padding must match TOP/BOTTOM/LEFT/RIGHT_MARGIN_MM in Python */
+    padding: 8mm 12mm 8mm 12mm;
+    overflow: hidden;          /* ← prevents any content from overflowing */
+}
+
+.page-content {
+    width: 100%;
+    height: 100%;              /* fills the padded area exactly */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;          /* belt-and-suspenders */
+}
+
+/* ── HEADER ───────────────────────────────────── */
+.header {
+    border: 1pt solid black;
+    padding: 2mm 3mm;
+    margin-bottom: 2mm;
+    background: white;
+    flex-shrink: 0;
+}
+.header.minimal {
+    border: 1pt dashed black;
+    padding: 1.5mm 2mm;
+    text-align: center;
+}
+.header-row {
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 1.5mm;
+    height: 4.5mm;
+}
+.header-label {
+    font-weight: bold;
+    min-width: 25mm;
+    margin-right: 2mm;
+    font-size: 9pt;
+}
+.underline {
+    flex: 1;
+    border-bottom: 0.5pt solid black;
+    height: 3.5mm;
+    margin-bottom: 0.5mm;
+    font-size: 9pt;
+    padding-left: 2mm;
+}
+
+/* ── STUDENT SECTION ──────────────────────────── */
+.student-section {
+    border: 1pt solid black;
+    padding: 2.5mm 3mm;
+    margin-bottom: 2mm;
+    position: relative;
+    min-height: 36mm;
+    background: white;
+    flex-shrink: 0;
+}
+.qr-area {
+    position: absolute;
+    top: 2.5mm; right: 3mm;
+    width: 17mm; height: 17mm;
+    border: 0.5pt solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: white;
+}
+.qr-placeholder { width: 100%; height: 100%; position: relative; }
+.qr-corner {
+    position: absolute;
+    width: 2.5mm; height: 2.5mm;
+    border: 0.3mm solid #666;
+}
+.qr-corner:nth-child(1){top:1.5mm;left:1.5mm;border-right:none;border-bottom:none;}
+.qr-corner:nth-child(2){top:1.5mm;right:1.5mm;border-left:none;border-bottom:none;}
+.qr-corner:nth-child(3){bottom:1.5mm;left:1.5mm;border-right:none;border-top:none;}
+.qr-corner:nth-child(4){bottom:1.5mm;right:1.5mm;border-left:none;border-top:none;}
+.qr-label {
+    position: absolute; top:50%; left:50%;
+    transform:translate(-50%,-50%);
+    font-size:10pt; font-weight:bold; color:#666;
+}
+.info-row { margin-bottom: 2mm; width: calc(100% - 21mm); max-width: 140mm; }
+.info-row:last-child { margin-bottom: 0; }
+.info-label { font-weight:bold; margin-bottom:0.3mm; font-size:8.5pt; text-transform:uppercase; }
+.box-row { display:flex; gap:0.5mm; flex-wrap:wrap; }
+.name-box { width:3.8mm; height:3.8mm; border:0.5pt solid black; display:inline-block; }
+.id-box   { width:4.3mm; height:4.3mm; border:0.5pt solid black; display:inline-block; }
+
+/* ── INSTRUCTION ──────────────────────────────── */
+.instruction-text {
+    text-align: center;
+    font-size: 9pt;
+    font-weight: bold;
+    font-style: italic;
+    margin-bottom: 2mm;
+    padding: 1mm;
+    background-color: #f9f9f9;
+    border-left: 2pt solid #333;
+    border-right: 2pt solid #333;
+    color: #333;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    flex-shrink: 0;
+}
+
+/* ── QUESTIONS GRID ───────────────────────────── */
+.questions-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 5mm;
+    position: relative;
+    flex: 1 1 0;      /* takes remaining height */
+    min-height: 0;
+    overflow: hidden; /* clips anything that exceeds the allocated space */
+}
+.vertical-divider {
+    position: absolute;
+    top: 0; bottom: 0;
+    left: calc(50% - 2.5mm);  /* sits in the column-gap */
+    width: 0.5pt;
+    background: black;
+    pointer-events: none;
+}
+.column {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;   /* ← key: column itself does NOT scroll/overflow */
+    min-width: 0;
+}
+
+/* ── INDIVIDUAL QUESTION ──────────────────────── */
+.question {
+    margin-bottom: 2.5mm;
+    padding-bottom: 0.5mm;
+    border-bottom: 1pt solid #000;
+    break-inside: avoid;
+    page-break-inside: avoid;
+    flex-shrink: 0;   /* questions never squish themselves */
+}
+.question:last-child { border-bottom: none; margin-bottom: 0; }
+
+.q-text {
+    font-weight: bold;
+    margin-bottom: 1mm;
+    line-height: 4.3mm;   /* must match LINE_HEIGHT_MM in Python */
+    font-size: 9pt;
+    display: flex;
+    gap: 1.5mm;
+    align-items: flex-start;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+}
+.q-number {
+    font-weight: bold;
+    min-width: 6.5mm;
+    flex-shrink: 0;
+    font-size: 9pt;
+    white-space: nowrap;
+}
+.q-text-content {
+    flex: 1;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+}
+
+.options {
+    display: flex;
+    flex-direction: column;
+    gap: 1mm;
+    margin-left: 8mm;
+    width: calc(100% - 8mm);
+}
+.option {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.2mm;
+    font-size: 9pt;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+.circle {
+    min-width: 2.8mm; width: 2.8mm; height: 2.8mm;
+    border: 0.5pt solid black;
+    border-radius: 50%;
+    display: flex;
+    align-items: center; justify-content: center;
+    font-size: 6pt; font-weight: bold;
+    flex-shrink: 0;
+    background: white;
+    margin-top: 0.5mm;
+}
+.option-text {
+    flex: 1;
+    min-width: 0;
+    line-height: 4.3mm;   /* must match LINE_HEIGHT_MM */
+    font-size: 9pt;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+}
+
+/* ── ALIGNMENT MARKS ──────────────────────────── */
+.align { position:absolute; width:3mm; height:3mm; background:black; z-index:10; }
+.align.top-left    { top:2mm;    left:2mm;  }
+.align.top-right   { top:2mm;    right:2mm; }
+.align.bottom-left { bottom:2mm; left:2mm;  }
+.align.bottom-right{ bottom:2mm; right:2mm; }
+
+/* ── SECTION MARKERS ─────────────────────────── */
+/* Small black TRIANGLES at left and right edges of question section */
+.questions-markers-top,
+.questions-markers-bottom {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 2mm;
+    flex-shrink: 0;
+}
+.section-marker {
+    width: 0;
+    height: 0;
+}
+.questions-markers-top .section-marker {
+    border-left: 4mm solid transparent;
+    border-right: 4mm solid transparent;
+    border-top: 6mm solid black;
+}
+.questions-markers-bottom .section-marker {
+    border-left: 4mm solid transparent;
+    border-right: 4mm solid transparent;
+    border-bottom: 6mm solid black;
+}
+
+.omr-marker {
+    position:absolute; width:2mm; height:2mm;
+    background:transparent; border:0.2mm solid #00f;
+    opacity:0.3; z-index:5; pointer-events:none;
+}
+.omr-marker.top-left    { top:5mm;    left:5mm;  }
+.omr-marker.top-right   { top:5mm;    right:5mm; }
+.omr-marker.bottom-left { bottom:5mm; left:5mm;  }
+.omr-marker.bottom-right{ bottom:5mm; right:5mm; }
+
+/* ── PAGE NUMBER ──────────────────────────────── */
+.page-number {
+    text-align:center;
+    font-size:7pt;
+    margin-top:2mm;
+    color:#333;
+    font-family:Arial,sans-serif;
+    border-top:0.2pt dotted #999;
+    padding-top:1mm;
+    flex-shrink:0;
+}
+
+/* ── PRINT ────────────────────────────────────── */
+@media print {
+    @page { size: A4; margin: 0; }
+    body { width: 210mm; }
+    .page {
+        width:210mm; height:297mm;
+        padding:8mm 12mm 8mm 12mm;
+        page-break-after:always;
+        break-after:page;
+        overflow:hidden;
+    }
+    .header,.student-section,.qr-area,.name-box,.id-box,.circle {
+        border:0.5pt solid black !important;
+        background:white !important;
+        -webkit-print-color-adjust:exact;
+        print-color-adjust:exact;
+    }
+    .instruction-text {
+        border-left:2pt solid black !important;
+        border-right:2pt solid black !important;
+        background-color:#f9f9f9 !important;
+        -webkit-print-color-adjust:exact;
+        print-color-adjust:exact;
+    }
+    .vertical-divider,.align { background:black !important; border-color:black !important; print-color-adjust:exact; }
+    .underline { border-bottom:0.5pt solid black !important; }
+}
+
+/* ── SCREEN PREVIEW ───────────────────────────── */
+@media screen {
+    body { background:#e0e0e0; display:flex; flex-direction:column; align-items:center; padding:20px 0; }
+    .page { box-shadow:0 0 15px rgba(0,0,0,0.3); margin-bottom:25px; border:1px solid #ccc; }
+}
+
+/* Clearfix */
+.student-section::after { content:""; display:table; clear:both; }
+</style>
+</head>
+<body>
+    
+    <div class="page">
+        <div class="align top-left"></div>
+        <div class="align top-right"></div>
+        <div class="align bottom-left"></div>
+        <div class="align bottom-right"></div>
+        
+    <div class="omr-marker top-left"></div>
+    <div class="omr-marker top-right"></div>
+    <div class="omr-marker bottom-left"></div>
+    <div class="omr-marker bottom-right"></div>
+        <div class="page-content">
+            
+        <div class="header">
+            <div class="header-row"><div class="header-label">INSTITUTION:</div><div class="underline">___________________________</div></div>
+            <div class="header-row"><div class="header-label">DEPARTMENT:</div><div class="underline">___________________________</div></div>
+            <div class="header-row"><div class="header-label">EXAM:</div><div class="underline">ssss</div></div>
+            <div class="header-row"><div class="header-label">SUBJECT:</div><div class="underline">ssss</div></div>
+            <div class="header-row"><div class="header-label">DATE:</div><div class="underline"></div></div>
+        </div>
+            
+    <div class="student-section">
+        <div class="qr-area">
+            <div class="qr-placeholder">
+                <div class="qr-corner"></div><div class="qr-corner"></div>
+                <div class="qr-corner"></div><div class="qr-corner"></div>
+                <div class="qr-label">ID</div>
+            </div>
+        </div>
+        <div class="info-row">
+            <div class="info-label">LAST NAME:</div>
+            <div class="box-row"><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span></div>
+        </div>
+        <div class="info-row">
+            <div class="info-label">FIRST NAME:</div>
+            <div class="box-row"><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span></div>
+        </div>
+        <div class="info-row">
+            <div class="info-label">STUDENT ID:</div>
+            <div class="box-row"><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span></div>
+        </div>
+    </div>
+            
+        <div class="instruction-text">✦ CHOOSE THE CORRECT ANSWER FOR EACH QUESTION ✦</div>
+            <div class="questions-markers-top">
+                <div class="section-marker"></div>
+                <div class="section-marker"></div>
+            </div>
+            <div class="questions-grid">
+                <div class="vertical-divider"></div>
+                <div class="column">
+    <div class="question" data-question-id="1" data-question-number="1" data-qid="1" data-qnum="1" data-correct-answer="A">
+        <div class="q-text">
+            <span class="q-number">1.</span>
+            <span class="q-text-content">sssssssssssssssssssssssssssssssEEEEEEEEEEEEEEEEEEEEE</span>
+        </div>
+        <div class="options">
+        <div class="option" data-qid="1" data-opt="A" data-correct="true" data-correct-answer="true">
+            <div class="circle"></div>
+            <div class="option-text">SSSSSSSSSSSSSSSSSSSSS</div>
+        </div>
+        <div class="option" data-qid="1" data-opt="B" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS</div>
+        </div>
+        <div class="option" data-qid="1" data-opt="C" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS</div>
+        </div>
+        <div class="option multi-line" data-qid="1" data-opt="D" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">SSSSSSSSSSSSSSSSSSSSSDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE</div>
+        </div>
+        </div>
+    </div>
+    <div class="question" data-question-id="2" data-question-number="2" data-qid="2" data-qnum="2" data-correct-answer="A">
+        <div class="q-text multi-line">
+            <span class="q-number">2.</span>
+            <span class="q-text-content">aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</span>
+        </div>
+        <div class="options">
+        <div class="option multi-line" data-qid="2" data-opt="A" data-correct="true" data-correct-answer="true">
+            <div class="circle"></div>
+            <div class="option-text">44444444444444444444444444444444444444444444444444444444444444444444444EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE</div>
+        </div>
+        <div class="option multi-line" data-qid="2" data-opt="B" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR</div>
+        </div>
+        <div class="option multi-line" data-qid="2" data-opt="C" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF</div>
+        </div>
+        <div class="option multi-line" data-qid="2" data-opt="D" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG</div>
+        </div>
+        </div>
+    </div>
+    <div class="question" data-question-id="3" data-question-number="3" data-qid="3" data-qnum="3" data-correct-answer="A">
+        <div class="q-text">
+            <span class="q-number">3.</span>
+            <span class="q-text-content">zzzzzzzzzzzzzz</span>
+        </div>
+        <div class="options">
+        <div class="option" data-qid="3" data-opt="A" data-correct="true" data-correct-answer="true">
+            <div class="circle"></div>
+            <div class="option-text">AAAAAAA</div>
+        </div>
+        <div class="option" data-qid="3" data-opt="B" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">SSSSSSSSS</div>
+        </div>
+        <div class="option" data-qid="3" data-opt="C" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">XXXXXXXXXXX</div>
+        </div>
+        <div class="option" data-qid="3" data-opt="D" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">CCCCCCCC</div>
+        </div>
+        </div>
+    </div>
+    <div class="question" data-question-id="4" data-question-number="4" data-qid="4" data-qnum="4" data-correct-answer="A">
+        <div class="q-text">
+            <span class="q-number">4.</span>
+            <span class="q-text-content">ZZZZZZZZZZZZ</span>
+        </div>
+        <div class="options">
+        <div class="option" data-qid="4" data-opt="A" data-correct="true" data-correct-answer="true">
+            <div class="circle"></div>
+            <div class="option-text">33333333</div>
+        </div>
+        <div class="option" data-qid="4" data-opt="B" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">RRRRRR</div>
+        </div>
+        <div class="option" data-qid="4" data-opt="C" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">FFFFFFFF</div>
+        </div>
+        <div class="option" data-qid="4" data-opt="D" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">VVVVVVVVVVV</div>
+        </div>
+        </div>
+    </div>
+    <div class="question" data-question-id="5" data-question-number="5" data-qid="5" data-qnum="5" data-correct-answer="A">
+        <div class="q-text">
+            <span class="q-number">5.</span>
+            <span class="q-text-content">VVVVVVVVVVVVVVVVVVVVVVVV</span>
+        </div>
+        <div class="options">
+        <div class="option" data-qid="5" data-opt="A" data-correct="true" data-correct-answer="true">
+            <div class="circle"></div>
+            <div class="option-text">DDDDDDDDDDD</div>
+        </div>
+        <div class="option" data-qid="5" data-opt="B" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">FFFFFFFFFF</div>
+        </div>
+        <div class="option" data-qid="5" data-opt="C" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">CCCCCCC</div>
+        </div>
+        <div class="option" data-qid="5" data-opt="D" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">CCCCCCCC</div>
+        </div>
+        </div>
+    </div></div>
+                <div class="column">
+    <div class="question" data-question-id="6" data-question-number="6" data-qid="6" data-qnum="6" data-correct-answer="A">
+        <div class="q-text">
+            <span class="q-number">6.</span>
+            <span class="q-text-content">AAAAAAAAAAAAAAA</span>
+        </div>
+        <div class="options">
+        <div class="option" data-qid="6" data-opt="A" data-correct="true" data-correct-answer="true">
+            <div class="circle"></div>
+            <div class="option-text">EEEEEEEEEEEEEEEEEEEEE</div>
+        </div>
+        <div class="option" data-qid="6" data-opt="B" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">EEEEEEEEEEEEEEEEEEE</div>
+        </div>
+        <div class="option" data-qid="6" data-opt="C" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">EEEEEEEEEEEEEEEEEEEEE</div>
+        </div>
+        <div class="option" data-qid="6" data-opt="D" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">EEEEEEEEEEEEEEEEEEEEE</div>
+        </div>
+        </div>
+    </div>
+    <div class="question" data-question-id="7" data-question-number="7" data-qid="7" data-qnum="7" data-correct-answer="A">
+        <div class="q-text">
+            <span class="q-number">7.</span>
+            <span class="q-text-content">EEEEEEEEEEEE</span>
+        </div>
+        <div class="options">
+        <div class="option" data-qid="7" data-opt="A" data-correct="true" data-correct-answer="true">
+            <div class="circle"></div>
+            <div class="option-text">SSSSSSSSSSS</div>
+        </div>
+        <div class="option" data-qid="7" data-opt="B" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">SSSSSSSSSSSS</div>
+        </div>
+        <div class="option" data-qid="7" data-opt="C" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">DDDDDDDDDDD</div>
+        </div>
+        <div class="option" data-qid="7" data-opt="D" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">SSSSSSSSSSSSSSSS</div>
+        </div>
+        </div>
+    </div>
+    <div class="question" data-question-id="8" data-question-number="8" data-qid="8" data-qnum="8" data-correct-answer="A">
+        <div class="q-text">
+            <span class="q-number">8.</span>
+            <span class="q-text-content">SSSSSSSSSSSSSSSSSSSSS</span>
+        </div>
+        <div class="options">
+        <div class="option" data-qid="8" data-opt="A" data-correct="true" data-correct-answer="true">
+            <div class="circle"></div>
+            <div class="option-text">SSSSSSSSSSSSS</div>
+        </div>
+        <div class="option" data-qid="8" data-opt="B" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">SSSSSSSSSSSSS</div>
+        </div>
+        <div class="option" data-qid="8" data-opt="C" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">WWWWWWWWWW</div>
+        </div>
+        <div class="option multi-line" data-qid="8" data-opt="D" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</div>
+        </div>
+        </div>
+    </div>
+    <div class="question" data-question-id="9" data-question-number="9" data-qid="9" data-qnum="9" data-correct-answer="A">
+        <div class="q-text">
+            <span class="q-number">9.</span>
+            <span class="q-text-content">AAAAAAAAAAAAAAAAAAAAAAAAAAA</span>
+        </div>
+        <div class="options">
+        <div class="option" data-qid="9" data-opt="A" data-correct="true" data-correct-answer="true">
+            <div class="circle"></div>
+            <div class="option-text">QQQQQQQQQQQQQQQQQQQQQQQQQQQQQ</div>
+        </div>
+        <div class="option" data-qid="9" data-opt="B" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ</div>
+        </div>
+        <div class="option multi-line" data-qid="9" data-opt="C" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS</div>
+        </div>
+        <div class="option multi-line" data-qid="9" data-opt="D" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC</div>
+        </div>
+        </div>
+    </div>
+    <div class="question" data-question-id="10" data-question-number="10" data-qid="10" data-qnum="10" data-correct-answer="A">
+        <div class="q-text multi-line">
+            <span class="q-number">10.</span>
+            <span class="q-text-content">XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</span>
+        </div>
+        <div class="options">
+        <div class="option multi-line" data-qid="10" data-opt="A" data-correct="true" data-correct-answer="true">
+            <div class="circle"></div>
+            <div class="option-text">EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE</div>
+        </div>
+        <div class="option" data-qid="10" data-opt="B" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF</div>
+        </div>
+        <div class="option" data-qid="10" data-opt="C" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">FFXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</div>
+        </div>
+        <div class="option" data-qid="10" data-opt="D" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV</div>
+        </div>
+        </div>
+    </div></div>
+            </div>
+            <div class="questions-markers-bottom">
+                <div class="section-marker"></div>
+                <div class="section-marker"></div>
+            </div>
+            <div class="page-number">Page 1 of 2</div>
+        </div>
+    </div>
+    <div class="page">
+        <div class="align top-left"></div>
+        <div class="align top-right"></div>
+        <div class="align bottom-left"></div>
+        <div class="align bottom-right"></div>
+        
+    <div class="omr-marker top-left"></div>
+    <div class="omr-marker top-right"></div>
+    <div class="omr-marker bottom-left"></div>
+    <div class="omr-marker bottom-right"></div>
+        <div class="page-content">
+            
+        <div class="header minimal">
+            <div class="header-row"><div class="header-label">EXAM CONTINUED — PAGE 2</div></div>
+        </div>
+            
+    <div class="student-section">
+        <div class="qr-area">
+            <div class="qr-placeholder">
+                <div class="qr-corner"></div><div class="qr-corner"></div>
+                <div class="qr-corner"></div><div class="qr-corner"></div>
+                <div class="qr-label">ID</div>
+            </div>
+        </div>
+        <div class="info-row">
+            <div class="info-label">LAST NAME:</div>
+            <div class="box-row"><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span></div>
+        </div>
+        <div class="info-row">
+            <div class="info-label">FIRST NAME:</div>
+            <div class="box-row"><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span><span class="name-box"></span></div>
+        </div>
+        <div class="info-row">
+            <div class="info-label">STUDENT ID:</div>
+            <div class="box-row"><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span><span class="id-box"></span></div>
+        </div>
+    </div>
+            
+            <div class="questions-markers-top">
+                <div class="section-marker"></div>
+                <div class="section-marker"></div>
+            </div>
+            <div class="questions-grid">
+                <div class="vertical-divider"></div>
+                <div class="column">
+    <div class="question" data-question-id="11" data-question-number="11" data-qid="11" data-qnum="11" data-correct-answer="A">
+        <div class="q-text">
+            <span class="q-number">11.</span>
+            <span class="q-text-content">AAAAAAAAAAAAAAAA</span>
+        </div>
+        <div class="options">
+        <div class="option" data-qid="11" data-opt="A" data-correct="true" data-correct-answer="true">
+            <div class="circle"></div>
+            <div class="option-text">ZZZZZZZZZZZZZZZ</div>
+        </div>
+        <div class="option" data-qid="11" data-opt="B" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD</div>
+        </div>
+        <div class="option" data-qid="11" data-opt="C" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD</div>
+        </div>
+        <div class="option" data-qid="11" data-opt="D" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</div>
+        </div>
+        </div>
+    </div>
+    <div class="question" data-question-id="12" data-question-number="12" data-qid="12" data-qnum="12" data-correct-answer="A">
+        <div class="q-text">
+            <span class="q-number">12.</span>
+            <span class="q-text-content">RRRRRRRRRRRRRRRRRRRRRRRRRRRRFFFFFFFFFFFFFFF</span>
+        </div>
+        <div class="options">
+        <div class="option" data-qid="12" data-opt="A" data-correct="true" data-correct-answer="true">
+            <div class="circle"></div>
+            <div class="option-text">EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEDDDDDDDDDDDDDD</div>
+        </div>
+        <div class="option" data-qid="12" data-opt="B" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRREEEEEEEEEEEEEEE</div>
+        </div>
+        <div class="option" data-qid="12" data-opt="C" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSCCCCCCCCCCCCC</div>
+        </div>
+        <div class="option" data-qid="12" data-opt="D" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRTTTTTTTTTTTT</div>
+        </div>
+        </div>
+    </div>
+    <div class="question" data-question-id="13" data-question-number="13" data-qid="13" data-qnum="13" data-correct-answer="A">
+        <div class="q-text">
+            <span class="q-number">13.</span>
+            <span class="q-text-content">CCCCCCCCCCCCCCCCCCCCCCCCVVVFFFFFFFFFFFFF</span>
+        </div>
+        <div class="options">
+        <div class="option" data-qid="13" data-opt="A" data-correct="true" data-correct-answer="true">
+            <div class="circle"></div>
+            <div class="option-text">EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEDDDDDDDDDDDD</div>
+        </div>
+        <div class="option" data-qid="13" data-opt="B" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">FFFFFFFFFFFFFFFFFFFFFFFFFFFDDDDDDDDDDDDDD</div>
+        </div>
+        <div class="option" data-qid="13" data-opt="C" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">RRRRRRRRRRRRRFFFFFFFFFFFFFFF</div>
+        </div>
+        <div class="option" data-qid="13" data-opt="D" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">CCCCCCCCCCCCCCCCCCCCCCCCCCCCCTTTTTTTTTTTTT</div>
+        </div>
+        </div>
+    </div>
+    <div class="question" data-question-id="14" data-question-number="14" data-qid="14" data-qnum="14" data-correct-answer="B">
+        <div class="q-text multi-line">
+            <span class="q-number">14.</span>
+            <span class="q-text-content">DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDSSSSSSSSSSSSSSSSSS</span>
+        </div>
+        <div class="options">
+        <div class="option" data-qid="14" data-opt="A" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">SSSSSSSSSSSSSSSSSSSSSSSSSSDDDDDDDDDDDDDDD</div>
+        </div>
+        <div class="option" data-qid="14" data-opt="B" data-correct="true" data-correct-answer="true">
+            <div class="circle"></div>
+            <div class="option-text">DDDDDDDDDDDDDDDDDDDDDDDDDDDCCCCCCCCCCCCCCC</div>
+        </div>
+        <div class="option" data-qid="14" data-opt="C" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">XXXXXXXXXXXXXXXXXXXXXXXXTTTTTTTTTTT</div>
+        </div>
+        <div class="option" data-qid="14" data-opt="D" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFDDDDDDDDDDD</div>
+        </div>
+        </div>
+    </div>
+    <div class="question" data-question-id="15" data-question-number="15" data-qid="15" data-qnum="15" data-correct-answer="A">
+        <div class="q-text multi-line">
+            <span class="q-number">15.</span>
+            <span class="q-text-content">AAAAAAAAAAAAAAAAAAAAAAAAZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ</span>
+        </div>
+        <div class="options">
+        <div class="option multi-line" data-qid="15" data-opt="A" data-correct="true" data-correct-answer="true">
+            <div class="circle"></div>
+            <div class="option-text">RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRFFFFFFFFFFFFFFFFFFFFFFFFF</div>
+        </div>
+        <div class="option" data-qid="15" data-opt="B" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDSSSSSSSSSSSSSSSSSSSSS</div>
+        </div>
+        <div class="option" data-qid="15" data-opt="C" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXSSSSSSSSSSSSSSSSS</div>
+        </div>
+        <div class="option multi-line" data-qid="15" data-opt="D" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCFFFFFFFFFFFFFFFFFF</div>
+        </div>
+        </div>
+    </div></div>
+                <div class="column">
+    <div class="question" data-question-id="16" data-question-number="16" data-qid="16" data-qnum="16" data-correct-answer="A">
+        <div class="q-text">
+            <span class="q-number">16.</span>
+            <span class="q-text-content">BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB</span>
+        </div>
+        <div class="options">
+        <div class="option" data-qid="16" data-opt="A" data-correct="true" data-correct-answer="true">
+            <div class="circle"></div>
+            <div class="option-text">EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE</div>
+        </div>
+        <div class="option" data-qid="16" data-opt="B" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR</div>
+        </div>
+        <div class="option" data-qid="16" data-opt="C" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY</div>
+        </div>
+        <div class="option" data-qid="16" data-opt="D" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU</div>
+        </div>
+        </div>
+    </div>
+    <div class="question" data-question-id="17" data-question-number="17" data-qid="17" data-qnum="17" data-correct-answer="A">
+        <div class="q-text">
+            <span class="q-number">17.</span>
+            <span class="q-text-content">CXXXXXXXXXXDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD</span>
+        </div>
+        <div class="options">
+        <div class="option" data-qid="17" data-opt="A" data-correct="true" data-correct-answer="true">
+            <div class="circle"></div>
+            <div class="option-text">EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE</div>
+        </div>
+        <div class="option" data-qid="17" data-opt="B" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD</div>
+        </div>
+        <div class="option" data-qid="17" data-opt="C" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS</div>
+        </div>
+        <div class="option" data-qid="17" data-opt="D" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">CCCCCCCCCCCCCCCCCCCCCCCCCC</div>
+        </div>
+        </div>
+    </div>
+    <div class="question" data-question-id="18" data-question-number="18" data-qid="18" data-qnum="18" data-correct-answer="A">
+        <div class="q-text">
+            <span class="q-number">18.</span>
+            <span class="q-text-content">CCCCCCCCCCCCCGGGGGGGGGGGGGGGVVVVVVVVVVVV</span>
+        </div>
+        <div class="options">
+        <div class="option" data-qid="18" data-opt="A" data-correct="true" data-correct-answer="true">
+            <div class="circle"></div>
+            <div class="option-text">CCCCCCCCCCCCCCCCCC</div>
+        </div>
+        <div class="option" data-qid="18" data-opt="B" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">HHHHHHHHHHHHHHHHHHHHHHHHHHHHHH</div>
+        </div>
+        <div class="option" data-qid="18" data-opt="C" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN</div>
+        </div>
+        <div class="option" data-qid="18" data-opt="D" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB</div>
+        </div>
+        </div>
+    </div>
+    <div class="question" data-question-id="19" data-question-number="19" data-qid="19" data-qnum="19" data-correct-answer="A">
+        <div class="q-text">
+            <span class="q-number">19.</span>
+            <span class="q-text-content">BBBBBBBBBBBBBHBJJJJJJJJJJJJJJJJJJJJJ</span>
+        </div>
+        <div class="options">
+        <div class="option" data-qid="19" data-opt="A" data-correct="true" data-correct-answer="true">
+            <div class="circle"></div>
+            <div class="option-text">SSSSSSSSSSSSSSSSSSSSSSSSSSSSDDDDDDXXXXXXXXXXX</div>
+        </div>
+        <div class="option" data-qid="19" data-opt="B" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">WWWWWWWWWWWWWWWWWDDDDDDDDDDDDDDDDDDDD</div>
+        </div>
+        <div class="option" data-qid="19" data-opt="C" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">FFFFFFFFFFFFFFFFFFFFFFFFFFFFGGGGGGGGGGGGGGGG</div>
+        </div>
+        <div class="option" data-qid="19" data-opt="D" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCVVVVVVVVVVVVVVVVV</div>
+        </div>
+        </div>
+    </div>
+    <div class="question" data-question-id="20" data-question-number="20" data-qid="20" data-qnum="20" data-correct-answer="C">
+        <div class="q-text">
+            <span class="q-number">20.</span>
+            <span class="q-text-content">azertyuioop^^$</span>
+        </div>
+        <div class="options">
+        <div class="option" data-qid="20" data-opt="A" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">asedr</div>
+        </div>
+        <div class="option" data-qid="20" data-opt="B" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">aqzerf</div>
+        </div>
+        <div class="option" data-qid="20" data-opt="C" data-correct="true" data-correct-answer="true">
+            <div class="circle"></div>
+            <div class="option-text">derffgg</div>
+        </div>
+        <div class="option" data-qid="20" data-opt="D" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">cddrfg</div>
+        </div>
+        </div>
+    </div>
+    <div class="question" data-question-id="31" data-question-number="21" data-qid="31" data-qnum="21" data-correct-answer="A">
+        <div class="q-text">
+            <span class="q-number">21.</span>
+            <span class="q-text-content">XXXXXX</span>
+        </div>
+        <div class="options">
+        <div class="option" data-qid="31" data-opt="A" data-correct="true" data-correct-answer="true">
+            <div class="circle"></div>
+            <div class="option-text">XXXXX</div>
+        </div>
+        <div class="option" data-qid="31" data-opt="B" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">XXXXXXXXXXX</div>
+        </div>
+        <div class="option" data-qid="31" data-opt="C" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">XXXXX</div>
+        </div>
+        <div class="option" data-qid="31" data-opt="D" data-correct="false">
+            <div class="circle"></div>
+            <div class="option-text">XXXXXX</div>
+        </div>
+        </div>
+    </div></div>
+            </div>
+            <div class="questions-markers-bottom">
+                <div class="section-marker"></div>
+                <div class="section-marker"></div>
+            </div>
+            <div class="page-number">Page 2 of 2</div>
+        </div>
+    </div>
+</body>
+</html>
