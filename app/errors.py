@@ -46,3 +46,10 @@ class NotFoundError(SmartGraderError):
         if resource_id is not None:
             msg = f"{resource} with id {resource_id} not found"
         super().__init__(msg, status_code=404)
+
+
+class AIModelError(SmartGraderError):
+    """Raised when AI model fails to load or inference fails."""
+
+    def __init__(self, message="AI model error"):
+        super().__init__(message, status_code=503)
