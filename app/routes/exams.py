@@ -1,3 +1,50 @@
 """Exam API endpoints."""
-from flask import Blueprint
+
+import logging
+from flask import Blueprint, request, jsonify
+from app.services.exam_service import (
+    create_exam, get_all_exams, get_exam_by_id,
+    update_exam, delete_exam, get_exam_statistics,
+)
+
+logger = logging.getLogger("smartgrader.routes.exams")
 exams_bp = Blueprint("exams", __name__)
+
+
+@exams_bp.route("/exams", methods=["GET"])
+def list_exams():
+    exams = get_all_exams()
+    return jsonify([e.to_dict() for e in exams])
+
+
+@exams_bp.route("/exams", methods=["POST"])
+def create():
+    data = request.get_json()
+    exam = create_exam(
+        title=data["title"],
+        subject=data.get("subject"),
+        date=data.get("date"),
+        total_marks=data.get("total_marks"),
+    )
+    return jsonify(exam.to_dict()), 201
+
+
+@exams_bp.route("/exams/<int:exam_id>", methods=["GET"])
+def get_exam(exam_id):
+    exam = get_exam_by_id(exam_id)
+    data = exam.to_dict()
+    data["statistics"] = get_exam_statistics(exam_id)
+    return jsonify(data)
+
+
+@exams_bp.route("/exams/<int:exam_id>", methods=["PUT"])
+def update(exam_id):
+    data = request.get_json()
+    exam = update_exam(exam_id, **data)
+    return jsonify(exam.to_dict())
+
+
+@exams_bp.route("/exams/<int:exam_id>", methods=["DELETE"])
+def delete(exam_id):
+    delete_exam(exam_id)
+    return jsonify({"message": "Exam deleted"}), 200
