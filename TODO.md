@@ -15,12 +15,12 @@
 - [x] Entry point and smoke test
 
 ## Sub-Project 2: Web UI
-- [ ] Flask backend with blueprints
-- [ ] React frontend scaffold
-- [ ] Dashboard page
-- [ ] Exam management pages
-- [ ] Scanner upload page
-- [ ] Results and statistics pages
+- [x] Flask backend with blueprints
+- [x] React frontend scaffold
+- [x] Dashboard page
+- [x] Exam management pages
+- [x] Scanner upload page
+- [x] Results and statistics pages
 
 ## Sub-Project 3: AI Vision Model
 - [ ] Model loader (Qwen2.5-VL-3B with 4-bit quantization)
