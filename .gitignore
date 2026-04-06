@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual environment
+venv/
+.venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Database
+*.db
+instance/
+
+# Generated files
+*.pdf
+*.jpg
+*.jpeg
+*.png
+debug_output/
+scanned_result.*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.flaskenv
+
+# Migrations
+migrations/versions/*.pyc

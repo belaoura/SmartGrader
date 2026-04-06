@@ -1,0 +1,15 @@
+Flask==3.1.1
+Flask-SQLAlchemy==3.1.1
+Flask-Migrate==4.1.0
+Flask-CORS==5.0.1
+SQLAlchemy==2.0.40
+alembic==1.15.2
+opencv-python==4.11.0.86
+numpy==2.2.4
+Pillow==11.2.1
+pdfkit==1.0.0
+PyMuPDF==1.25.5
+qrcode==8.0
+pyzbar==0.1.9
+pytest==8.3.5
+pytest-cov==6.1.1
