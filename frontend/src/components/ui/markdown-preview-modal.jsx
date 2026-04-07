@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { X, Printer } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -82,7 +83,7 @@ export function MarkdownPreviewModal({ open, onClose, filePath, title }) {
     win.onload = () => win.print();
   };
 
-  return (
+  return createPortal(
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4" onClick={onClose}>
       <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" />
       <div
@@ -107,6 +108,7 @@ export function MarkdownPreviewModal({ open, onClose, filePath, title }) {
           {content && <div dangerouslySetInnerHTML={{ __html: html }} />}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

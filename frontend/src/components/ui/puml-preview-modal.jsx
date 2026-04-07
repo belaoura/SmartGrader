@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { X, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -36,7 +37,7 @@ export function PumlPreviewModal({ open, onClose, filename, title }) {
 
   if (!open) return null;
 
-  return (
+  return createPortal(
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4" onClick={onClose}>
       <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" />
       <div
@@ -73,6 +74,7 @@ export function PumlPreviewModal({ open, onClose, filename, title }) {
           )}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
