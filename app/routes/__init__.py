@@ -9,6 +9,7 @@ def register_blueprints(app):
     from app.routes.scanning import scanning_bp
     from app.routes.grading import grading_bp
     from app.routes.ai import ai_bp
+    from app.routes.static_files import static_files_bp
 
     app.register_blueprint(exams_bp, url_prefix="/api")
     app.register_blueprint(questions_bp, url_prefix="/api")
@@ -16,3 +17,4 @@ def register_blueprints(app):
     app.register_blueprint(scanning_bp, url_prefix="/api")
     app.register_blueprint(grading_bp, url_prefix="/api")
     app.register_blueprint(ai_bp, url_prefix="/api")
+    app.register_blueprint(static_files_bp, url_prefix="/api")
