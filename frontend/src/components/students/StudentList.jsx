@@ -1,4 +1,5 @@
-import { Mail, Hash } from "lucide-react";
+import { Mail, Hash, Pencil } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default function StudentList({ students }) {
   if (students.length === 0) {
@@ -39,6 +40,17 @@ export default function StudentList({ students }) {
               )}
             </div>
           </div>
+
+          {/* Edit button */}
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8 cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+            title="Edit student"
+            onClick={() => alert(`Edit: ${s.name} (${s.matricule})`)}
+          >
+            <Pencil className="h-3.5 w-3.5 text-muted-foreground" />
+          </Button>
         </div>
       ))}
     </div>

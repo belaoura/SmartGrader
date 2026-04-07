@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { JsonPreviewModal } from "@/components/ui/json-preview-modal";
+import { ImagePreviewModal } from "@/components/ui/image-preview-modal";
 import { PageHeader } from "@/components/ui/page-header";
 import { Button } from "@/components/ui/button";
 import {
@@ -29,11 +30,11 @@ const SCANNED_SHEETS = [
 ];
 
 const PIPELINE_STAGES = [
-  { step: "01", label: "Original",         desc: "Raw scan input",             color: "text-slate-500",   bg: "bg-slate-500/10",   border: "border-slate-500/30"   },
-  { step: "02", label: "Grayscale",        desc: "RGB \u2192 Grayscale conversion", color: "text-zinc-400",    bg: "bg-zinc-400/10",    border: "border-zinc-400/30"    },
-  { step: "03", label: "Noise Reduced",    desc: "Gaussian blur applied",      color: "text-blue-500",    bg: "bg-blue-500/10",    border: "border-blue-500/30"    },
-  { step: "04", label: "Contrast Enhanced",desc: "CLAHE equalisation",         color: "text-indigo-500",  bg: "bg-indigo-500/10",  border: "border-indigo-500/30"  },
-  { step: "05", label: "Threshold",        desc: "Adaptive binary threshold",  color: "text-emerald-500", bg: "bg-emerald-500/10", border: "border-emerald-500/30" },
+  { step: "01", label: "Original",          file: "01_original.png",          desc: "Raw scan input",             color: "text-slate-500",   bg: "bg-slate-500/10",   border: "border-slate-500/30"   },
+  { step: "02", label: "Grayscale",         file: "02_grayscale.png",         desc: "RGB \u2192 Grayscale conversion", color: "text-zinc-400",    bg: "bg-zinc-400/10",    border: "border-zinc-400/30"    },
+  { step: "03", label: "Noise Reduced",     file: "03_noise_reduced.png",     desc: "Gaussian blur applied",      color: "text-blue-500",    bg: "bg-blue-500/10",    border: "border-blue-500/30"    },
+  { step: "04", label: "Contrast Enhanced", file: "04_contrast_enhanced.png", desc: "CLAHE equalisation",         color: "text-indigo-500",  bg: "bg-indigo-500/10",  border: "border-indigo-500/30"  },
+  { step: "05", label: "Threshold",         file: "05_threshold.png",         desc: "Adaptive binary threshold",  color: "text-emerald-500", bg: "bg-emerald-500/10", border: "border-emerald-500/30" },
 ];
 
 const ANSWER_KEYS = [
@@ -61,6 +62,7 @@ function SectionHeader({ icon: Icon, title, count, color }) {
 export default function SampleData() {
   const [expandedKey, setExpandedKey] = useState(null);
   const [jsonModal, setJsonModal] = useState({ open: false, filename: "", title: "" });
+  const [imageModal, setImageModal] = useState({ open: false, src: "", title: "" });
 
   return (
     <div className="space-y-8">
@@ -142,7 +144,7 @@ export default function SampleData() {
                   <div className="flex items-center justify-between mt-2">
                     <span className="text-xs opacity-50">{sheet.size}</span>
                     <button
-                      onClick={() => alert("Feature coming soon \u2014 requires static file serving to be configured.")}
+                      onClick={() => setImageModal({ open: true, src: `/api/files/old sheets/${sheet.name}`, title: sheet.name })}
                       className="flex items-center gap-1 text-xs px-2 py-1 rounded-lg border border-white/10 hover:bg-white/10 cursor-pointer transition-all duration-200"
                       style={{ color: "var(--color-muted-foreground)" }}
                     >
@@ -178,7 +180,7 @@ export default function SampleData() {
                   <span className="font-heading font-semibold text-xs" style={{ color: "var(--color-foreground)" }}>{stage.label}</span>
                   <span className="text-xs" style={{ color: "var(--color-muted-foreground)" }}>{stage.desc}</span>
                   <button
-                    onClick={() => alert("Feature coming soon \u2014 requires static file serving to be configured.")}
+                    onClick={() => setImageModal({ open: true, src: `/api/files/debug_output/${stage.file}`, title: stage.label })}
                     className={`text-xs px-2 py-1 rounded-lg border ${stage.border} hover:opacity-80 cursor-pointer transition-all duration-200 ${stage.color}`}
                   >
                     View
@@ -262,6 +264,13 @@ export default function SampleData() {
         onClose={() => setJsonModal({ open: false, filename: "", title: "" })}
         filename={jsonModal.filename}
         title={jsonModal.title}
+      />
+
+      <ImagePreviewModal
+        open={imageModal.open}
+        onClose={() => setImageModal({ open: false, src: "", title: "" })}
+        src={imageModal.src}
+        title={imageModal.title}
       />
     </div>
   );
