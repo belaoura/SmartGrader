@@ -85,6 +85,12 @@ class Config:
     LOG_LEVEL = "INFO"
     LOG_FILE = os.path.join(BASE_DIR, "logs", "smartgrader.log")
 
+    # Authentication
+    JWT_ACCESS_TOKEN_EXPIRES = 900        # 15 minutes
+    JWT_REFRESH_TOKEN_EXPIRES = 604800    # 7 days
+    BCRYPT_LOG_ROUNDS = 12
+    RATELIMIT_LOGIN = "5 per minute"
+
 
 class DevelopmentConfig(Config):
     """Development configuration."""

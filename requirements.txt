@@ -18,3 +18,8 @@ bitsandbytes>=0.44.0
 accelerate>=1.0.0
 torch>=2.4.0
 qwen-vl-utils>=0.0.8
+
+# Authentication
+PyJWT>=2.8.0
+bcrypt>=4.1.0
+Flask-Limiter>=3.5.0

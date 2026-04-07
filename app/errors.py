@@ -53,3 +53,17 @@ class AIModelError(SmartGraderError):
 
     def __init__(self, message="AI model error"):
         super().__init__(message, status_code=503)
+
+
+class AuthenticationError(SmartGraderError):
+    """Raised when authentication fails."""
+
+    def __init__(self, message="Authentication failed"):
+        super().__init__(message, status_code=401)
+
+
+class AuthorizationError(SmartGraderError):
+    """Raised when user lacks required permissions."""
+
+    def __init__(self, message="Permission denied"):
+        super().__init__(message, status_code=403)
