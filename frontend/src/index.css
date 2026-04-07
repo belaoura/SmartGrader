@@ -1,66 +1,142 @@
-@import url("https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Crimson+Pro:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Open+Sans:wght@300;400;500;600&display=swap");
 @import "tailwindcss";
 
 @custom-variant dark (&:is([data-theme="dark"] *));
 
 @theme inline {
-  --color-background: #ffffff;
-  --color-foreground: #0f172a;
-  --color-card: #ffffff;
-  --color-card-foreground: #0f172a;
+  --color-background: #F5F3FF;
+  --color-foreground: #1E1B4B;
+  --color-card: rgba(255,255,255,0.80);
+  --color-card-foreground: #1E1B4B;
   --color-popover: #ffffff;
-  --color-popover-foreground: #0f172a;
-  --color-primary: #16a34a;
+  --color-popover-foreground: #1E1B4B;
+  --color-primary: #6366F1;
   --color-primary-foreground: #ffffff;
-  --color-secondary: #f1f5f9;
-  --color-secondary-foreground: #0f172a;
-  --color-muted: #f8fafc;
-  --color-muted-foreground: #475569;
-  --color-accent: #f1f5f9;
-  --color-accent-foreground: #0f172a;
-  --color-destructive: #ef4444;
+  --color-secondary: #EEF2FF;
+  --color-secondary-foreground: #3730A3;
+  --color-muted: #EEF2FF;
+  --color-muted-foreground: #64748B;
+  --color-accent: #EEF2FF;
+  --color-accent-foreground: #1E1B4B;
+  --color-destructive: #EF4444;
   --color-destructive-foreground: #ffffff;
-  --color-border: #e2e8f0;
-  --color-input: #e2e8f0;
-  --color-ring: #16a34a;
-  --color-sidebar: #f8fafc;
-  --color-sidebar-foreground: #0f172a;
-  --radius: 0.5rem;
-  --font-sans: "Atkinson Hyperlegible", ui-sans-serif, system-ui, sans-serif;
-  --font-heading: "Crimson Pro", ui-serif, Georgia, serif;
+  --color-success: #10B981;
+  --color-success-foreground: #ffffff;
+  --color-border: rgba(99,102,241,0.15);
+  --color-input: rgba(99,102,241,0.2);
+  --color-ring: #6366F1;
+  --color-sidebar: rgba(255,255,255,0.60);
+  --color-sidebar-foreground: #1E1B4B;
+  --radius: 0.75rem;
+  --font-sans: "Open Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "Poppins", ui-sans-serif, system-ui, sans-serif;
 }
 
 [data-theme="dark"] {
   --color-background: #020617;
-  --color-foreground: #f8fafc;
-  --color-card: #0f172a;
-  --color-card-foreground: #f8fafc;
-  --color-popover: #0f172a;
-  --color-popover-foreground: #f8fafc;
-  --color-primary: #22c55e;
+  --color-foreground: #F8FAFC;
+  --color-card: rgba(15,23,42,0.92);
+  --color-card-foreground: #F8FAFC;
+  --color-popover: #0F172A;
+  --color-popover-foreground: #F8FAFC;
+  --color-primary: #818CF8;
   --color-primary-foreground: #020617;
-  --color-secondary: #1e293b;
-  --color-secondary-foreground: #f8fafc;
-  --color-muted: #1e293b;
-  --color-muted-foreground: #94a3b8;
-  --color-accent: #1e293b;
-  --color-accent-foreground: #f8fafc;
-  --color-destructive: #ef4444;
-  --color-destructive-foreground: #ffffff;
-  --color-border: #1e293b;
-  --color-input: #1e293b;
-  --color-ring: #22c55e;
-  --color-sidebar: #0f172a;
-  --color-sidebar-foreground: #f8fafc;
+  --color-secondary: #1E293B;
+  --color-secondary-foreground: #E0E7FF;
+  --color-muted: #1E293B;
+  --color-muted-foreground: #94A3B8;
+  --color-accent: #1E293B;
+  --color-accent-foreground: #F8FAFC;
+  --color-success: #34D399;
+  --color-success-foreground: #020617;
+  --color-border: rgba(129,140,248,0.15);
+  --color-input: rgba(129,140,248,0.2);
+  --color-ring: #818CF8;
+  --color-sidebar: rgba(15,23,42,0.95);
+  --color-sidebar-foreground: #F8FAFC;
 }
 
 body {
   font-family: var(--font-sans);
-  background-color: var(--color-background);
+  background: var(--color-background);
   color: var(--color-foreground);
-  transition: background-color 200ms ease, color 200ms ease;
+  transition: background-color 300ms ease, color 300ms ease;
+}
+
+/* Subtle background pattern for depth */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(ellipse at 20% 50%, rgba(99,102,241,0.08) 0%, transparent 50%),
+              radial-gradient(ellipse at 80% 20%, rgba(16,185,129,0.06) 0%, transparent 50%),
+              radial-gradient(ellipse at 50% 80%, rgba(129,140,248,0.05) 0%, transparent 50%);
+}
+
+[data-theme="dark"] body::before {
+  background: radial-gradient(ellipse at 20% 50%, rgba(99,102,241,0.03) 0%, transparent 50%),
+              radial-gradient(ellipse at 80% 20%, rgba(16,185,129,0.02) 0%, transparent 50%);
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
+  font-weight: 600;
+}
+
+/* Glass card utility */
+.glass {
+  background: var(--color-card);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--color-border);
+  box-shadow: 0 4px 24px -4px rgba(99,102,241,0.08);
+}
+
+/* Smooth transitions for all interactive elements */
+a, button, [role="button"] {
+  transition: all 200ms ease;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-primary); }
+
+/* Page fade-in animation */
+@keyframes page-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.page-animate {
+  animation: page-fade-in 200ms ease forwards;
+}
+
+/* Print styles — A4 clean output */
+@media print {
+  header, aside, .no-print { display: none !important; }
+  main { padding: 0 !important; margin: 0 !important; }
+  body::before { display: none !important; }
+  body {
+    background: white !important;
+    color: black !important;
+    font-size: 12pt;
+    line-height: 1.5;
+  }
+  .glass {
+    background: white !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: none !important;
+  }
+  @page { size: A4; margin: 2cm; }
 }
