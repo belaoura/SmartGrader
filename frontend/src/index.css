@@ -3,63 +3,94 @@
 
 @custom-variant dark (&:is([data-theme="dark"] *));
 
+/* Light theme values (default) */
+:root {
+  --sg-background: #F5F3FF;
+  --sg-foreground: #1E1B4B;
+  --sg-card: rgba(255,255,255,0.80);
+  --sg-card-foreground: #1E1B4B;
+  --sg-popover: #ffffff;
+  --sg-popover-foreground: #1E1B4B;
+  --sg-primary: #6366F1;
+  --sg-primary-foreground: #ffffff;
+  --sg-secondary: #EEF2FF;
+  --sg-secondary-foreground: #3730A3;
+  --sg-muted: #EEF2FF;
+  --sg-muted-foreground: #64748B;
+  --sg-accent: #EEF2FF;
+  --sg-accent-foreground: #1E1B4B;
+  --sg-destructive: #EF4444;
+  --sg-destructive-foreground: #ffffff;
+  --sg-success: #10B981;
+  --sg-success-foreground: #ffffff;
+  --sg-border: rgba(99,102,241,0.15);
+  --sg-input: rgba(99,102,241,0.2);
+  --sg-ring: #6366F1;
+  --sg-sidebar: rgba(255,255,255,0.60);
+  --sg-sidebar-foreground: #1E1B4B;
+}
+
+/* Dark theme values */
+[data-theme="dark"] {
+  --sg-background: #020617;
+  --sg-foreground: #F8FAFC;
+  --sg-card: rgba(15,23,42,0.92);
+  --sg-card-foreground: #F8FAFC;
+  --sg-popover: #0F172A;
+  --sg-popover-foreground: #F8FAFC;
+  --sg-primary: #818CF8;
+  --sg-primary-foreground: #020617;
+  --sg-secondary: #1E293B;
+  --sg-secondary-foreground: #E0E7FF;
+  --sg-muted: #1E293B;
+  --sg-muted-foreground: #94A3B8;
+  --sg-accent: #1E293B;
+  --sg-accent-foreground: #F8FAFC;
+  --sg-destructive: #EF4444;
+  --sg-destructive-foreground: #ffffff;
+  --sg-success: #34D399;
+  --sg-success-foreground: #020617;
+  --sg-border: rgba(129,140,248,0.15);
+  --sg-input: rgba(129,140,248,0.2);
+  --sg-ring: #818CF8;
+  --sg-sidebar: rgba(15,23,42,0.95);
+  --sg-sidebar-foreground: #F8FAFC;
+}
+
+/* Tailwind theme tokens — reference the CSS vars so they respond to data-theme changes */
 @theme inline {
-  --color-background: #F5F3FF;
-  --color-foreground: #1E1B4B;
-  --color-card: rgba(255,255,255,0.80);
-  --color-card-foreground: #1E1B4B;
-  --color-popover: #ffffff;
-  --color-popover-foreground: #1E1B4B;
-  --color-primary: #6366F1;
-  --color-primary-foreground: #ffffff;
-  --color-secondary: #EEF2FF;
-  --color-secondary-foreground: #3730A3;
-  --color-muted: #EEF2FF;
-  --color-muted-foreground: #64748B;
-  --color-accent: #EEF2FF;
-  --color-accent-foreground: #1E1B4B;
-  --color-destructive: #EF4444;
-  --color-destructive-foreground: #ffffff;
-  --color-success: #10B981;
-  --color-success-foreground: #ffffff;
-  --color-border: rgba(99,102,241,0.15);
-  --color-input: rgba(99,102,241,0.2);
-  --color-ring: #6366F1;
-  --color-sidebar: rgba(255,255,255,0.60);
-  --color-sidebar-foreground: #1E1B4B;
+  --color-background: var(--sg-background);
+  --color-foreground: var(--sg-foreground);
+  --color-card: var(--sg-card);
+  --color-card-foreground: var(--sg-card-foreground);
+  --color-popover: var(--sg-popover);
+  --color-popover-foreground: var(--sg-popover-foreground);
+  --color-primary: var(--sg-primary);
+  --color-primary-foreground: var(--sg-primary-foreground);
+  --color-secondary: var(--sg-secondary);
+  --color-secondary-foreground: var(--sg-secondary-foreground);
+  --color-muted: var(--sg-muted);
+  --color-muted-foreground: var(--sg-muted-foreground);
+  --color-accent: var(--sg-accent);
+  --color-accent-foreground: var(--sg-accent-foreground);
+  --color-destructive: var(--sg-destructive);
+  --color-destructive-foreground: var(--sg-destructive-foreground);
+  --color-success: var(--sg-success);
+  --color-success-foreground: var(--sg-success-foreground);
+  --color-border: var(--sg-border);
+  --color-input: var(--sg-input);
+  --color-ring: var(--sg-ring);
+  --color-sidebar: var(--sg-sidebar);
+  --color-sidebar-foreground: var(--sg-sidebar-foreground);
   --radius: 0.75rem;
   --font-sans: "Open Sans", ui-sans-serif, system-ui, sans-serif;
   --font-heading: "Poppins", ui-sans-serif, system-ui, sans-serif;
 }
 
-[data-theme="dark"] {
-  --color-background: #020617;
-  --color-foreground: #F8FAFC;
-  --color-card: rgba(15,23,42,0.92);
-  --color-card-foreground: #F8FAFC;
-  --color-popover: #0F172A;
-  --color-popover-foreground: #F8FAFC;
-  --color-primary: #818CF8;
-  --color-primary-foreground: #020617;
-  --color-secondary: #1E293B;
-  --color-secondary-foreground: #E0E7FF;
-  --color-muted: #1E293B;
-  --color-muted-foreground: #94A3B8;
-  --color-accent: #1E293B;
-  --color-accent-foreground: #F8FAFC;
-  --color-success: #34D399;
-  --color-success-foreground: #020617;
-  --color-border: rgba(129,140,248,0.15);
-  --color-input: rgba(129,140,248,0.2);
-  --color-ring: #818CF8;
-  --color-sidebar: rgba(15,23,42,0.95);
-  --color-sidebar-foreground: #F8FAFC;
-}
-
 body {
   font-family: var(--font-sans);
-  background: var(--color-background);
-  color: var(--color-foreground);
+  background: var(--sg-background);
+  color: var(--sg-foreground);
   transition: background-color 300ms ease, color 300ms ease;
 }
 
@@ -86,10 +117,10 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Glass card utility */
 .glass {
-  background: var(--color-card);
+  background: var(--sg-card);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--sg-border);
   box-shadow: 0 4px 24px -4px rgba(99,102,241,0.08);
 }
 
@@ -101,8 +132,8 @@ a, button, [role="button"] {
 /* Scrollbar styling */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: var(--color-primary); }
+::-webkit-scrollbar-thumb { background: var(--sg-border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--sg-primary); }
 
 /* Page fade-in animation */
 @keyframes page-fade-in {
