@@ -111,10 +111,10 @@ const KEY_REFS = [
 function ChapterCard({ chapter, onOpen }) {
   const [open, setOpen] = useState(false);
   return (
-    <div className="glass rounded-xl overflow-hidden cursor-pointer" onClick={() => onOpen(chapter)}>
+    <div className="glass rounded-xl overflow-hidden">
       <button
-        className="w-full flex items-start gap-4 p-5 hover:bg-white/5 transition-all duration-200 text-left"
-        onClick={(e) => { e.stopPropagation(); setOpen((v) => !v); }}
+        className="w-full flex items-start gap-4 p-5 hover:bg-white/5 transition-all duration-200 text-left cursor-pointer"
+        onClick={() => setOpen((v) => !v)}
       >
         <div className="flex flex-col items-center gap-1 shrink-0">
           <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
@@ -143,11 +143,19 @@ function ChapterCard({ chapter, onOpen }) {
         {open ? <ChevronDown className="h-4 w-4 shrink-0 opacity-40 mt-1" /> : <ChevronRight className="h-4 w-4 shrink-0 opacity-40 mt-1" />}
       </button>
       {open && (
-        <div className="border-t border-white/10 px-5 py-3 bg-black/10" onClick={(e) => e.stopPropagation()}>
+        <div className="border-t border-border px-5 py-3 bg-muted/30 flex items-center justify-between">
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
             <FileText className="h-3.5 w-3.5" />
             <code className="font-mono">docs/thesis/{chapter.file}</code>
           </div>
+          <Button
+            variant="outline"
+            size="sm"
+            className="cursor-pointer text-xs h-7"
+            onClick={() => onOpen(chapter)}
+          >
+            <BookOpen className="h-3 w-3 mr-1" /> Read Chapter
+          </Button>
         </div>
       )}
     </div>
