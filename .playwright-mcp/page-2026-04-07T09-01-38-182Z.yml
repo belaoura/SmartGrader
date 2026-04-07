@@ -1,0 +1,156 @@
+- generic [ref=e1]:
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - generic [ref=e5]:
+        - img [ref=e6]
+        - generic [ref=e10]: SmartGrader
+      - generic [ref=e11]:
+        - button "Search" [ref=e12] [cursor=pointer]:
+          - img
+        - button "Notifications" [ref=e14] [cursor=pointer]:
+          - img
+        - button "Switch to light mode" [active] [ref=e246] [cursor=pointer]:
+          - img
+        - button "User menu" [ref=e17] [cursor=pointer]: SG
+    - complementary [ref=e18]:
+      - navigation [ref=e19]:
+        - generic [ref=e20]:
+          - paragraph [ref=e21]: Main
+          - generic [ref=e22]:
+            - link "Dashboard" [ref=e23] [cursor=pointer]:
+              - /url: /
+              - img [ref=e24]
+              - generic [ref=e29]: Dashboard
+            - link "Exams" [ref=e30] [cursor=pointer]:
+              - /url: /exams
+              - img [ref=e31]
+              - generic [ref=e34]: Exams
+            - link "Scanner" [ref=e35] [cursor=pointer]:
+              - /url: /scanner
+              - img [ref=e36]
+              - generic [ref=e41]: Scanner
+            - link "Students" [ref=e42] [cursor=pointer]:
+              - /url: /students
+              - img [ref=e43]
+              - generic [ref=e46]: Students
+            - link "Results" [ref=e47] [cursor=pointer]:
+              - /url: /results
+              - img [ref=e48]
+              - generic [ref=e50]: Results
+        - generic [ref=e51]:
+          - paragraph [ref=e53]: Documentation
+          - generic [ref=e54]:
+            - link "Academic Thesis" [ref=e55] [cursor=pointer]:
+              - /url: /academic-docs
+              - img [ref=e56]
+              - generic [ref=e58]: Academic Thesis
+            - link "Sample Data" [ref=e59] [cursor=pointer]:
+              - /url: /samples
+              - img [ref=e60]
+              - generic [ref=e65]: Sample Data
+            - link "API Reference" [ref=e66] [cursor=pointer]:
+              - /url: /documentation
+              - img [ref=e67]
+              - generic [ref=e71]: API Reference
+            - link "Legacy App" [ref=e72] [cursor=pointer]:
+              - /url: /legacy
+              - img [ref=e73]
+              - generic [ref=e76]: Legacy App
+        - generic [ref=e77]:
+          - paragraph [ref=e79]: System
+          - generic [ref=e80]:
+            - link "AI Configuration" [ref=e81] [cursor=pointer]:
+              - /url: /ai-config
+              - img [ref=e82]
+              - generic [ref=e90]: AI Configuration
+            - link "Settings" [ref=e91] [cursor=pointer]:
+              - /url: /settings
+              - img [ref=e92]
+              - generic [ref=e95]: Settings
+            - link "Help & Guide" [ref=e96] [cursor=pointer]:
+              - /url: /help
+              - img [ref=e97]
+              - generic [ref=e100]: Help & Guide
+      - generic [ref=e103]: SmartGrader v0.3.0
+    - main [ref=e104]:
+      - generic [ref=e106]:
+        - generic [ref=e117]:
+          - generic [ref=e118]:
+            - heading "Dashboard" [level=2] [ref=e119]
+            - generic [ref=e120]:
+              - img "The dashboard shows real-time statistics about your exams, students, and grading results." [ref=e121]
+              - tooltip "The dashboard shows real-time statistics about your exams, students, and grading results.": The dashboard shows real-time statistics about your exams, students, and grading results.
+          - paragraph [ref=e124]: Overview of your exam management system
+        - generic [ref=e108]:
+          - generic [ref=e125]:
+            - img [ref=e127]
+            - generic [ref=e130]:
+              - heading "Welcome to SmartGrader" [level=3] [ref=e131]
+              - paragraph [ref=e132]: Create and manage multiple-choice exams, generate printable answer sheets, scan filled sheets with computer vision, and grade short answers using AI.
+          - link "Get Started" [ref=e133] [cursor=pointer]:
+            - /url: /help
+            - button "Get Started" [ref=e134]:
+              - text: Get Started
+              - img
+        - generic [ref=e113]:
+          - generic [ref=e136] [cursor=pointer]:
+            - img [ref=e138]
+            - generic [ref=e141]:
+              - paragraph [ref=e142]: "5"
+              - paragraph [ref=e143]: Total Exams
+          - generic [ref=e145] [cursor=pointer]:
+            - img [ref=e147]
+            - generic [ref=e150]:
+              - paragraph [ref=e151]: "0"
+              - paragraph [ref=e152]: Total Questions
+          - generic [ref=e154] [cursor=pointer]:
+            - img [ref=e156]
+            - generic [ref=e161]:
+              - paragraph [ref=e162]: "10"
+              - paragraph [ref=e163]: Total Students
+          - generic [ref=e165] [cursor=pointer]:
+            - img [ref=e167]
+            - generic [ref=e170]:
+              - paragraph [ref=e171]: 0.0%
+              - paragraph [ref=e172]: Avg Score
+        - generic [ref=e173]:
+          - generic [ref=e174]:
+            - generic [ref=e175]:
+              - generic [ref=e176]:
+                - generic [ref=e177]: Results by Exam
+                - generic [ref=e178]:
+                  - img "Average score percentage for each exam based on graded results." [ref=e179]
+                  - tooltip "Average score percentage for each exam based on graded results.": Average score percentage for each exam based on graded results.
+              - paragraph [ref=e182]: Average score % per exam
+            - application [ref=e186]:
+              - generic [ref=e190]:
+                - generic [ref=e191]:
+                  - generic [ref=e193]: Computer Scienc
+                  - generic [ref=e195]: Chemistry - Org
+                  - generic [ref=e197]: Physics - Mecha
+                  - generic [ref=e199]: Biology - Cell
+                  - generic [ref=e201]: Mathematics - A
+                - generic [ref=e202]:
+                  - generic [ref=e204]: 0%
+                  - generic [ref=e206]: 25%
+                  - generic [ref=e208]: 50%
+                  - generic [ref=e210]: 75%
+                  - generic [ref=e212]: 100%
+          - generic [ref=e213]:
+            - generic [ref=e214]:
+              - generic [ref=e215]:
+                - generic [ref=e216]: Pass / Fail Distribution
+                - generic [ref=e217]:
+                  - img "Overall pass and fail distribution across all graded exams. Pass threshold is 50%." [ref=e218]
+                  - tooltip "Overall pass and fail distribution across all graded exams. Pass threshold is 50%.": Overall pass and fail distribution across all graded exams. Pass threshold is 50%.
+              - paragraph [ref=e221]: Based on 100 graded results
+            - generic [ref=e224]:
+              - list [ref=e226]:
+                - listitem [ref=e227]:
+                  - img "Fail legend icon" [ref=e228]
+                  - generic [ref=e230]: Fail
+                - listitem [ref=e231]:
+                  - img "Pass legend icon" [ref=e232]
+                  - generic [ref=e234]: Pass
+              - application [ref=e235]
+  - generic [ref=e245]: 0%

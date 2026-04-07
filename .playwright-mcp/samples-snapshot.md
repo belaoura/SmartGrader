@@ -1,0 +1,45 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - img [ref=e6]
+      - generic [ref=e10]: SmartGrader
+    - generic [ref=e11]:
+      - button "Search" [ref=e12] [cursor=pointer]:
+        - img
+      - button "Notifications" [ref=e14] [cursor=pointer]:
+        - img
+      - button "Switch to dark mode" [ref=e15] [cursor=pointer]:
+        - img
+      - button "User menu" [ref=e17] [cursor=pointer]: SG
+  - complementary [ref=e18]:
+    - navigation [ref=e19]:
+      - generic [ref=e20]:
+        - paragraph [ref=e21]: Main
+        - generic [ref=e22]
+      - generic [ref=e51]:
+        - paragraph [ref=e53]: Documentation
+        - generic [ref=e54]
+      - generic [ref=e77]:
+        - paragraph [ref=e79]: System
+        - generic [ref=e80]
+    - generic [ref=e103]: SmartGrader v0.3.0
+  - main [ref=e104]:
+    - generic [ref=e106]:
+      - generic [ref=e108]:
+        - generic [ref=e109]
+        - paragraph [ref=e115]: Browse sample exam sheets, scanned answer images, scanner debug output, and answer keys.
+      - generic [ref=e117]:
+        - generic [ref=e118]
+        - generic [ref=e124]
+      - generic [ref=e298]:
+        - generic [ref=e299]
+        - generic [ref=e307]
+        - paragraph [ref=e404]
+      - generic [ref=e407]:
+        - generic [ref=e408]
+        - paragraph [ref=e413]
+        - generic [ref=e416]
+      - generic [ref=e481]:
+        - generic [ref=e482]
+        - generic [ref=e489]
+        - paragraph [ref=e550]

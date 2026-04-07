@@ -51,7 +51,7 @@ export function ResultsBarChart({ data }) {
     <Card className="glass">
       <CardHeader className="pb-2">
         <div className="flex items-center gap-2">
-          <CardTitle className="font-heading text-base">Results by Exam</CardTitle>
+          <CardTitle className="font-heading text-base text-foreground">Results by Exam</CardTitle>
           <HelpTooltip text="Average score percentage for each exam based on graded results." />
         </div>
         <p className="text-xs text-muted-foreground">Average score % per exam</p>
@@ -73,12 +73,12 @@ export function ResultsBarChart({ data }) {
               <CartesianGrid strokeDasharray="3 3" className="stroke-border" vertical={false} />
               <XAxis
                 dataKey="name"
-                tick={{ fontSize: 11, fill: "var(--color-muted-foreground)" }}
+                tick={{ fontSize: 11, className: "fill-muted-foreground" }}
                 axisLine={false}
                 tickLine={false}
               />
               <YAxis
-                tick={{ fontSize: 11, fill: "var(--color-muted-foreground)" }}
+                tick={{ fontSize: 11, className: "fill-muted-foreground" }}
                 axisLine={false}
                 tickLine={false}
                 domain={[0, 100]}
@@ -110,7 +110,7 @@ export function PassFailPieChart({ data }) {
     <Card className="glass">
       <CardHeader className="pb-2">
         <div className="flex items-center gap-2">
-          <CardTitle className="font-heading text-base">Pass / Fail Distribution</CardTitle>
+          <CardTitle className="font-heading text-base text-foreground">Pass / Fail Distribution</CardTitle>
           <HelpTooltip text="Overall pass and fail distribution across all graded exams. Pass threshold is 50%." />
         </div>
         <p className="text-xs text-muted-foreground">
@@ -129,7 +129,7 @@ export function PassFailPieChart({ data }) {
               paddingAngle={4}
               dataKey="value"
               strokeWidth={2}
-              stroke="var(--color-background)"
+              className="stroke-background"
             >
               {enriched.map((entry, index) => (
                 <Cell key={index} fill={entry.fill} />

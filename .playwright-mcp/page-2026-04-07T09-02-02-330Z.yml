@@ -1,0 +1,334 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - img [ref=e6]
+      - generic [ref=e10]: SmartGrader
+    - generic [ref=e11]:
+      - button "Search" [ref=e12] [cursor=pointer]:
+        - img
+      - button "Notifications" [ref=e14] [cursor=pointer]:
+        - img
+      - button "Switch to light mode" [ref=e15] [cursor=pointer]:
+        - img
+      - button "User menu" [ref=e17] [cursor=pointer]: SG
+  - complementary [ref=e18]:
+    - navigation [ref=e19]:
+      - generic [ref=e20]:
+        - paragraph [ref=e21]: Main
+        - generic [ref=e22]:
+          - link "Dashboard" [ref=e23] [cursor=pointer]:
+            - /url: /
+            - img [ref=e24]
+            - generic [ref=e29]: Dashboard
+          - link "Exams" [ref=e30] [cursor=pointer]:
+            - /url: /exams
+            - img [ref=e31]
+            - generic [ref=e34]: Exams
+          - link "Scanner" [ref=e35] [cursor=pointer]:
+            - /url: /scanner
+            - img [ref=e36]
+            - generic [ref=e41]: Scanner
+          - link "Students" [ref=e42] [cursor=pointer]:
+            - /url: /students
+            - img [ref=e43]
+            - generic [ref=e46]: Students
+          - link "Results" [ref=e47] [cursor=pointer]:
+            - /url: /results
+            - img [ref=e48]
+            - generic [ref=e50]: Results
+      - generic [ref=e51]:
+        - paragraph [ref=e53]: Documentation
+        - generic [ref=e54]:
+          - link "Academic Thesis" [ref=e55] [cursor=pointer]:
+            - /url: /academic-docs
+            - img [ref=e56]
+            - generic [ref=e58]: Academic Thesis
+          - link "Sample Data" [ref=e59] [cursor=pointer]:
+            - /url: /samples
+            - img [ref=e60]
+            - generic [ref=e65]: Sample Data
+          - link "API Reference" [ref=e66] [cursor=pointer]:
+            - /url: /documentation
+            - img [ref=e67]
+            - generic [ref=e71]: API Reference
+          - link "Legacy App" [ref=e72] [cursor=pointer]:
+            - /url: /legacy
+            - img [ref=e73]
+            - generic [ref=e76]: Legacy App
+      - generic [ref=e77]:
+        - paragraph [ref=e79]: System
+        - generic [ref=e80]:
+          - link "AI Configuration" [ref=e81] [cursor=pointer]:
+            - /url: /ai-config
+            - img [ref=e82]
+            - generic [ref=e90]: AI Configuration
+          - link "Settings" [ref=e91] [cursor=pointer]:
+            - /url: /settings
+            - img [ref=e92]
+            - generic [ref=e95]: Settings
+          - link "Help & Guide" [ref=e96] [cursor=pointer]:
+            - /url: /help
+            - img [ref=e97]
+            - generic [ref=e100]: Help & Guide
+    - generic [ref=e103]: SmartGrader v0.3.0
+  - main [ref=e104]:
+    - generic [ref=e106]:
+      - generic [ref=e108]:
+        - generic [ref=e109]:
+          - heading "AI Configuration" [level=2] [ref=e110]
+          - generic [ref=e111]:
+            - img "Displays the Qwen2.5-VL model configuration, scanner thresholds, AI pipeline stages, and GPU requirements. Edit values directly in app/config.py." [ref=e112]
+            - tooltip "Displays the Qwen2.5-VL model configuration, scanner thresholds, AI pipeline stages, and GPU requirements. Edit values directly in app/config.py.": Displays the Qwen2.5-VL model configuration, scanner thresholds, AI pipeline stages, and GPU requirements. Edit values directly in app/config.py.
+        - paragraph [ref=e115]: Read-only view of the current AI model settings from app/config.py.
+      - generic [ref=e116]:
+        - img [ref=e117]
+        - paragraph [ref=e119]:
+          - text: This is a
+          - strong [ref=e120]: read-only
+          - text: display of configuration values from
+          - code [ref=e121]: app/config.py
+          - text: . A live config API is planned for a future release.
+      - generic [ref=e122]:
+        - button "Model Status" [ref=e123] [cursor=pointer]:
+          - img [ref=e124]
+          - generic [ref=e132]: Model Status
+          - img [ref=e133]
+        - generic [ref=e135]:
+          - generic [ref=e136]:
+            - generic [ref=e137]:
+              - generic [ref=e138]:
+                - img [ref=e139]
+                - generic [ref=e147]: Model
+              - generic [ref=e148]: Qwen2.5-VL-3B-Instruct
+            - generic [ref=e149]:
+              - generic [ref=e150]:
+                - img [ref=e151]
+                - generic [ref=e154]: Quantisation
+              - generic [ref=e155]: 4-bit NF4
+            - generic [ref=e156]:
+              - generic [ref=e157]:
+                - img [ref=e158]
+                - generic [ref=e160]: Status
+              - generic [ref=e161]: Requires GPU
+            - generic [ref=e162]:
+              - generic [ref=e163]:
+                - img [ref=e164]
+                - generic [ref=e167]: VRAM Required
+              - generic [ref=e168]: ~6–8 GB
+          - generic [ref=e169]:
+            - paragraph [ref=e170]: "HuggingFace model path:"
+            - code [ref=e171]: Qwen/Qwen2.5-VL-3B-Instruct
+            - paragraph [ref=e172]:
+              - text: Downloaded automatically on first run via
+              - code [ref=e173]: transformers.AutoModelForVision2Seq
+              - text: . Cached to
+              - code [ref=e174]: ~/.cache/huggingface/
+              - text: .
+      - generic [ref=e175]:
+        - button "AI Pipeline Configuration" [ref=e176] [cursor=pointer]:
+          - img [ref=e177]
+          - generic [ref=e179]: AI Pipeline Configuration
+          - img [ref=e180]
+        - generic [ref=e184]:
+          - generic [ref=e185]:
+            - generic [ref=e186]:
+              - generic [ref=e187]:
+                - generic [ref=e188]: Stage 1
+                - img [ref=e189]
+                - generic [ref=e192]: OCR
+              - paragraph [ref=e193]: Handwritten text extraction from cropped answer image
+              - generic [ref=e194]:
+                - generic [ref=e195]:
+                  - generic [ref=e196]: "Model:"
+                  - generic [ref=e197]: Qwen2.5-VL-3B-Instruct
+                - generic [ref=e198]:
+                  - generic [ref=e199]: "max_new_tokens:"
+                  - generic [ref=e200]: "512"
+                - generic [ref=e201]:
+                  - generic [ref=e202]: "Task prompt:"
+                  - generic [ref=e203]: "\"Extract text...\""
+            - img [ref=e204]
+          - generic [ref=e206]:
+            - generic [ref=e207]:
+              - generic [ref=e208]:
+                - generic [ref=e209]: Stage 2
+                - img [ref=e210]
+                - generic [ref=e212]: Evaluation
+              - paragraph [ref=e213]: Score extracted text against model answer or keywords
+              - generic [ref=e214]:
+                - generic [ref=e215]:
+                  - generic [ref=e216]: "Mode:"
+                  - generic [ref=e217]: model_answer / keywords
+                - generic [ref=e218]:
+                  - generic [ref=e219]: "max_marks:"
+                  - generic [ref=e220]: configurable per question
+                - generic [ref=e221]:
+                  - generic [ref=e222]: "output:"
+                  - generic [ref=e223]: score + feedback
+            - img [ref=e224]
+          - generic [ref=e227]:
+            - generic [ref=e228]:
+              - generic [ref=e229]: Stage 3
+              - img [ref=e230]
+              - generic [ref=e235]: RAG Feedback Loop
+            - paragraph [ref=e236]: Teacher corrections stored and used to improve future grading
+            - generic [ref=e237]:
+              - generic [ref=e238]:
+                - generic [ref=e239]: "Table:"
+                - generic [ref=e240]: ai_corrections
+              - generic [ref=e241]:
+                - generic [ref=e242]: "Trigger:"
+                - generic [ref=e243]: POST /api/ai/correct
+              - generic [ref=e244]:
+                - generic [ref=e245]: "Effect:"
+                - generic [ref=e246]: Retrieval-augmented re-evaluation
+      - generic [ref=e247]:
+        - button "Thresholds & Parameters" [ref=e248] [cursor=pointer]:
+          - img [ref=e249]
+          - generic [ref=e250]: Thresholds & Parameters
+          - img [ref=e251]
+        - generic [ref=e254]:
+          - generic [ref=e255]:
+            - generic [ref=e256]:
+              - generic [ref=e257]:
+                - code [ref=e258]: CONFIDENCE_THRESHOLD
+                - generic [ref=e259]:
+                  - generic [ref=e260]: "0.7"
+                  - generic [ref=e261]: float
+              - text: AI
+              - paragraph [ref=e262]: AI grades below this score are flagged for teacher review. Prevents over-confident incorrect automated grading.
+            - generic [ref=e263]:
+              - generic [ref=e264]:
+                - code [ref=e265]: FILL_THRESHOLD
+                - generic [ref=e266]:
+                  - generic [ref=e267]: "0.35"
+                  - generic [ref=e268]: float
+              - text: Scanner
+              - paragraph [ref=e269]: Minimum fill ratio for a bubble to be considered 'filled'. Ratio of dark pixels in the bubble ROI.
+            - generic [ref=e270]:
+              - generic [ref=e271]:
+                - code [ref=e272]: CIRCLE_AREA_MIN
+                - generic [ref=e273]:
+                  - generic [ref=e274]: "100"
+                  - generic [ref=e275]: int
+              - text: Scanner
+              - paragraph [ref=e276]: Minimum contour area (px²) for a region to be considered a bubble. Filters out noise and artefacts.
+            - generic [ref=e277]:
+              - generic [ref=e278]:
+                - code [ref=e279]: CIRCLE_AREA_MAX
+                - generic [ref=e280]:
+                  - generic [ref=e281]: "5000"
+                  - generic [ref=e282]: int
+              - text: Scanner
+              - paragraph [ref=e283]: Maximum contour area (px²). Excludes large shapes that are clearly not answer bubbles.
+            - generic [ref=e284]:
+              - generic [ref=e285]:
+                - code [ref=e286]: CIRCULARITY_MIN
+                - generic [ref=e287]:
+                  - generic [ref=e288]: "0.5"
+                  - generic [ref=e289]: float
+              - text: Scanner
+              - paragraph [ref=e290]: Minimum circularity score (4π·area/perimeter²). Rejects non-circular contours.
+          - paragraph [ref=e291]:
+            - text: All values configurable in
+            - code [ref=e292]: app/config.py
+            - text: under the
+            - code [ref=e293]: Config
+            - text: base class.
+      - generic [ref=e294]:
+        - button "Scanner Pipeline" [ref=e295] [cursor=pointer]:
+          - img [ref=e296]
+          - generic [ref=e301]: Scanner Pipeline
+          - img [ref=e302]
+        - generic [ref=e305]:
+          - generic [ref=e306]:
+            - generic [ref=e308]:
+              - img [ref=e310]
+              - generic [ref=e313]:
+                - generic [ref=e314]:
+                  - generic [ref=e315]: "01"
+                  - generic [ref=e316]: Preprocessing
+                - paragraph [ref=e317]: Deskew → Crop → Grayscale → Threshold
+                - code [ref=e318]: scanner/preprocessor.py
+              - img [ref=e320]
+            - generic [ref=e323]:
+              - img [ref=e325]
+              - generic [ref=e330]:
+                - generic [ref=e331]:
+                  - generic [ref=e332]: "02"
+                  - generic [ref=e333]: Marker Detection
+                - paragraph [ref=e334]: Detect triangle alignment markers for sheet registration
+                - code [ref=e335]: scanner/marker_finder.py
+              - img [ref=e337]
+            - generic [ref=e340]:
+              - img [ref=e342]
+              - generic [ref=e344]:
+                - generic [ref=e345]:
+                  - generic [ref=e346]: "03"
+                  - generic [ref=e347]: Bubble Detection
+                - paragraph [ref=e348]: Contour-based detection with area + circularity filters
+                - code [ref=e349]: scanner/detector.py
+              - img [ref=e351]
+            - generic [ref=e354]:
+              - img [ref=e356]
+              - generic [ref=e357]:
+                - generic [ref=e358]:
+                  - generic [ref=e359]: "04"
+                  - generic [ref=e360]: Grid Mapping
+                - paragraph [ref=e361]: Map detected bubbles to question/choice grid coordinates
+                - code [ref=e362]: scanner/grid_mapper.py
+              - img [ref=e364]
+            - generic [ref=e367]:
+              - img [ref=e369]
+              - generic [ref=e377]:
+                - generic [ref=e378]:
+                  - generic [ref=e379]: "05"
+                  - generic [ref=e380]: Answer Reading
+                - paragraph [ref=e381]: Apply FILL_THRESHOLD to determine selected answers
+                - code [ref=e382]: scanner/answer_reader.py
+          - paragraph [ref=e384]:
+            - text: Debug images for each stage are saved to
+            - code [ref=e385]: debug_output/
+            - text: when
+            - code [ref=e386]: DEBUG_SCANNER=True
+            - text: in config.
+      - generic [ref=e387]:
+        - button "Hardware & Software Requirements" [ref=e388] [cursor=pointer]:
+          - img [ref=e389]
+          - generic [ref=e392]: Hardware & Software Requirements
+          - img [ref=e393]
+        - generic [ref=e395]:
+          - generic [ref=e396]:
+            - generic [ref=e397]:
+              - img [ref=e398]
+              - generic [ref=e401]:
+                - paragraph [ref=e402]: CUDA-compatible GPU
+                - paragraph [ref=e403]: NVIDIA RTX / Tesla with CUDA 11.8+
+            - generic [ref=e404]:
+              - img [ref=e405]
+              - generic [ref=e408]:
+                - paragraph [ref=e409]: ~6-8 GB VRAM
+                - paragraph [ref=e410]: Minimum for 4-bit quantised Qwen2.5
+            - generic [ref=e411]:
+              - img [ref=e412]
+              - generic [ref=e414]:
+                - paragraph [ref=e415]: Python 3.10+
+                - paragraph [ref=e416]: Required for transformers compatibility
+            - generic [ref=e417]:
+              - img [ref=e418]
+              - generic [ref=e420]:
+                - paragraph [ref=e421]: PyTorch + CUDA
+                - paragraph [ref=e422]: torch>=2.0 built with CUDA support
+            - generic [ref=e423]:
+              - img [ref=e424]
+              - generic [ref=e432]:
+                - paragraph [ref=e433]: transformers library
+                - paragraph [ref=e434]: HuggingFace transformers ≥4.45
+            - generic [ref=e435]:
+              - img [ref=e436]
+              - generic [ref=e439]:
+                - paragraph [ref=e440]: BitsAndBytes 0.43
+                - paragraph [ref=e441]: 4-bit NF4 quantisation backend
+          - generic [ref=e443]:
+            - img [ref=e444]
+            - paragraph [ref=e446]: Without a CUDA-compatible GPU, the AI grading pipeline will fall back to CPU inference which is significantly slower (~3-5 minutes per answer vs ~10 seconds on GPU). MCQ optical scanning works without GPU.

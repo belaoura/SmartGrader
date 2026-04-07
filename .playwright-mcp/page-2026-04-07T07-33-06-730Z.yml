@@ -1,0 +1,229 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - img [ref=e6]
+      - generic [ref=e10]: SmartGrader
+    - generic [ref=e11]:
+      - button "Search" [ref=e12] [cursor=pointer]:
+        - img
+      - button "Notifications" [ref=e14] [cursor=pointer]:
+        - img
+      - button "Switch to dark mode" [ref=e15] [cursor=pointer]:
+        - img
+      - button "User menu" [ref=e17] [cursor=pointer]: SG
+  - complementary [ref=e18]:
+    - navigation [ref=e19]:
+      - generic [ref=e20]:
+        - paragraph [ref=e21]: Main
+        - generic [ref=e22]:
+          - link "Dashboard" [ref=e23] [cursor=pointer]:
+            - /url: /
+            - img [ref=e24]
+            - generic [ref=e29]: Dashboard
+          - link "Exams" [ref=e30] [cursor=pointer]:
+            - /url: /exams
+            - img [ref=e31]
+            - generic [ref=e34]: Exams
+          - link "Scanner" [ref=e35] [cursor=pointer]:
+            - /url: /scanner
+            - img [ref=e36]
+            - generic [ref=e41]: Scanner
+          - link "Students" [ref=e42] [cursor=pointer]:
+            - /url: /students
+            - img [ref=e43]
+            - generic [ref=e46]: Students
+          - link "Results" [ref=e47] [cursor=pointer]:
+            - /url: /results
+            - img [ref=e48]
+            - generic [ref=e50]: Results
+      - generic [ref=e51]:
+        - paragraph [ref=e53]: Documentation
+        - generic [ref=e54]:
+          - link "Academic Thesis" [ref=e55] [cursor=pointer]:
+            - /url: /academic-docs
+            - img [ref=e56]
+            - generic [ref=e58]: Academic Thesis
+          - link "Sample Data" [ref=e59] [cursor=pointer]:
+            - /url: /samples
+            - img [ref=e60]
+            - generic [ref=e65]: Sample Data
+          - link "API Reference" [ref=e66] [cursor=pointer]:
+            - /url: /documentation
+            - img [ref=e67]
+            - generic [ref=e71]: API Reference
+          - link "Legacy App" [ref=e72] [cursor=pointer]:
+            - /url: /legacy
+            - img [ref=e73]
+            - generic [ref=e76]: Legacy App
+      - generic [ref=e77]:
+        - paragraph [ref=e79]: System
+        - generic [ref=e80]:
+          - link "AI Configuration" [ref=e81] [cursor=pointer]:
+            - /url: /ai-config
+            - img [ref=e82]
+            - generic [ref=e90]: AI Configuration
+          - link "Settings" [ref=e91] [cursor=pointer]:
+            - /url: /settings
+            - img [ref=e92]
+            - generic [ref=e95]: Settings
+          - link "Help & Guide" [ref=e96] [cursor=pointer]:
+            - /url: /help
+            - img [ref=e97]
+            - generic [ref=e100]: Help & Guide
+    - generic [ref=e103]: SmartGrader v0.3.0
+  - main [ref=e104]:
+    - generic [ref=e106]:
+      - generic [ref=e108]:
+        - generic [ref=e109]:
+          - heading "Settings" [level=2] [ref=e110]
+          - generic [ref=e111]:
+            - img "Configure appearance, view project information, and check system status." [ref=e112]
+            - tooltip "Configure appearance, view project information, and check system status.": Configure appearance, view project information, and check system status.
+        - paragraph [ref=e115]: Application preferences and system information
+      - generic [ref=e116]:
+        - generic [ref=e118]:
+          - img [ref=e120]
+          - generic [ref=e126]: Appearance
+        - generic [ref=e127]:
+          - generic [ref=e128]:
+            - generic [ref=e129]:
+              - generic [ref=e130]: Dark Mode
+              - paragraph [ref=e131]: Toggle between light and dark theme
+            - switch [ref=e132] [cursor=pointer]
+            - checkbox [ref=e133]
+          - separator
+          - generic [ref=e134]:
+            - generic [ref=e135]:
+              - generic [ref=e136]: Color Palette
+              - generic [ref=e137]:
+                - img "These are the main colors used throughout the application." [ref=e138]
+                - tooltip "These are the main colors used throughout the application.": These are the main colors used throughout the application.
+            - generic [ref=e141]:
+              - generic [ref=e142]:
+                - generic "Primary (Indigo)" [ref=e143]
+                - generic [ref=e144]: Primary (Indigo)
+              - generic [ref=e145]:
+                - generic "Success (Emerald)" [ref=e146]
+                - generic [ref=e147]: Success (Emerald)
+              - generic [ref=e148]:
+                - generic "Warning (Amber)" [ref=e149]
+                - generic [ref=e150]: Warning (Amber)
+              - generic [ref=e151]:
+                - generic "Danger (Rose)" [ref=e152]
+                - generic [ref=e153]: Danger (Rose)
+              - generic [ref=e154]:
+                - generic "Violet" [ref=e155]
+                - generic [ref=e156]: Violet
+      - generic [ref=e157]:
+        - generic [ref=e159]:
+          - img [ref=e161]
+          - generic [ref=e164]: Application Info
+        - generic [ref=e165]:
+          - generic [ref=e166]:
+            - generic [ref=e167]:
+              - paragraph [ref=e168]: Application
+              - paragraph [ref=e169]: SmartGrader v0.3.0
+            - generic [ref=e170]:
+              - paragraph [ref=e171]: Project Type
+              - paragraph [ref=e172]: Final Year Project (PFE)
+          - generic [ref=e173]:
+            - paragraph [ref=e174]: Description
+            - paragraph [ref=e175]: Academic Exam Management System with AI-Powered Grading
+          - separator
+          - generic [ref=e176]:
+            - generic [ref=e177]:
+              - paragraph [ref=e178]: Tech Stack
+              - generic [ref=e179]:
+                - img "Technologies powering SmartGrader." [ref=e180]
+                - tooltip "Technologies powering SmartGrader.": Technologies powering SmartGrader.
+            - generic [ref=e183]:
+              - generic [ref=e184]: Python
+              - generic [ref=e185]: Flask
+              - generic [ref=e186]: React
+              - generic [ref=e187]: OpenCV
+              - generic [ref=e188]: Qwen2.5-VL
+              - generic [ref=e189]: SQLite
+              - generic [ref=e190]: TailwindCSS
+          - separator
+          - generic [ref=e191]:
+            - paragraph [ref=e192]: Links
+            - generic [ref=e193]:
+              - link "Documentation" [ref=e194] [cursor=pointer]:
+                - /url: /documentation
+                - button "Documentation" [ref=e195]:
+                  - img
+                  - text: Documentation
+              - link "Academic Thesis" [ref=e196] [cursor=pointer]:
+                - /url: /academic-docs
+                - button "Academic Thesis" [ref=e197]:
+                  - img
+                  - text: Academic Thesis
+              - link "Help" [ref=e198] [cursor=pointer]:
+                - /url: /help
+                - button "Help" [ref=e199]:
+                  - img
+                  - text: Help
+      - generic [ref=e200]:
+        - generic [ref=e202]:
+          - img [ref=e204]
+          - generic [ref=e208]: Quick Links
+        - generic [ref=e210]:
+          - link "AI Configuration Configure AI model settings and vision thresholds" [ref=e211] [cursor=pointer]:
+            - /url: /ai-config
+            - generic [ref=e212]:
+              - img [ref=e214]
+              - generic [ref=e222]:
+                - paragraph [ref=e223]: AI Configuration
+                - paragraph [ref=e224]: Configure AI model settings and vision thresholds
+              - img [ref=e225]
+          - link "Sample Data Browse sample exam sheets and test datasets" [ref=e227] [cursor=pointer]:
+            - /url: /samples
+            - generic [ref=e228]:
+              - img [ref=e230]
+              - generic [ref=e232]:
+                - paragraph [ref=e233]: Sample Data
+                - paragraph [ref=e234]: Browse sample exam sheets and test datasets
+              - img [ref=e235]
+          - link "Legacy App Original PyQt5 desktop application reference" [ref=e237] [cursor=pointer]:
+            - /url: /legacy
+            - generic [ref=e238]:
+              - img [ref=e240]
+              - generic [ref=e243]:
+                - paragraph [ref=e244]: Legacy App
+                - paragraph [ref=e245]: Original PyQt5 desktop application reference
+              - img [ref=e246]
+          - link "Documentation Technical documentation and API reference" [ref=e248] [cursor=pointer]:
+            - /url: /documentation
+            - generic [ref=e249]:
+              - img [ref=e251]
+              - generic [ref=e253]:
+                - paragraph [ref=e254]: Documentation
+                - paragraph [ref=e255]: Technical documentation and API reference
+              - img [ref=e256]
+      - generic [ref=e258]:
+        - generic [ref=e260]:
+          - img [ref=e262]
+          - generic [ref=e265]: System Status
+        - generic [ref=e266]:
+          - generic [ref=e267]:
+            - generic [ref=e268]:
+              - generic [ref=e269]:
+                - img [ref=e270]
+                - text: API Endpoint
+              - paragraph [ref=e273]: http://localhost:5000
+            - generic [ref=e274]:
+              - generic [ref=e275]:
+                - img [ref=e276]
+                - text: Database
+              - paragraph [ref=e280]: SQLite
+              - paragraph [ref=e281]: instance/smart_grader.db
+            - generic [ref=e282]:
+              - generic [ref=e283]:
+                - img [ref=e284]
+                - text: AI Model
+              - paragraph [ref=e292]: Qwen2.5-VL-3B
+              - paragraph [ref=e293]: Instruct variant
+          - separator
+          - button "Check API Health" [ref=e295] [cursor=pointer]:
+            - img
+            - text: Check API Health

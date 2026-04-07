@@ -1,0 +1,250 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - img [ref=e6]
+      - generic [ref=e10]: SmartGrader
+    - generic [ref=e11]:
+      - button "Search" [ref=e12] [cursor=pointer]:
+        - img
+      - button "Notifications" [ref=e14] [cursor=pointer]:
+        - img
+      - button "Switch to dark mode" [ref=e15] [cursor=pointer]:
+        - img
+      - button "User menu" [ref=e17] [cursor=pointer]: SG
+  - complementary [ref=e18]:
+    - navigation [ref=e19]:
+      - generic [ref=e20]:
+        - paragraph [ref=e21]: Main
+        - generic [ref=e22]:
+          - link "Dashboard" [ref=e23] [cursor=pointer]:
+            - /url: /
+            - img [ref=e24]
+            - generic [ref=e29]: Dashboard
+          - link "Exams" [ref=e30] [cursor=pointer]:
+            - /url: /exams
+            - img [ref=e31]
+            - generic [ref=e34]: Exams
+          - link "Scanner" [ref=e35] [cursor=pointer]:
+            - /url: /scanner
+            - img [ref=e36]
+            - generic [ref=e41]: Scanner
+          - link "Students" [ref=e42] [cursor=pointer]:
+            - /url: /students
+            - img [ref=e43]
+            - generic [ref=e46]: Students
+          - link "Results" [ref=e47] [cursor=pointer]:
+            - /url: /results
+            - img [ref=e48]
+            - generic [ref=e50]: Results
+      - generic [ref=e51]:
+        - paragraph [ref=e53]: Documentation
+        - generic [ref=e54]:
+          - link "Academic Thesis" [ref=e55] [cursor=pointer]:
+            - /url: /academic-docs
+            - img [ref=e56]
+            - generic [ref=e58]: Academic Thesis
+          - link "Sample Data" [ref=e59] [cursor=pointer]:
+            - /url: /samples
+            - img [ref=e60]
+            - generic [ref=e65]: Sample Data
+          - link "API Reference" [ref=e66] [cursor=pointer]:
+            - /url: /documentation
+            - img [ref=e67]
+            - generic [ref=e71]: API Reference
+          - link "Legacy App" [ref=e72] [cursor=pointer]:
+            - /url: /legacy
+            - img [ref=e73]
+            - generic [ref=e76]: Legacy App
+      - generic [ref=e77]:
+        - paragraph [ref=e79]: System
+        - generic [ref=e80]:
+          - link "AI Configuration" [ref=e81] [cursor=pointer]:
+            - /url: /ai-config
+            - img [ref=e82]
+            - generic [ref=e90]: AI Configuration
+          - link "Settings" [ref=e91] [cursor=pointer]:
+            - /url: /settings
+            - img [ref=e92]
+            - generic [ref=e95]: Settings
+          - link "Help & Guide" [ref=e96] [cursor=pointer]:
+            - /url: /help
+            - img [ref=e97]
+            - generic [ref=e100]: Help & Guide
+    - generic [ref=e103]: SmartGrader v0.3.0
+  - main [ref=e104]:
+    - generic [ref=e106]:
+      - generic [ref=e108]:
+        - generic [ref=e109]:
+          - heading "Help & User Guide" [level=2] [ref=e110]
+          - generic [ref=e111]:
+            - img "Everything you need to know about using SmartGrader — from creating your first exam to interpreting AI grading results." [ref=e112]
+            - tooltip "Everything you need to know about using SmartGrader — from creating your first exam to interpreting AI grading results.": Everything you need to know about using SmartGrader — from creating your first exam to interpreting AI grading results.
+        - paragraph [ref=e115]: Step-by-step guides, feature documentation, FAQs, and usage tips.
+      - generic [ref=e116]:
+        - generic [ref=e117]:
+          - img [ref=e118]
+          - heading "Quick Start Guide" [level=3] [ref=e120]
+        - generic [ref=e121]:
+          - generic [ref=e122]:
+            - generic [ref=e123]:
+              - generic [ref=e125]: "1"
+              - img [ref=e126]
+            - generic [ref=e129]:
+              - paragraph [ref=e130]: Create an Exam
+              - paragraph [ref=e131]: Go to the Exams page, click "New Exam", enter a title and description, then add your MCQ questions with 2–6 answer choices each.
+          - generic [ref=e132]:
+            - generic [ref=e133]:
+              - generic [ref=e135]: "2"
+              - img [ref=e136]
+            - generic [ref=e141]:
+              - paragraph [ref=e142]: Generate & Print Answer Sheets
+              - paragraph [ref=e143]: From the exam detail page, generate a printable A4 answer sheet. Print it and distribute to students during the exam.
+          - generic [ref=e144]:
+            - generic [ref=e145]:
+              - generic [ref=e147]: "3"
+              - img [ref=e148]
+            - generic [ref=e151]:
+              - paragraph [ref=e152]: Scan Completed Sheets
+              - paragraph [ref=e153]: Go to the Scanner page, upload a photo or scan of the completed answer sheet, select the exam, and let SmartGrader detect the filled bubbles automatically.
+          - generic [ref=e154]:
+            - generic [ref=e155]:
+              - generic [ref=e157]: "4"
+              - img [ref=e158]
+            - generic [ref=e159]:
+              - paragraph [ref=e160]: View Results & Statistics
+              - paragraph [ref=e161]: Check the Results page for individual student scores, pass/fail status, and the Dashboard for class-wide averages and charts.
+      - generic [ref=e162]:
+        - generic [ref=e163]:
+          - img [ref=e164]
+          - heading "Feature Guide" [level=3] [ref=e166]
+        - generic [ref=e167]:
+          - generic [ref=e168]:
+            - button "Dashboard" [ref=e169] [cursor=pointer]:
+              - img [ref=e170]
+              - generic [ref=e175]: Dashboard
+              - img [ref=e176]
+            - generic [ref=e179]:
+              - paragraph [ref=e180]: "The Dashboard gives a bird's-eye view of your grading activity:"
+              - list [ref=e181]:
+                - listitem [ref=e182]:
+                  - strong [ref=e183]: "Stat cards:"
+                  - text: Total Exams, Total Questions, Total Students, Average Score
+                - listitem [ref=e184]:
+                  - strong [ref=e185]: "Bar chart:"
+                  - text: Average score per exam — useful for comparing difficulty
+                - listitem [ref=e186]:
+                  - strong [ref=e187]: "Pie chart:"
+                  - text: Pass / Fail distribution across all graded submissions
+              - paragraph [ref=e188]: Data updates in real-time as you create exams and scan answer sheets.
+          - button "Exams" [ref=e190] [cursor=pointer]:
+            - img [ref=e191]
+            - generic [ref=e194]: Exams
+            - img [ref=e195]
+          - button "Scanner" [ref=e198] [cursor=pointer]:
+            - img [ref=e199]
+            - generic [ref=e204]: Scanner
+            - img [ref=e205]
+          - button "Students" [ref=e208] [cursor=pointer]:
+            - img [ref=e209]
+            - generic [ref=e214]: Students
+            - img [ref=e215]
+          - button "Results" [ref=e218] [cursor=pointer]:
+            - img [ref=e219]
+            - generic [ref=e220]: Results
+            - img [ref=e221]
+          - button "AI Configuration" [ref=e224] [cursor=pointer]:
+            - img [ref=e225]
+            - generic [ref=e233]: AI Configuration
+            - img [ref=e234]
+          - button "Settings" [ref=e237] [cursor=pointer]:
+            - img [ref=e238]
+            - generic [ref=e241]: Settings
+            - img [ref=e242]
+      - generic [ref=e244]:
+        - generic [ref=e245]:
+          - img [ref=e246]
+          - heading "Frequently Asked Questions" [level=3] [ref=e249]
+        - generic [ref=e250]:
+          - button "What image formats are supported for scanning?" [ref=e252] [cursor=pointer]:
+            - img [ref=e253]
+            - generic [ref=e258]: What image formats are supported for scanning?
+            - img [ref=e259]
+          - button "How accurate is the MCQ optical scanner?" [ref=e262] [cursor=pointer]:
+            - img [ref=e263]
+            - generic [ref=e266]: How accurate is the MCQ optical scanner?
+            - img [ref=e267]
+          - button "What GPU is needed for AI short-answer grading?" [ref=e270] [cursor=pointer]:
+            - img [ref=e271]
+            - generic [ref=e279]: What GPU is needed for AI short-answer grading?
+            - img [ref=e280]
+          - button "How does the RAG feedback loop improve grading?" [ref=e283] [cursor=pointer]:
+            - img [ref=e284]
+            - generic [ref=e286]: How does the RAG feedback loop improve grading?
+            - img [ref=e287]
+          - button "Can I export results to a spreadsheet?" [ref=e290] [cursor=pointer]:
+            - img [ref=e291]
+            - generic [ref=e292]: Can I export results to a spreadsheet?
+            - img [ref=e293]
+          - button "How do I run SmartGrader locally?" [ref=e296] [cursor=pointer]:
+            - img [ref=e297]
+            - generic [ref=e301]: How do I run SmartGrader locally?
+            - img [ref=e302]
+      - generic [ref=e304]:
+        - generic [ref=e305]:
+          - img [ref=e306]
+          - heading "Keyboard Shortcuts" [level=3] [ref=e308]
+        - paragraph [ref=e309]: SmartGrader uses standard browser keyboard shortcuts. Application-specific hotkeys are planned for a future release.
+        - generic [ref=e310]:
+          - generic [ref=e311]:
+            - generic [ref=e312]:
+              - generic [ref=e313]: Ctrl
+              - generic [ref=e314]: K
+            - generic [ref=e315]: Open command palette (browser default)
+          - generic [ref=e316]:
+            - generic [ref=e318]: Tab
+            - generic [ref=e319]: Navigate between form fields
+          - generic [ref=e320]:
+            - generic [ref=e322]: Escape
+            - generic [ref=e323]: Close dialogs and modals
+          - generic [ref=e324]:
+            - generic [ref=e326]: Enter
+            - generic [ref=e327]: Confirm dialogs and submit forms
+          - generic [ref=e328]:
+            - generic [ref=e330]: F5
+            - generic [ref=e331]: Reload page / refetch data
+      - generic [ref=e332]:
+        - generic [ref=e333]:
+          - img [ref=e334]
+          - heading "About SmartGrader" [level=3] [ref=e336]
+        - generic [ref=e337]:
+          - generic [ref=e338]:
+            - generic [ref=e339]:
+              - generic [ref=e340]: Version
+              - generic [ref=e341]: v0.3.0
+            - generic [ref=e342]:
+              - generic [ref=e343]: Type
+              - generic [ref=e344]: PFE Graduation Project
+            - generic [ref=e345]:
+              - generic [ref=e346]: Institution
+              - generic [ref=e347]: Algerian University
+            - generic [ref=e348]:
+              - generic [ref=e349]: Backend
+              - generic [ref=e350]: Python 3.10 · Flask 3.1
+            - generic [ref=e351]:
+              - generic [ref=e352]: Frontend
+              - generic [ref=e353]: React 19 · Vite 6 · Tailwind 4
+            - generic [ref=e354]:
+              - generic [ref=e355]: AI Model
+              - generic [ref=e356]: Qwen2.5-VL-3B (4-bit NF4)
+          - generic [ref=e357]:
+            - generic [ref=e358]:
+              - img [ref=e359]
+              - generic [ref=e361]: Project Summary
+            - paragraph [ref=e362]: SmartGrader automates the exam-grading workflow for Algerian university instructors. It generates printable MCQ answer sheets, optically scans completed sheets using computer vision, and uses a vision-language AI model to grade handwritten short answers with a teacher-in-the-loop RAG correction feedback system.
+            - generic [ref=e363]:
+              - generic [ref=e364]: Flask API
+              - generic [ref=e365]: React SPA
+              - generic [ref=e366]: OpenCV
+              - generic [ref=e367]: Qwen2.5-VL
+              - generic [ref=e368]: RAG
+              - generic [ref=e369]: SQLAlchemy

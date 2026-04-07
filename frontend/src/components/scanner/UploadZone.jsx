@@ -20,8 +20,10 @@ export default function UploadZone({ file, onFileChange }) {
       onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
       onDragLeave={() => setDragOver(false)}
       onDrop={handleDrop}
-      className={`flex flex-col items-center justify-center rounded-lg border-2 border-dashed p-12 transition-colors cursor-pointer ${
-        dragOver ? "border-primary bg-primary/5" : "border-border"
+      className={`flex flex-col items-center justify-center rounded-xl border-2 border-dashed p-12 transition-all duration-200 cursor-pointer ${
+        dragOver
+          ? "border-primary bg-primary/8 scale-[1.01]"
+          : "border-primary/30 bg-gradient-to-br from-primary/5 to-transparent hover:border-primary/60 hover:bg-primary/5"
       }`}
       onClick={() => document.getElementById("file-upload").click()}
     >

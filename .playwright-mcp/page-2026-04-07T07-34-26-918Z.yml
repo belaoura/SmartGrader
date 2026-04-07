@@ -1,0 +1,294 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - img [ref=e6]
+      - generic [ref=e10]: SmartGrader
+    - generic [ref=e11]:
+      - button "Search" [ref=e12] [cursor=pointer]:
+        - img
+      - button "Notifications" [ref=e14] [cursor=pointer]:
+        - img
+      - button "Switch to light mode" [ref=e15] [cursor=pointer]:
+        - img
+      - button "User menu" [ref=e17] [cursor=pointer]: SG
+  - complementary [ref=e18]:
+    - navigation [ref=e19]:
+      - generic [ref=e20]:
+        - paragraph [ref=e21]: Main
+        - generic [ref=e22]:
+          - link "Dashboard" [ref=e23] [cursor=pointer]:
+            - /url: /
+            - img [ref=e24]
+            - generic [ref=e29]: Dashboard
+          - link "Exams" [ref=e30] [cursor=pointer]:
+            - /url: /exams
+            - img [ref=e31]
+            - generic [ref=e34]: Exams
+          - link "Scanner" [ref=e35] [cursor=pointer]:
+            - /url: /scanner
+            - img [ref=e36]
+            - generic [ref=e41]: Scanner
+          - link "Students" [ref=e42] [cursor=pointer]:
+            - /url: /students
+            - img [ref=e43]
+            - generic [ref=e46]: Students
+          - link "Results" [ref=e47] [cursor=pointer]:
+            - /url: /results
+            - img [ref=e48]
+            - generic [ref=e50]: Results
+      - generic [ref=e51]:
+        - paragraph [ref=e53]: Documentation
+        - generic [ref=e54]:
+          - link "Academic Thesis" [ref=e55] [cursor=pointer]:
+            - /url: /academic-docs
+            - img [ref=e56]
+            - generic [ref=e58]: Academic Thesis
+          - link "Sample Data" [ref=e59] [cursor=pointer]:
+            - /url: /samples
+            - img [ref=e60]
+            - generic [ref=e65]: Sample Data
+          - link "API Reference" [ref=e66] [cursor=pointer]:
+            - /url: /documentation
+            - img [ref=e67]
+            - generic [ref=e71]: API Reference
+          - link "Legacy App" [ref=e72] [cursor=pointer]:
+            - /url: /legacy
+            - img [ref=e73]
+            - generic [ref=e76]: Legacy App
+      - generic [ref=e77]:
+        - paragraph [ref=e79]: System
+        - generic [ref=e80]:
+          - link "AI Configuration" [ref=e81] [cursor=pointer]:
+            - /url: /ai-config
+            - img [ref=e82]
+            - generic [ref=e90]: AI Configuration
+          - link "Settings" [ref=e91] [cursor=pointer]:
+            - /url: /settings
+            - img [ref=e92]
+            - generic [ref=e95]: Settings
+          - link "Help & Guide" [ref=e96] [cursor=pointer]:
+            - /url: /help
+            - img [ref=e97]
+            - generic [ref=e100]: Help & Guide
+    - generic [ref=e103]: SmartGrader v0.3.0
+  - main [ref=e104]:
+    - generic [ref=e106]:
+      - generic [ref=e108]:
+        - generic [ref=e109]:
+          - heading "Legacy Application" [level=2] [ref=e110]
+          - generic [ref=e111]:
+            - img "The legacy/ directory contains the original SmartGrader desktop application built with PyQt5. It is preserved for reference and comparison with the current web architecture." [ref=e112]
+            - tooltip "The legacy/ directory contains the original SmartGrader desktop application built with PyQt5. It is preserved for reference and comparison with the current web architecture.": The legacy/ directory contains the original SmartGrader desktop application built with PyQt5. It is preserved for reference and comparison with the current web architecture.
+        - paragraph [ref=e115]: Archived PyQt5 desktop app — the original SmartGrader v0.1.0 preserved for reference.
+      - generic [ref=e116]:
+        - generic [ref=e117]:
+          - img [ref=e119]
+          - generic [ref=e122]:
+            - heading "SmartGrader v0.1.0 — Desktop Application" [level=3] [ref=e123]
+            - paragraph [ref=e124]:
+              - text: SmartGrader was originally developed as a PyQt5 desktop application as part of the initial PFE prototype. The legacy code is preserved in the
+              - code [ref=e125]: legacy/
+              - text: directory for reference. It demonstrates the evolution of the scanner algorithm through 6 iterations and the original raw-SQLite database approach before the migration to SQLAlchemy ORM.
+        - generic [ref=e126]:
+          - generic [ref=e127]: PyQt5 GUI
+          - generic [ref=e128]: Raw sqlite3
+          - generic [ref=e129]: 6 scanner iterations
+          - generic [ref=e130]: pdfkit PDF generation
+          - generic [ref=e131]: No REST API
+          - generic [ref=e132]: Desktop only
+      - generic [ref=e133]:
+        - 'button "Architecture Comparison: Old vs New" [ref=e134] [cursor=pointer]':
+          - img [ref=e135]
+          - generic [ref=e139]: "Architecture Comparison: Old vs New"
+          - img [ref=e140]
+        - generic [ref=e142]:
+          - generic [ref=e143]:
+            - generic [ref=e144]: Layer
+            - generic [ref=e145]: Legacy (v0.1)
+            - generic [ref=e146]: Current (v0.3)
+          - generic [ref=e147]:
+            - generic [ref=e149]: UI
+            - generic [ref=e150]:
+              - img [ref=e151]
+              - generic [ref=e153]:
+                - paragraph [ref=e154]: PyQt5 Desktop
+                - paragraph [ref=e155]: QMainWindow, QDialog, QTableWidget widgets
+            - generic [ref=e156]:
+              - img [ref=e157]
+              - generic [ref=e160]:
+                - paragraph [ref=e161]: React 19 SPA
+                - paragraph [ref=e162]: Glassmorphism UI, TanStack Query, Recharts
+          - generic [ref=e163]:
+            - generic [ref=e165]: Database
+            - generic [ref=e166]:
+              - img [ref=e167]
+              - generic [ref=e171]:
+                - paragraph [ref=e172]: Raw SQLite
+                - paragraph [ref=e173]: sqlite3 module, hand-written SQL, no migrations
+            - generic [ref=e174]:
+              - img [ref=e175]
+              - generic [ref=e179]:
+                - paragraph [ref=e180]: SQLAlchemy 2.0
+                - paragraph [ref=e181]: ORM models, Flask-Migrate, relationship mapping
+          - generic [ref=e182]:
+            - generic [ref=e184]: Scanner
+            - generic [ref=e185]:
+              - img [ref=e186]
+              - generic [ref=e191]:
+                - paragraph [ref=e192]: 6 Algorithm Iterations
+                - paragraph [ref=e193]: HoughCircles → contours → robust_detection final
+            - generic [ref=e194]:
+              - img [ref=e195]
+              - generic [ref=e200]:
+                - paragraph [ref=e201]: Clean Pipeline
+                - paragraph [ref=e202]: 5 focused modules with debug output + config
+          - generic [ref=e203]:
+            - generic [ref=e205]: AI
+            - generic [ref=e206]:
+              - img [ref=e207]
+              - generic [ref=e215]:
+                - paragraph [ref=e216]: None
+                - paragraph [ref=e217]: No AI component in original app
+            - generic [ref=e218]:
+              - img [ref=e219]
+              - generic [ref=e227]:
+                - paragraph [ref=e228]: Qwen2.5-VL-3B
+                - paragraph [ref=e229]: OCR + evaluation + RAG feedback loop
+      - generic [ref=e230]:
+        - generic [ref=e231]:
+          - img [ref=e232]
+          - heading "File Inventory legacy/" [level=3] [ref=e237]
+        - generic [ref=e238]:
+          - generic [ref=e239]:
+            - button "All" [ref=e240] [cursor=pointer]
+            - button "GUI" [ref=e241] [cursor=pointer]
+            - button "Scanner" [ref=e242] [cursor=pointer]
+            - button "Generator" [ref=e243] [cursor=pointer]
+            - button "Database" [ref=e244] [cursor=pointer]
+            - button "Template" [ref=e245] [cursor=pointer]
+          - table [ref=e247]:
+            - rowgroup [ref=e248]:
+              - row "File Type Role Description" [ref=e249]:
+                - columnheader "File" [ref=e250]
+                - columnheader "Type" [ref=e251]
+                - columnheader "Role" [ref=e252]
+                - columnheader "Description" [ref=e253]
+            - rowgroup [ref=e254]:
+              - row "main.py GUI Application entry point PyQt5 main window, menu bar, toolbar, and application lifecycle" [ref=e255]:
+                - cell "main.py" [ref=e256]:
+                  - code [ref=e257]: main.py
+                - cell "GUI" [ref=e258]
+                - cell "Application entry point" [ref=e259]
+                - cell "PyQt5 main window, menu bar, toolbar, and application lifecycle" [ref=e260]
+              - row "exam_form.py GUI Exam management dialog Qt dialog for creating and editing exams with title, description, and date fields" [ref=e261]:
+                - cell "exam_form.py" [ref=e262]:
+                  - code [ref=e263]: exam_form.py
+                - cell "GUI" [ref=e264]
+                - cell "Exam management dialog" [ref=e265]
+                - cell "Qt dialog for creating and editing exams with title, description, and date fields" [ref=e266]
+              - row "question_form.py GUI Question editor dialog Qt dialog for adding MCQ questions with 2-6 configurable choices and correct-answer selection" [ref=e267]:
+                - cell "question_form.py" [ref=e268]:
+                  - code [ref=e269]: question_form.py
+                - cell "GUI" [ref=e270]
+                - cell "Question editor dialog" [ref=e271]
+                - cell "Qt dialog for adding MCQ questions with 2-6 configurable choices and correct-answer selection" [ref=e272]
+              - row "scanner.py Scanner Main scanner module Orchestrates image preprocessing, bubble detection, and answer reading from scanned sheets" [ref=e273]:
+                - cell "scanner.py" [ref=e274]:
+                  - code [ref=e275]: scanner.py
+                - cell "Scanner" [ref=e276]
+                - cell "Main scanner module" [ref=e277]
+                - cell "Orchestrates image preprocessing, bubble detection, and answer reading from scanned sheets" [ref=e278]
+              - row "circle_detector.py Scanner Bubble detector v1 First iteration using HoughCircles transform for bubble detection — limited accuracy" [ref=e279]:
+                - cell "circle_detector.py" [ref=e280]:
+                  - code [ref=e281]: circle_detector.py
+                - cell "Scanner" [ref=e282]
+                - cell "Bubble detector v1" [ref=e283]
+                - cell "First iteration using HoughCircles transform for bubble detection — limited accuracy" [ref=e284]
+              - row "circle_detection.py Scanner Bubble detector v2 Improved detector with contour filtering + area thresholding — better noise rejection" [ref=e285]:
+                - cell "circle_detection.py" [ref=e286]:
+                  - code [ref=e287]: circle_detection.py
+                - cell "Scanner" [ref=e288]
+                - cell "Bubble detector v2" [ref=e289]
+                - cell "Improved detector with contour filtering + area thresholding — better noise rejection" [ref=e290]
+              - 'row "robust_detection.py Scanner Bubble detector v3 (final) Production-quality detector: contour area, circularity, and fill-ratio scoring in one pass" [ref=e291]':
+                - cell "robust_detection.py" [ref=e292]:
+                  - code [ref=e293]: robust_detection.py
+                - cell "Scanner" [ref=e294]
+                - cell "Bubble detector v3 (final)" [ref=e295]
+                - 'cell "Production-quality detector: contour area, circularity, and fill-ratio scoring in one pass" [ref=e296]'
+              - row "generate_qcm_sheet.py Generator Sheet generator Generates HTML answer sheets via Jinja2 and converts to PDF using pdfkit/wkhtmltopdf" [ref=e297]:
+                - cell "generate_qcm_sheet.py" [ref=e298]:
+                  - code [ref=e299]: generate_qcm_sheet.py
+                - cell "Generator" [ref=e300]
+                - cell "Sheet generator" [ref=e301]
+                - cell "Generates HTML answer sheets via Jinja2 and converts to PDF using pdfkit/wkhtmltopdf" [ref=e302]
+              - row "database.py Database Raw SQLite layer Direct sqlite3 connection management with hand-written SQL queries — no ORM" [ref=e303]:
+                - cell "database.py" [ref=e304]:
+                  - code [ref=e305]: database.py
+                - cell "Database" [ref=e306]
+                - cell "Raw SQLite layer" [ref=e307]
+                - cell "Direct sqlite3 connection management with hand-written SQL queries — no ORM" [ref=e308]
+              - row "qcm_template.html Template Answer sheet Jinja2 template HTML template for printable A4 QCM answer sheets with bubble grid layout" [ref=e309]:
+                - cell "qcm_template.html" [ref=e310]:
+                  - code [ref=e311]: qcm_template.html
+                - cell "Template" [ref=e312]
+                - cell "Answer sheet Jinja2 template" [ref=e313]
+                - cell "HTML template for printable A4 QCM answer sheets with bubble grid layout" [ref=e314]
+      - generic [ref=e315]:
+        - generic [ref=e316]:
+          - img [ref=e317]
+          - heading "How to Run the Legacy App" [level=3] [ref=e319]
+        - generic [ref=e320]:
+          - img [ref=e321]
+          - paragraph [ref=e323]: The legacy app is for reference only. For active use, run the current Flask + React application instead.
+        - generic [ref=e324]:
+          - generic [ref=e325]:
+            - paragraph [ref=e326]: 1. Install dependencies
+            - generic [ref=e327]: cd legacy/ pip install PyQt5 opencv-python pdfkit
+          - generic [ref=e328]:
+            - paragraph [ref=e329]: 2. Install wkhtmltopdf (for PDF generation)
+            - generic [ref=e330]: "# Windows: download from https://wkhtmltopdf.org/downloads.html # Ubuntu: sudo apt-get install wkhtmltopdf # macOS: brew install wkhtmltopdf"
+          - generic [ref=e331]:
+            - paragraph [ref=e332]: 3. Run the desktop app
+            - generic [ref=e333]: python main.py
+      - generic [ref=e334]:
+        - generic [ref=e335]:
+          - img [ref=e336]
+          - heading "Migration Timeline" [level=3] [ref=e339]
+        - generic [ref=e340]:
+          - generic [ref=e346]:
+            - generic [ref=e347]:
+              - generic [ref=e348]: v0.1.0
+              - generic [ref=e349]: Desktop App
+              - generic [ref=e350]: Year 3 PFE
+            - paragraph [ref=e351]: Original PyQt5 desktop application with raw SQLite, basic scanner, and HTML/PDF sheet generation.
+            - generic [ref=e352]:
+              - generic [ref=e353]: PyQt5 GUI
+              - generic [ref=e354]: Raw SQLite
+              - generic [ref=e355]: HoughCircles scanner
+              - generic [ref=e356]: pdfkit sheets
+          - generic [ref=e362]:
+            - generic [ref=e363]:
+              - generic [ref=e364]: v0.2.0
+              - generic [ref=e365]: Web Restructuring
+              - generic [ref=e366]: Sub-Project 1–2
+            - paragraph [ref=e367]: "Complete rewrite: Flask REST API + React SPA. Layered architecture, SQLAlchemy ORM, improved scanner."
+            - generic [ref=e368]:
+              - generic [ref=e369]: Flask API
+              - generic [ref=e370]: React + Vite
+              - generic [ref=e371]: SQLAlchemy ORM
+              - generic [ref=e372]: Clean scanner pipeline
+          - generic [ref=e377]:
+            - generic [ref=e378]:
+              - generic [ref=e379]: v0.3.0
+              - generic [ref=e380]: AI Integration (Current)
+              - generic [ref=e381]: Sub-Project 3–4
+              - generic [ref=e382]:
+                - img [ref=e383]
+                - text: Current
+            - paragraph [ref=e386]: Qwen2.5-VL-3B-Instruct integrated for handwritten OCR, automated scoring, and RAG correction loop.
+            - generic [ref=e387]:
+              - generic [ref=e388]: Qwen2.5-VL OCR
+              - generic [ref=e389]: RAG feedback
+              - generic [ref=e390]: 4-bit quantisation
+              - generic [ref=e391]: Full thesis docs

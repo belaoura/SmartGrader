@@ -6,3 +6,76 @@
 2026-04-06 21:11:14 [INFO] smartgrader.services.exam: Created question 4 for exam 1 with 3 choices
 2026-04-06 21:11:19 [INFO] smartgrader: SmartGrader app created [development]
 2026-04-06 21:11:42 [INFO] smartgrader: SmartGrader app created [development]
+2026-04-07 09:39:41 [INFO] smartgrader: SmartGrader app created [development]
+2026-04-07 09:39:41 [INFO] smartgrader.services.exam: Created exam 2: Biology - Cell Biology
+2026-04-07 09:39:41 [INFO] smartgrader.services.exam: Created question 5 for exam 2 with 4 choices
+2026-04-07 09:39:41 [INFO] smartgrader.services.exam: Created question 6 for exam 2 with 3 choices
+2026-04-07 09:39:41 [INFO] smartgrader.services.exam: Created question 7 for exam 2 with 4 choices
+2026-04-07 09:39:41 [INFO] smartgrader.services.exam: Created question 8 for exam 2 with 3 choices
+2026-04-07 09:39:41 [INFO] smartgrader.services.exam: Created question 9 for exam 2 with 4 choices
+2026-04-07 09:39:41 [INFO] smartgrader.services.exam: Created exam 3: Physics - Mechanics
+2026-04-07 09:39:41 [INFO] smartgrader.services.exam: Created question 10 for exam 3 with 3 choices
+2026-04-07 09:39:41 [INFO] smartgrader.services.exam: Created question 11 for exam 3 with 4 choices
+2026-04-07 09:39:41 [INFO] smartgrader.services.exam: Created question 12 for exam 3 with 3 choices
+2026-04-07 09:39:41 [INFO] smartgrader.services.exam: Created question 13 for exam 3 with 4 choices
+2026-04-07 09:39:41 [INFO] smartgrader.services.exam: Created question 14 for exam 3 with 3 choices
+2026-04-07 09:39:41 [INFO] smartgrader.services.exam: Created exam 4: Chemistry - Organic
+2026-04-07 09:39:41 [INFO] smartgrader.services.exam: Created question 15 for exam 4 with 3 choices
+2026-04-07 09:39:41 [INFO] smartgrader.services.exam: Created question 16 for exam 4 with 4 choices
+2026-04-07 09:39:41 [INFO] smartgrader.services.exam: Created question 17 for exam 4 with 3 choices
+2026-04-07 09:39:41 [INFO] smartgrader.services.exam: Created question 18 for exam 4 with 4 choices
+2026-04-07 09:39:41 [INFO] smartgrader.services.exam: Created exam 5: Computer Science - Algorithms
+2026-04-07 09:39:41 [INFO] smartgrader.services.exam: Created question 19 for exam 5 with 4 choices
+2026-04-07 09:39:41 [INFO] smartgrader.services.exam: Created question 20 for exam 5 with 3 choices
+2026-04-07 09:39:41 [INFO] smartgrader.services.exam: Created question 21 for exam 5 with 4 choices
+2026-04-07 09:39:41 [INFO] smartgrader.services.exam: Created question 22 for exam 5 with 3 choices
+2026-04-07 09:39:41 [INFO] smartgrader.services.exam: Created question 23 for exam 5 with 4 choices
+2026-04-07 09:40:09 [INFO] smartgrader: SmartGrader app created [development]
+2026-04-07 09:41:20 [INFO] smartgrader: SmartGrader app created [development]
+2026-04-07 09:41:36 [INFO] smartgrader: SmartGrader app created [development]
+2026-04-07 09:41:47 [INFO] smartgrader: SmartGrader app created [development]
+2026-04-07 09:51:47 [INFO] smartgrader: SmartGrader app created [development]
+2026-04-07 09:52:24 [INFO] smartgrader: SmartGrader app created [development]
+2026-04-07 09:52:35 [INFO] smartgrader: SmartGrader app created [development]
+2026-04-07 10:26:13 [INFO] smartgrader: SmartGrader app created [development]
+2026-04-07 10:30:13 [INFO] smartgrader: SmartGrader app created [development]
+2026-04-07 10:30:13 [INFO] smartgrader.services.exam: Created exam 6: English - Grammar & Vocabulary
+2026-04-07 10:30:13 [INFO] smartgrader.services.exam: Created question 24 for exam 6 with 4 choices
+2026-04-07 10:30:13 [INFO] smartgrader.services.exam: Created question 25 for exam 6 with 4 choices
+2026-04-07 10:30:13 [INFO] smartgrader.services.exam: Created question 26 for exam 6 with 4 choices
+2026-04-07 10:30:13 [INFO] smartgrader.services.exam: Created question 27 for exam 6 with 4 choices
+2026-04-07 10:30:13 [INFO] smartgrader.services.exam: Created question 28 for exam 6 with 4 choices
+2026-04-07 10:30:13 [INFO] smartgrader.services.exam: Created question 29 for exam 6 with 4 choices
+2026-04-07 10:30:13 [INFO] smartgrader.services.exam: Created question 30 for exam 6 with 4 choices
+2026-04-07 10:30:13 [INFO] smartgrader.services.exam: Created question 31 for exam 6 with 4 choices
+2026-04-07 10:30:13 [INFO] smartgrader.services.exam: Created question 32 for exam 6 with 4 choices
+2026-04-07 10:30:13 [INFO] smartgrader.services.exam: Created question 33 for exam 6 with 4 choices
+2026-04-07 10:30:13 [INFO] smartgrader.services.exam: Created question 34 for exam 6 with 4 choices
+2026-04-07 10:30:13 [INFO] smartgrader.services.exam: Created question 35 for exam 6 with 4 choices
+2026-04-07 10:30:13 [INFO] smartgrader.services.exam: Created question 36 for exam 6 with 4 choices
+2026-04-07 10:30:13 [INFO] smartgrader.services.exam: Created question 37 for exam 6 with 4 choices
+2026-04-07 10:30:13 [INFO] smartgrader.services.exam: Created question 38 for exam 6 with 4 choices
+2026-04-07 10:30:13 [INFO] smartgrader.services.exam: Created question 39 for exam 6 with 4 choices
+2026-04-07 10:30:13 [INFO] smartgrader.services.exam: Created exam 7: History - World History
+2026-04-07 10:30:13 [INFO] smartgrader.services.exam: Created question 40 for exam 7 with 4 choices
+2026-04-07 10:30:13 [INFO] smartgrader.services.exam: Created question 41 for exam 7 with 4 choices
+2026-04-07 10:30:13 [INFO] smartgrader.services.exam: Created question 42 for exam 7 with 4 choices
+2026-04-07 10:30:13 [INFO] smartgrader.services.exam: Created question 43 for exam 7 with 4 choices
+2026-04-07 10:30:13 [INFO] smartgrader.services.exam: Created question 44 for exam 7 with 4 choices
+2026-04-07 10:30:13 [INFO] smartgrader.services.exam: Created question 45 for exam 7 with 4 choices
+2026-04-07 10:30:13 [INFO] smartgrader.services.exam: Created question 46 for exam 7 with 4 choices
+2026-04-07 10:30:13 [INFO] smartgrader.services.exam: Created question 47 for exam 7 with 4 choices
+2026-04-07 10:30:13 [INFO] smartgrader.services.exam: Created question 48 for exam 7 with 4 choices
+2026-04-07 10:30:13 [INFO] smartgrader.services.exam: Created question 49 for exam 7 with 4 choices
+2026-04-07 10:30:13 [INFO] smartgrader.services.exam: Created question 50 for exam 7 with 4 choices
+2026-04-07 10:30:13 [INFO] smartgrader.services.exam: Created question 51 for exam 7 with 4 choices
+2026-04-07 10:30:13 [INFO] smartgrader.services.exam: Created question 52 for exam 7 with 4 choices
+2026-04-07 10:30:13 [INFO] smartgrader.services.exam: Created question 53 for exam 7 with 4 choices
+2026-04-07 10:30:13 [INFO] smartgrader.services.exam: Created question 54 for exam 7 with 4 choices
+2026-04-07 10:30:13 [INFO] smartgrader.services.exam: Created question 55 for exam 7 with 4 choices
+2026-04-07 10:30:13 [INFO] smartgrader.services.exam: Created question 56 for exam 7 with 4 choices
+2026-04-07 10:30:13 [INFO] smartgrader.services.exam: Created question 57 for exam 7 with 4 choices
+2026-04-07 10:30:13 [INFO] smartgrader.services.exam: Created question 58 for exam 7 with 4 choices
+2026-04-07 10:30:13 [INFO] smartgrader.services.exam: Created question 59 for exam 7 with 4 choices
+2026-04-07 10:31:43 [INFO] smartgrader: SmartGrader app created [development]
+2026-04-07 10:34:57 [INFO] smartgrader: SmartGrader app created [development]

@@ -1,0 +1,138 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - img [ref=e6]
+      - generic [ref=e10]: SmartGrader
+    - generic [ref=e11]:
+      - button "Search" [ref=e12] [cursor=pointer]:
+        - img
+      - button "Notifications" [ref=e14] [cursor=pointer]:
+        - img
+      - button "Switch to light mode" [ref=e15] [cursor=pointer]:
+        - img
+      - button "User menu" [ref=e17] [cursor=pointer]: SG
+  - complementary [ref=e18]:
+    - navigation [ref=e19]:
+      - generic [ref=e20]:
+        - paragraph [ref=e21]: Main
+        - generic [ref=e22]:
+          - link "Dashboard" [ref=e23] [cursor=pointer]:
+            - /url: /
+            - img [ref=e24]
+            - generic [ref=e29]: Dashboard
+          - link "Exams" [ref=e30] [cursor=pointer]:
+            - /url: /exams
+            - img [ref=e31]
+            - generic [ref=e34]: Exams
+          - link "Scanner" [ref=e35] [cursor=pointer]:
+            - /url: /scanner
+            - img [ref=e36]
+            - generic [ref=e41]: Scanner
+          - link "Students" [ref=e42] [cursor=pointer]:
+            - /url: /students
+            - img [ref=e43]
+            - generic [ref=e46]: Students
+          - link "Results" [ref=e47] [cursor=pointer]:
+            - /url: /results
+            - img [ref=e48]
+            - generic [ref=e50]: Results
+      - generic [ref=e51]:
+        - paragraph [ref=e53]: Documentation
+        - generic [ref=e54]:
+          - link "Academic Thesis" [ref=e55] [cursor=pointer]:
+            - /url: /academic-docs
+            - img [ref=e56]
+            - generic [ref=e58]: Academic Thesis
+          - link "Sample Data" [ref=e59] [cursor=pointer]:
+            - /url: /samples
+            - img [ref=e60]
+            - generic [ref=e65]: Sample Data
+          - link "API Reference" [ref=e66] [cursor=pointer]:
+            - /url: /documentation
+            - img [ref=e67]
+            - generic [ref=e71]: API Reference
+          - link "Legacy App" [ref=e72] [cursor=pointer]:
+            - /url: /legacy
+            - img [ref=e73]
+            - generic [ref=e76]: Legacy App
+      - generic [ref=e77]:
+        - paragraph [ref=e79]: System
+        - generic [ref=e80]:
+          - link "AI Configuration" [ref=e81] [cursor=pointer]:
+            - /url: /ai-config
+            - img [ref=e82]
+            - generic [ref=e90]: AI Configuration
+          - link "Settings" [ref=e91] [cursor=pointer]:
+            - /url: /settings
+            - img [ref=e92]
+            - generic [ref=e95]: Settings
+          - link "Help & Guide" [ref=e96] [cursor=pointer]:
+            - /url: /help
+            - img [ref=e97]
+            - generic [ref=e100]: Help & Guide
+    - generic [ref=e103]: SmartGrader v0.3.0
+  - main [ref=e104]:
+    - generic [ref=e106]:
+      - generic [ref=e107]:
+        - generic [ref=e108]:
+          - generic [ref=e109]:
+            - heading "Students" [level=2] [ref=e110]
+            - generic [ref=e111]:
+              - img "Students are linked to exam results. Add students here before scanning their answer sheets." [ref=e112]
+              - tooltip "Students are linked to exam results. Add students here before scanning their answer sheets.": Students are linked to exam results. Add students here before scanning their answer sheets.
+          - paragraph [ref=e115]: Manage your student roster
+        - button "Add Student" [ref=e117] [cursor=pointer]:
+          - img
+          - text: Add Student
+      - generic [ref=e118]:
+        - generic [ref=e119]:
+          - img
+          - textbox "Search by name or ID..." [ref=e120]
+        - generic [ref=e121]: 10 students
+      - table [ref=e125]:
+        - rowgroup [ref=e126]:
+          - row "Name Matricule Email" [ref=e127]:
+            - columnheader "Name" [ref=e128]
+            - columnheader "Matricule" [ref=e129]
+            - columnheader "Email" [ref=e130]
+        - rowgroup [ref=e131]:
+          - row "Ahmed Benali 2026001 ahmed@univ.dz" [ref=e132]:
+            - cell "Ahmed Benali" [ref=e133]
+            - cell "2026001" [ref=e134]
+            - cell "ahmed@univ.dz" [ref=e135]
+          - row "Amina Boudiaf 2026004 amina@univ.dz" [ref=e136]:
+            - cell "Amina Boudiaf" [ref=e137]
+            - cell "2026004" [ref=e138]
+            - cell "amina@univ.dz" [ref=e139]
+          - row "Fatima Zahra 2026002 fatima@univ.dz" [ref=e140]:
+            - cell "Fatima Zahra" [ref=e141]
+            - cell "2026002" [ref=e142]
+            - cell "fatima@univ.dz" [ref=e143]
+          - row "Karim Zidane 2026009 karim@univ.dz" [ref=e144]:
+            - cell "Karim Zidane" [ref=e145]
+            - cell "2026009" [ref=e146]
+            - cell "karim@univ.dz" [ref=e147]
+          - row "Lina Benmoussa 2026010 lina@univ.dz" [ref=e148]:
+            - cell "Lina Benmoussa" [ref=e149]
+            - cell "2026010" [ref=e150]
+            - cell "lina@univ.dz" [ref=e151]
+          - row "Mohamed Amine 2026003 amine@univ.dz" [ref=e152]:
+            - cell "Mohamed Amine" [ref=e153]
+            - cell "2026003" [ref=e154]
+            - cell "amine@univ.dz" [ref=e155]
+          - row "Nour El Houda 2026008 nour@univ.dz" [ref=e156]:
+            - cell "Nour El Houda" [ref=e157]
+            - cell "2026008" [ref=e158]
+            - cell "nour@univ.dz" [ref=e159]
+          - row "Rachid Hamidi 2026007 rachid@univ.dz" [ref=e160]:
+            - cell "Rachid Hamidi" [ref=e161]
+            - cell "2026007" [ref=e162]
+            - cell "rachid@univ.dz" [ref=e163]
+          - row "Sara Mebarki 2026006 sara@univ.dz" [ref=e164]:
+            - cell "Sara Mebarki" [ref=e165]
+            - cell "2026006" [ref=e166]
+            - cell "sara@univ.dz" [ref=e167]
+          - row "Youcef Khelifi 2026005 youcef@univ.dz" [ref=e168]:
+            - cell "Youcef Khelifi" [ref=e169]
+            - cell "2026005" [ref=e170]
+            - cell "youcef@univ.dz" [ref=e171]

@@ -1,0 +1,113 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - img [ref=e6]
+      - generic [ref=e10]: SmartGrader
+    - generic [ref=e11]:
+      - button "Search" [ref=e12] [cursor=pointer]:
+        - img
+      - button "Notifications" [ref=e14] [cursor=pointer]:
+        - img
+      - button "Switch to dark mode" [ref=e15] [cursor=pointer]:
+        - img
+      - button "User menu" [ref=e17] [cursor=pointer]: SG
+  - complementary [ref=e18]:
+    - navigation [ref=e19]:
+      - generic [ref=e20]:
+        - paragraph [ref=e21]: Main
+        - generic [ref=e22]:
+          - link "Dashboard" [ref=e23] [cursor=pointer]:
+            - /url: /
+            - img [ref=e24]
+            - generic [ref=e29]: Dashboard
+          - link "Exams" [ref=e30] [cursor=pointer]:
+            - /url: /exams
+            - img [ref=e31]
+            - generic [ref=e34]: Exams
+          - link "Scanner" [ref=e35] [cursor=pointer]:
+            - /url: /scanner
+            - img [ref=e36]
+            - generic [ref=e41]: Scanner
+          - link "Students" [ref=e42] [cursor=pointer]:
+            - /url: /students
+            - img [ref=e43]
+            - generic [ref=e46]: Students
+          - link "Results" [ref=e47] [cursor=pointer]:
+            - /url: /results
+            - img [ref=e48]
+            - generic [ref=e50]: Results
+      - generic [ref=e51]:
+        - paragraph [ref=e53]: Documentation
+        - generic [ref=e54]:
+          - link "Academic Thesis" [ref=e55] [cursor=pointer]:
+            - /url: /academic-docs
+            - img [ref=e56]
+            - generic [ref=e58]: Academic Thesis
+          - link "Sample Data" [ref=e59] [cursor=pointer]:
+            - /url: /samples
+            - img [ref=e60]
+            - generic [ref=e65]: Sample Data
+          - link "API Reference" [ref=e66] [cursor=pointer]:
+            - /url: /documentation
+            - img [ref=e67]
+            - generic [ref=e71]: API Reference
+          - link "Legacy App" [ref=e72] [cursor=pointer]:
+            - /url: /legacy
+            - img [ref=e73]
+            - generic [ref=e76]: Legacy App
+      - generic [ref=e77]:
+        - paragraph [ref=e79]: System
+        - generic [ref=e80]:
+          - link "AI Configuration" [ref=e81] [cursor=pointer]:
+            - /url: /ai-config
+            - img [ref=e82]
+            - generic [ref=e90]: AI Configuration
+          - link "Settings" [ref=e91] [cursor=pointer]:
+            - /url: /settings
+            - img [ref=e92]
+            - generic [ref=e95]: Settings
+          - link "Help & Guide" [ref=e96] [cursor=pointer]:
+            - /url: /help
+            - img [ref=e97]
+            - generic [ref=e100]: Help & Guide
+    - generic [ref=e103]: SmartGrader v0.3.0
+  - main [ref=e104]:
+    - generic [ref=e106]:
+      - generic [ref=e107]:
+        - generic [ref=e108]:
+          - generic [ref=e109]:
+            - heading "Results" [level=2] [ref=e110]
+            - generic [ref=e111]:
+              - img "Results are generated after scanning an answer sheet. Select an exam to view all results for that exam." [ref=e112]
+              - tooltip "Results are generated after scanning an answer sheet. Select an exam to view all results for that exam.": Results are generated after scanning an answer sheet. Select an exam to view all results for that exam.
+          - paragraph [ref=e115]: View and export graded exam results
+        - generic [ref=e116]:
+          - button "Export CSV" [disabled]:
+            - img
+            - text: Export CSV
+      - generic [ref=e117]:
+        - generic [ref=e118]:
+          - generic [ref=e119]: Filter by Exam
+          - generic [ref=e120]:
+            - img "Select an exam to see all graded results for that exam." [ref=e121]
+            - tooltip "Select an exam to see all graded results for that exam.": Select an exam to see all graded results for that exam.
+        - combobox [expanded] [ref=e124] [cursor=pointer]:
+          - generic [ref=e125]: Choose an exam to view results...
+          - img: ▼
+        - listbox [ref=e137]:
+          - option "Computer Science - Algorithms" [active] [ref=e138] [cursor=pointer]:
+            - generic [ref=e139]: Computer Science - Algorithms
+          - option "Chemistry - Organic" [ref=e140] [cursor=pointer]:
+            - generic [ref=e141]: Chemistry - Organic
+          - option "Physics - Mechanics" [ref=e142] [cursor=pointer]:
+            - generic [ref=e143]: Physics - Mechanics
+          - option "Biology - Cell Biology" [ref=e144] [cursor=pointer]:
+            - generic [ref=e145]: Biology - Cell Biology
+          - option "Mathematics - Algebra" [ref=e146] [cursor=pointer]:
+            - generic [ref=e147]: Mathematics - Algebra
+        - textbox [ref=e126]
+      - generic [ref=e128]:
+        - img [ref=e130]
+        - generic [ref=e131]:
+          - heading "Select an Exam" [level=3] [ref=e132]
+          - paragraph [ref=e133]: Choose an exam from the dropdown above to view its graded results.

@@ -1,0 +1,107 @@
+[     119ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:14336
+[  105584ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:14336
+[  522049ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:14336
+[  612191ms] ReferenceError: METHOD_STYLES is not defined
+    at Documentation (http://localhost:3005/src/pages/Documentation.jsx?t=1775552943905:537:32)
+    at Object.react_stack_bottom_frame (http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:12867:12)
+    at renderWithHooks (http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:4212:19)
+    at updateFunctionComponent (http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:5568:16)
+    at beginWork (http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:6139:20)
+    at runWithFiberInDEV (http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:850:66)
+    at performUnitOfWork (http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:8428:92)
+    at workLoopSync (http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:8324:37)
+    at renderRootSync (http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:8308:6)
+    at performWorkOnRoot (http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:7993:27)
+[  612190ms] [WARNING] %s
+
+%s
+ An error occurred in the <Documentation> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://localhost:3005/@vite/client:509
+[  616707ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:14336
+[  647328ms] ReferenceError: METHOD_STYLES is not defined
+    at Documentation (http://localhost:3005/src/pages/Documentation.jsx?t=1775552943905:537:32)
+    at Object.react_stack_bottom_frame (http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:12867:12)
+    at renderWithHooks (http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:4212:19)
+    at updateFunctionComponent (http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:5568:16)
+    at beginWork (http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:6139:20)
+    at runWithFiberInDEV (http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:850:66)
+    at performUnitOfWork (http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:8428:92)
+    at workLoopSync (http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:8324:37)
+    at renderRootSync (http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:8308:6)
+    at performWorkOnRoot (http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:7993:27)
+[  647329ms] [WARNING] %s
+
+%s
+ An error occurred in the <Documentation> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://localhost:3005/@vite/client:509
+[  651623ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:14336
+[  651690ms] ReferenceError: METHOD_STYLES is not defined
+    at Documentation (http://localhost:3005/src/pages/Documentation.jsx?t=1775552943905:537:32)
+    at Object.react_stack_bottom_frame (http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:12867:12)
+    at renderWithHooks (http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:4212:19)
+    at updateFunctionComponent (http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:5568:16)
+    at beginWork (http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:6139:20)
+    at runWithFiberInDEV (http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:850:66)
+    at performUnitOfWork (http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:8428:92)
+    at workLoopSync (http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:8324:37)
+    at renderRootSync (http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:8308:6)
+    at performWorkOnRoot (http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:7993:27)
+[  651690ms] [WARNING] %s
+
+%s
+ An error occurred in the <Documentation> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://localhost:3005/@vite/client:509
+[  668786ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:14336
+[ 1253235ms] ReferenceError: METHOD_STYLES is not defined
+    at Documentation (http://localhost:3005/src/pages/Documentation.jsx?t=1775552943905:537:32)
+    at Object.react_stack_bottom_frame (http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:12867:12)
+    at renderWithHooks (http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:4212:19)
+    at updateFunctionComponent (http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:5568:16)
+    at beginWork (http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:6139:20)
+    at runWithFiberInDEV (http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:850:66)
+    at performUnitOfWork (http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:8428:92)
+    at workLoopSync (http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:8324:37)
+    at renderRootSync (http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:8308:6)
+    at performWorkOnRoot (http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:7993:27)
+[ 1253235ms] [WARNING] %s
+
+%s
+ An error occurred in the <Documentation> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://localhost:3005/@vite/client:509
+[ 1262652ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:14336
+[ 1787942ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:14336
+[ 1811478ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:14336
+[ 1872378ms] ReferenceError: METHOD_STYLES is not defined
+    at Documentation (http://localhost:3005/src/pages/Documentation.jsx?t=1775552943905:537:32)
+    at Object.react_stack_bottom_frame (http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:12867:12)
+    at renderWithHooks (http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:4212:19)
+    at updateFunctionComponent (http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:5568:16)
+    at beginWork (http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:6139:20)
+    at runWithFiberInDEV (http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:850:66)
+    at performUnitOfWork (http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:8428:92)
+    at workLoopSync (http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:8324:37)
+    at renderRootSync (http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:8308:6)
+    at performWorkOnRoot (http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:7993:27)
+[ 1872377ms] [WARNING] %s
+
+%s
+ An error occurred in the <Documentation> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://localhost:3005/@vite/client:509
+[ 1886123ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:14336
+[ 1890003ms] ReferenceError: METHOD_STYLES is not defined
+    at Documentation (http://localhost:3005/src/pages/Documentation.jsx?t=1775552943905:537:32)
+    at Object.react_stack_bottom_frame (http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:12867:12)
+    at renderWithHooks (http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:4212:19)
+    at updateFunctionComponent (http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:5568:16)
+    at beginWork (http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:6139:20)
+    at runWithFiberInDEV (http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:850:66)
+    at performUnitOfWork (http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:8428:92)
+    at workLoopSync (http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:8324:37)
+    at renderRootSync (http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:8308:6)
+    at performWorkOnRoot (http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:7993:27)
+[ 1890002ms] [WARNING] %s
+
+%s
+ An error occurred in the <Documentation> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://localhost:3005/@vite/client:509
+[ 1894268ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3005/node_modules/.vite/deps/react-dom_client.js?v=e970c3a1:14336

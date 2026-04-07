@@ -1,0 +1,50 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - heading "SmartGrader" [level=1] [ref=e5]
+    - button [ref=e7] [cursor=pointer]:
+      - img
+  - complementary [ref=e8]:
+    - navigation [ref=e9]:
+      - link "Dashboard" [ref=e10] [cursor=pointer]:
+        - /url: /
+        - img [ref=e11]
+        - generic [ref=e16]: Dashboard
+      - link "Exams" [ref=e17] [cursor=pointer]:
+        - /url: /exams
+        - img [ref=e18]
+        - generic [ref=e21]: Exams
+      - link "Scanner" [ref=e22] [cursor=pointer]:
+        - /url: /scanner
+        - img [ref=e23]
+        - generic [ref=e28]: Scanner
+      - link "Students" [ref=e29] [cursor=pointer]:
+        - /url: /students
+        - img [ref=e30]
+        - generic [ref=e35]: Students
+      - link "Results" [ref=e36] [cursor=pointer]:
+        - /url: /results
+        - img [ref=e37]
+        - generic [ref=e39]: Results
+      - link "Settings" [ref=e40] [cursor=pointer]:
+        - /url: /settings
+        - img [ref=e41]
+        - generic [ref=e44]: Settings
+    - generic [ref=e45]: SmartGrader v0.2.0
+  - main [ref=e46]:
+    - generic [ref=e48]:
+      - heading "Settings" [level=2] [ref=e49]
+      - generic [ref=e50]:
+        - generic [ref=e52]: Appearance
+        - generic [ref=e54]:
+          - generic [ref=e55]:
+            - generic [ref=e56]: Dark Mode
+            - paragraph [ref=e57]: Toggle dark theme
+          - switch [checked] [active] [ref=e58] [cursor=pointer]
+          - checkbox [checked] [ref=e59]
+      - generic [ref=e60]:
+        - generic [ref=e62]: About
+        - generic [ref=e63]:
+          - paragraph [ref=e64]: "Application: SmartGrader"
+          - paragraph [ref=e65]: "Version: 0.2.0"
+          - separator
+          - paragraph [ref=e66]: Academic Exam Management System with AI-Powered Grading. Final Year Project (PFE).

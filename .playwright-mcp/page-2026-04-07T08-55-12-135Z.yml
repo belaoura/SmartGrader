@@ -1,0 +1,325 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - img [ref=e6]
+      - generic [ref=e10]: SmartGrader
+    - generic [ref=e11]:
+      - button "Search" [ref=e12] [cursor=pointer]:
+        - img
+      - button "Notifications" [ref=e14] [cursor=pointer]:
+        - img
+      - button "Switch to dark mode" [ref=e15] [cursor=pointer]:
+        - img
+      - button "User menu" [ref=e17] [cursor=pointer]: SG
+  - complementary [ref=e18]:
+    - navigation [ref=e19]:
+      - generic [ref=e20]:
+        - paragraph [ref=e21]: Main
+        - generic [ref=e22]:
+          - link "Dashboard" [ref=e23] [cursor=pointer]:
+            - /url: /
+            - img [ref=e24]
+            - generic [ref=e29]: Dashboard
+          - link "Exams" [ref=e30] [cursor=pointer]:
+            - /url: /exams
+            - img [ref=e31]
+            - generic [ref=e34]: Exams
+          - link "Scanner" [ref=e35] [cursor=pointer]:
+            - /url: /scanner
+            - img [ref=e36]
+            - generic [ref=e41]: Scanner
+          - link "Students" [ref=e42] [cursor=pointer]:
+            - /url: /students
+            - img [ref=e43]
+            - generic [ref=e46]: Students
+          - link "Results" [ref=e47] [cursor=pointer]:
+            - /url: /results
+            - img [ref=e48]
+            - generic [ref=e50]: Results
+      - generic [ref=e51]:
+        - paragraph [ref=e53]: Documentation
+        - generic [ref=e54]:
+          - link "Academic Thesis" [ref=e55] [cursor=pointer]:
+            - /url: /academic-docs
+            - img [ref=e56]
+            - generic [ref=e58]: Academic Thesis
+          - link "Sample Data" [ref=e59] [cursor=pointer]:
+            - /url: /samples
+            - img [ref=e60]
+            - generic [ref=e65]: Sample Data
+          - link "API Reference" [ref=e66] [cursor=pointer]:
+            - /url: /documentation
+            - img [ref=e67]
+            - generic [ref=e71]: API Reference
+          - link "Legacy App" [ref=e72] [cursor=pointer]:
+            - /url: /legacy
+            - img [ref=e73]
+            - generic [ref=e76]: Legacy App
+      - generic [ref=e77]:
+        - paragraph [ref=e79]: System
+        - generic [ref=e80]:
+          - link "AI Configuration" [ref=e81] [cursor=pointer]:
+            - /url: /ai-config
+            - img [ref=e82]
+            - generic [ref=e90]: AI Configuration
+          - link "Settings" [ref=e91] [cursor=pointer]:
+            - /url: /settings
+            - img [ref=e92]
+            - generic [ref=e95]: Settings
+          - link "Help & Guide" [ref=e96] [cursor=pointer]:
+            - /url: /help
+            - img [ref=e97]
+            - generic [ref=e100]: Help & Guide
+    - generic [ref=e103]: SmartGrader v0.3.0
+  - main [ref=e104]:
+    - generic [ref=e106]:
+      - generic [ref=e108]:
+        - generic [ref=e109]:
+          - heading "Academic Thesis" [level=2] [ref=e110]
+          - generic [ref=e111]:
+            - img "Browse all 6 thesis chapters, 7 UML diagrams, and the BibTeX bibliography for the SmartGrader final-year project." [ref=e112]
+            - tooltip "Browse all 6 thesis chapters, 7 UML diagrams, and the BibTeX bibliography for the SmartGrader final-year project.": Browse all 6 thesis chapters, 7 UML diagrams, and the BibTeX bibliography for the SmartGrader final-year project.
+        - paragraph [ref=e115]: PFE graduation project — full thesis documentation, UML diagrams, and build instructions.
+      - generic [ref=e116]:
+        - generic [ref=e117]:
+          - heading "Sub-Project Completion" [level=3] [ref=e118]
+          - generic [ref=e119]: 4 / 4 Complete — 100%
+        - generic [ref=e125]:
+          - generic [ref=e126]:
+            - generic [ref=e127]:
+              - generic [ref=e128]: SP1
+              - img [ref=e129]
+            - paragraph [ref=e132]: Code Restructuring
+            - paragraph [ref=e133]: Migrated from monolithic PyQt5 desktop app to a clean Flask API + React SPA with proper layered architecture.
+          - generic [ref=e134]:
+            - generic [ref=e135]:
+              - generic [ref=e136]: SP2
+              - img [ref=e137]
+            - paragraph [ref=e140]: Web UI
+            - paragraph [ref=e141]: Built a full glassmorphism React 19 frontend with TanStack Query, Recharts dashboards, and responsive design.
+          - generic [ref=e142]:
+            - generic [ref=e143]:
+              - generic [ref=e144]: SP3
+              - img [ref=e145]
+            - paragraph [ref=e148]: AI Vision
+            - paragraph [ref=e149]: Integrated Qwen2.5-VL-3B-Instruct with 4-bit NF4 quantisation for OCR of handwritten answers + automated marking.
+          - generic [ref=e150]:
+            - generic [ref=e151]:
+              - generic [ref=e152]: SP4
+              - img [ref=e153]
+            - paragraph [ref=e156]: Documentation
+            - paragraph [ref=e157]: Wrote a complete 6-chapter PFE thesis with 18 academic references, 7 UML diagrams, and pandoc/XeLaTeX build pipeline.
+      - generic [ref=e158]:
+        - heading "Thesis Chapters" [level=3] [ref=e159]
+        - generic [ref=e160]:
+          - 'button "01 Chapter 01: General Introduction ✓ Complete ~15 pages Introduces the motivation for SmartGrader: the manual exam-grading bottleneck in Algerian universities. Defines the four sub-project roadmap and positions the work within the PFE framework. Problem Statement Objectives Methodology Project Scope Document Structure" [ref=e162]':
+            - generic [ref=e165]: "01"
+            - generic [ref=e166]:
+              - generic [ref=e167]:
+                - generic [ref=e168]: "Chapter 01: General Introduction"
+                - generic [ref=e169]: ✓ Complete
+                - generic [ref=e170]: ~15 pages
+              - paragraph [ref=e171]: "Introduces the motivation for SmartGrader: the manual exam-grading bottleneck in Algerian universities. Defines the four sub-project roadmap and positions the work within the PFE framework."
+              - generic [ref=e172]:
+                - generic [ref=e173]: Problem Statement
+                - generic [ref=e174]: Objectives
+                - generic [ref=e175]: Methodology
+                - generic [ref=e176]: Project Scope
+                - generic [ref=e177]: Document Structure
+            - img [ref=e430]
+          - 'button "02 Chapter 02: State of the Art ✓ Complete ~25 pages Surveys optical mark recognition (OMR) systems, modern OCR approaches, and vision-language models. Compares LLaVA, Qwen2-VL, and GPT-4V. Reviews RAG-based feedback loops for educational AI. OMR Systems OCR Technology Vision-Language Models LLaVA / Qwen2-VL RAG Existing Tools" [ref=e181]':
+            - generic [ref=e184]: "02"
+            - generic [ref=e185]:
+              - generic [ref=e186]:
+                - generic [ref=e187]: "Chapter 02: State of the Art"
+                - generic [ref=e188]: ✓ Complete
+                - generic [ref=e189]: ~25 pages
+              - paragraph [ref=e190]: Surveys optical mark recognition (OMR) systems, modern OCR approaches, and vision-language models. Compares LLaVA, Qwen2-VL, and GPT-4V. Reviews RAG-based feedback loops for educational AI.
+              - generic [ref=e191]:
+                - generic [ref=e192]: OMR Systems
+                - generic [ref=e193]: OCR Technology
+                - generic [ref=e194]: Vision-Language Models
+                - generic [ref=e195]: LLaVA / Qwen2-VL
+                - generic [ref=e196]: RAG
+                - generic [ref=e197]: Existing Tools
+            - img [ref=e198]
+          - 'button "03 Chapter 03: Analysis & Design ✓ Complete ~30 pages Captures functional and non-functional requirements. Presents 7 UML diagrams: use-case, class, 3 sequence diagrams, ER diagram, and deployment diagram. Defines the REST API contract. Requirements Use-Case Diagrams Class Diagram Sequence Diagrams ER Diagram Deployment" [ref=e201]':
+            - generic [ref=e204]: "03"
+            - generic [ref=e205]:
+              - generic [ref=e206]:
+                - generic [ref=e207]: "Chapter 03: Analysis & Design"
+                - generic [ref=e208]: ✓ Complete
+                - generic [ref=e209]: ~30 pages
+              - paragraph [ref=e210]: "Captures functional and non-functional requirements. Presents 7 UML diagrams: use-case, class, 3 sequence diagrams, ER diagram, and deployment diagram. Defines the REST API contract."
+              - generic [ref=e211]:
+                - generic [ref=e212]: Requirements
+                - generic [ref=e213]: Use-Case Diagrams
+                - generic [ref=e214]: Class Diagram
+                - generic [ref=e215]: Sequence Diagrams
+                - generic [ref=e216]: ER Diagram
+                - generic [ref=e217]: Deployment
+            - img [ref=e218]
+          - 'button "04 Chapter 04: Implementation ✓ Complete ~35 pages Details the technical implementation of all four sub-projects. Covers the OpenCV bubble-detection pipeline, Qwen2.5-VL OCR integration, React component architecture, and database schema. Flask App Factory Scanner Pipeline AI Integration React Frontend SQLAlchemy ORM API Routes" [ref=e221]':
+            - generic [ref=e224]: "04"
+            - generic [ref=e225]:
+              - generic [ref=e226]:
+                - generic [ref=e227]: "Chapter 04: Implementation"
+                - generic [ref=e228]: ✓ Complete
+                - generic [ref=e229]: ~35 pages
+              - paragraph [ref=e230]: Details the technical implementation of all four sub-projects. Covers the OpenCV bubble-detection pipeline, Qwen2.5-VL OCR integration, React component architecture, and database schema.
+              - generic [ref=e231]:
+                - generic [ref=e232]: Flask App Factory
+                - generic [ref=e233]: Scanner Pipeline
+                - generic [ref=e234]: AI Integration
+                - generic [ref=e235]: React Frontend
+                - generic [ref=e236]: SQLAlchemy ORM
+                - generic [ref=e237]: API Routes
+            - img [ref=e238]
+          - 'button "05 Chapter 05: Testing & Results ✓ Complete ~20 pages Reports 40 automated tests across models, services, scanner, and routes. Documents 96% bubble detection accuracy on 50 test sheets. Presents AI grading precision/recall metrics and API response-time benchmarks. 40 pytest Tests Scanner Accuracy 96% AI Grading Performance Benchmarks User Acceptance" [ref=e241]':
+            - generic [ref=e244]: "05"
+            - generic [ref=e245]:
+              - generic [ref=e246]:
+                - generic [ref=e247]: "Chapter 05: Testing & Results"
+                - generic [ref=e248]: ✓ Complete
+                - generic [ref=e249]: ~20 pages
+              - paragraph [ref=e250]: Reports 40 automated tests across models, services, scanner, and routes. Documents 96% bubble detection accuracy on 50 test sheets. Presents AI grading precision/recall metrics and API response-time benchmarks.
+              - generic [ref=e251]:
+                - generic [ref=e252]: 40 pytest Tests
+                - generic [ref=e253]: Scanner Accuracy 96%
+                - generic [ref=e254]: AI Grading
+                - generic [ref=e255]: Performance Benchmarks
+                - generic [ref=e256]: User Acceptance
+            - img [ref=e257]
+          - 'button "06 Chapter 06: Conclusion ✓ Complete ~10 pages Summarises achievements across all sub-projects. Identifies current limitations (GPU requirement, limited language support). Proposes future directions: multilingual OCR, batch processing, LMS integration. Achievements Limitations Future Work Reflections RAG Improvements" [ref=e260]':
+            - generic [ref=e263]: "06"
+            - generic [ref=e264]:
+              - generic [ref=e265]:
+                - generic [ref=e266]: "Chapter 06: Conclusion"
+                - generic [ref=e267]: ✓ Complete
+                - generic [ref=e268]: ~10 pages
+              - paragraph [ref=e269]: "Summarises achievements across all sub-projects. Identifies current limitations (GPU requirement, limited language support). Proposes future directions: multilingual OCR, batch processing, LMS integration."
+              - generic [ref=e270]:
+                - generic [ref=e271]: Achievements
+                - generic [ref=e272]: Limitations
+                - generic [ref=e273]: Future Work
+                - generic [ref=e274]: Reflections
+                - generic [ref=e275]: RAG Improvements
+            - img [ref=e276]
+          - 'button "A Chapter Appendices: Appendices ✓ Complete ~12 pages Provides the full API specification, database schema DDL, configuration reference table, sample answer sheet images, and the complete BibTeX bibliography with 18 academic references. API Spec DB Schema Config Reference Sample Sheets BibTeX References" [ref=e279]':
+            - generic [ref=e282]: A
+            - generic [ref=e283]:
+              - generic [ref=e284]:
+                - generic [ref=e285]: "Chapter Appendices: Appendices"
+                - generic [ref=e286]: ✓ Complete
+                - generic [ref=e287]: ~12 pages
+              - paragraph [ref=e288]: Provides the full API specification, database schema DDL, configuration reference table, sample answer sheet images, and the complete BibTeX bibliography with 18 academic references.
+              - generic [ref=e289]:
+                - generic [ref=e290]: API Spec
+                - generic [ref=e291]: DB Schema
+                - generic [ref=e292]: Config Reference
+                - generic [ref=e293]: Sample Sheets
+                - generic [ref=e294]: BibTeX References
+            - img [ref=e295]
+      - generic [ref=e297]:
+        - heading "UML Diagrams (7 PlantUML)" [level=3] [ref=e298]
+        - generic [ref=e299]:
+          - generic [ref=e300] [cursor=pointer]:
+            - img [ref=e302]
+            - generic [ref=e307]:
+              - generic [ref=e309]: System Use-Case
+              - text: Use Case
+              - paragraph [ref=e310]: Teacher and student actors with all system use cases
+            - code [ref=e311]: use-case.puml
+          - generic [ref=e312] [cursor=pointer]:
+            - img [ref=e314]
+            - generic [ref=e319]:
+              - generic [ref=e321]: Domain Class Diagram
+              - text: Class
+              - paragraph [ref=e322]: Exam, Question, Choice, Student, Result ORM relationships
+            - code [ref=e323]: class-diagram.puml
+          - generic [ref=e324] [cursor=pointer]:
+            - img [ref=e326]
+            - generic [ref=e331]:
+              - generic [ref=e333]: Exam Creation Flow
+              - text: Sequence
+              - paragraph [ref=e334]: React → Flask → SQLAlchemy sequence for exam creation
+            - code [ref=e335]: sequence-scan.puml
+          - generic [ref=e336] [cursor=pointer]:
+            - img [ref=e338]
+            - generic [ref=e343]:
+              - generic [ref=e345]: Scan & Grade Flow
+              - text: Sequence
+              - paragraph [ref=e346]: Upload → Preprocess → Detect → Grade → Save sequence
+            - code [ref=e347]: sequence-scan.puml
+          - generic [ref=e348] [cursor=pointer]:
+            - img [ref=e350]
+            - generic [ref=e355]:
+              - generic [ref=e357]: AI Grading Flow
+              - text: Sequence
+              - paragraph [ref=e358]: Image → OCR → Evaluate → RAG correction pipeline
+            - code [ref=e359]: sequence-ai-grade.puml
+          - generic [ref=e360] [cursor=pointer]:
+            - img [ref=e362]
+            - generic [ref=e367]:
+              - generic [ref=e369]: Entity-Relationship
+              - text: ER Diagram
+              - paragraph [ref=e370]: "Full database schema: 6 tables, FKs, and cardinalities"
+            - code [ref=e371]: er-diagram.puml
+          - generic [ref=e372] [cursor=pointer]:
+            - img [ref=e374]
+            - generic [ref=e379]:
+              - generic [ref=e381]: Deployment Architecture
+              - text: Deployment
+              - paragraph [ref=e382]: "Docker/host topology: Flask API, React SPA, GPU node"
+            - code [ref=e383]: deployment.puml
+        - paragraph [ref=e384]:
+          - text: PNG exports require running
+          - code [ref=e385]: plantuml *.puml
+          - text: in
+          - code [ref=e386]: docs/figures/uml/
+      - generic [ref=e387]:
+        - generic [ref=e388]:
+          - img [ref=e389]
+          - heading "Bibliography" [level=3] [ref=e392]
+          - generic [ref=e393]: 18 references
+        - paragraph [ref=e394]:
+          - text: Complete bibliography in BibTeX format at
+          - code [ref=e395]: docs/thesis/bibliography.bib
+          - text: ". Key references:"
+        - generic [ref=e396]:
+          - generic [ref=e397]:
+            - code [ref=e398]: "@qwen2vl"
+            - paragraph [ref=e399]: "Wang et al. (2024). Qwen2-VL: Enhancing Vision-Language Model's Perception of the World at Any Resolution."
+          - generic [ref=e400]:
+            - code [ref=e401]: "@opencv"
+            - paragraph [ref=e402]: Bradski, G. (2000). The OpenCV Library. Dr. Dobb's Journal of Software Tools.
+          - generic [ref=e403]:
+            - code [ref=e404]: "@llava"
+            - paragraph [ref=e405]: Liu et al. (2024). Visual Instruction Tuning. NeurIPS 2023.
+          - generic [ref=e406]:
+            - code [ref=e407]: "@rag"
+            - paragraph [ref=e408]: Lewis et al. (2020). Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks. NeurIPS.
+          - generic [ref=e409]:
+            - code [ref=e410]: "@bitsb"
+            - paragraph [ref=e411]: "Dettmers et al. (2023). QLoRA: Efficient Finetuning of Quantized LLMs. NeurIPS."
+          - paragraph [ref=e412]: …and 13 more references covering Flask, React, TanStack Query, PyQt5, Pandoc, and Algerian education literature.
+      - generic [ref=e413]:
+        - generic [ref=e414]:
+          - img [ref=e415]
+          - heading "Build the Thesis PDF" [level=3] [ref=e417]
+        - generic [ref=e418]:
+          - generic [ref=e419]:
+            - paragraph [ref=e420]: Python build script (recommended)
+            - generic [ref=e421]: python docs/thesis/build_pdf.py
+            - paragraph [ref=e422]: "Requires: markdown, xhtml2pdf, pyyaml"
+          - generic [ref=e423]:
+            - paragraph [ref=e424]: Traditional Bash build
+            - generic [ref=e425]: bash docs/thesis/build.sh
+            - paragraph [ref=e426]: "Requires: pandoc + XeLaTeX (TeX Live / MiKTeX)"
+        - generic [ref=e427]:
+          - button "Download Thesis PDF" [ref=e428] [cursor=pointer]:
+            - img
+            - text: Download Thesis PDF
+          - button "Browse docs/ Folder" [ref=e429] [cursor=pointer]:
+            - img
+            - text: Browse docs/ Folder

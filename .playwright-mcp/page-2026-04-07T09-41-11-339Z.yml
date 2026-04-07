@@ -1,0 +1,242 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - img [ref=e6]
+      - generic [ref=e10]: SmartGrader
+    - generic [ref=e11]:
+      - button "Search" [ref=e12] [cursor=pointer]:
+        - img
+      - button "Notifications" [ref=e14] [cursor=pointer]:
+        - img
+      - button "Switch to dark mode" [ref=e15] [cursor=pointer]:
+        - img
+      - button "User menu" [ref=e17] [cursor=pointer]: SG
+  - complementary [ref=e18]:
+    - navigation [ref=e19]:
+      - generic [ref=e20]:
+        - paragraph [ref=e21]: Main
+        - generic [ref=e22]:
+          - link "Dashboard" [ref=e23] [cursor=pointer]:
+            - /url: /
+            - img [ref=e24]
+            - generic [ref=e29]: Dashboard
+          - link "Exams" [ref=e30] [cursor=pointer]:
+            - /url: /exams
+            - img [ref=e31]
+            - generic [ref=e34]: Exams
+          - link "Scanner" [ref=e35] [cursor=pointer]:
+            - /url: /scanner
+            - img [ref=e36]
+            - generic [ref=e41]: Scanner
+          - link "Students" [ref=e42] [cursor=pointer]:
+            - /url: /students
+            - img [ref=e43]
+            - generic [ref=e46]: Students
+          - link "Results" [ref=e47] [cursor=pointer]:
+            - /url: /results
+            - img [ref=e48]
+            - generic [ref=e50]: Results
+      - generic [ref=e51]:
+        - paragraph [ref=e53]: Documentation
+        - generic [ref=e54]:
+          - link "Academic Thesis" [ref=e55] [cursor=pointer]:
+            - /url: /academic-docs
+            - img [ref=e56]
+            - generic [ref=e58]: Academic Thesis
+          - link "Sample Data" [ref=e59] [cursor=pointer]:
+            - /url: /samples
+            - img [ref=e60]
+            - generic [ref=e65]: Sample Data
+          - link "API Reference" [ref=e66] [cursor=pointer]:
+            - /url: /documentation
+            - img [ref=e67]
+            - generic [ref=e71]: API Reference
+          - link "Legacy App" [ref=e72] [cursor=pointer]:
+            - /url: /legacy
+            - img [ref=e73]
+            - generic [ref=e76]: Legacy App
+      - generic [ref=e77]:
+        - paragraph [ref=e79]: System
+        - generic [ref=e80]:
+          - link "AI Configuration" [ref=e81] [cursor=pointer]:
+            - /url: /ai-config
+            - img [ref=e82]
+            - generic [ref=e90]: AI Configuration
+          - link "Settings" [ref=e91] [cursor=pointer]:
+            - /url: /settings
+            - img [ref=e92]
+            - generic [ref=e95]: Settings
+          - link "Help & Guide" [ref=e96] [cursor=pointer]:
+            - /url: /help
+            - img [ref=e97]
+            - generic [ref=e100]: Help & Guide
+    - generic [ref=e103]: SmartGrader v0.3.0
+  - main [ref=e104]:
+    - generic [ref=e106]:
+      - generic [ref=e108]:
+        - generic [ref=e109]:
+          - heading "API Reference & Docs" [level=2] [ref=e110]
+          - generic [ref=e111]:
+            - img "Browse all 15+ API endpoints grouped by resource, explore the system architecture, and view the full technology stack." [ref=e112]
+            - tooltip "Browse all 15+ API endpoints grouped by resource, explore the system architecture, and view the full technology stack.": Browse all 15+ API endpoints grouped by resource, explore the system architecture, and view the full technology stack.
+        - paragraph [ref=e115]: Complete documentation for the SmartGrader REST API, architecture, and tech stack.
+      - generic [ref=e116]:
+        - button "API Reference" [ref=e117] [cursor=pointer]:
+          - img [ref=e118]
+          - generic [ref=e122]: API Reference
+        - button "Architecture" [ref=e123] [cursor=pointer]:
+          - img [ref=e124]
+          - generic [ref=e128]: Architecture
+        - button "Tech Stack" [ref=e129] [cursor=pointer]:
+          - img [ref=e130]
+          - generic [ref=e132]: Tech Stack
+        - button "Quick Links" [ref=e133] [cursor=pointer]:
+          - img [ref=e134]
+          - generic [ref=e138]: Quick Links
+      - generic [ref=e139]:
+        - generic [ref=e140]:
+          - generic [ref=e141]:
+            - generic [ref=e142]: "Base URL:"
+            - code [ref=e143]: http://localhost:5000
+          - generic [ref=e144]:
+            - generic [ref=e145]: GET
+            - generic [ref=e146]: POST
+            - generic [ref=e147]: PUT
+            - generic [ref=e148]: DELETE
+        - generic [ref=e149]:
+          - button "Exams 5 endpoints" [ref=e150] [cursor=pointer]:
+            - img [ref=e151]
+            - generic [ref=e154]: Exams
+            - generic [ref=e155]: 5 endpoints
+            - img [ref=e156]
+          - generic [ref=e158]:
+            - button "GET /api/exams List all exams with statistics" [ref=e160] [cursor=pointer]:
+              - generic [ref=e161]: GET
+              - code [ref=e162]: /api/exams
+              - generic [ref=e163]: List all exams with statistics
+              - img [ref=e164]
+            - button "POST /api/exams Create a new exam" [ref=e167] [cursor=pointer]:
+              - generic [ref=e168]: POST
+              - code [ref=e169]: /api/exams
+              - generic [ref=e170]: Create a new exam
+              - img [ref=e171]
+            - button "GET /api/exams/:id Retrieve a single exam by ID" [ref=e174] [cursor=pointer]:
+              - generic [ref=e175]: GET
+              - code [ref=e176]: /api/exams/:id
+              - generic [ref=e177]: Retrieve a single exam by ID
+              - img [ref=e178]
+            - button "PUT /api/exams/:id Update exam title or description" [ref=e181] [cursor=pointer]:
+              - generic [ref=e182]: PUT
+              - code [ref=e183]: /api/exams/:id
+              - generic [ref=e184]: Update exam title or description
+              - img [ref=e185]
+            - button "DELETE /api/exams/:id Delete exam and all linked data" [ref=e188] [cursor=pointer]:
+              - generic [ref=e189]: DELETE
+              - code [ref=e190]: /api/exams/:id
+              - generic [ref=e191]: Delete exam and all linked data
+              - img [ref=e192]
+        - generic [ref=e194]:
+          - button "Questions 2 endpoints" [ref=e195] [cursor=pointer]:
+            - img [ref=e196]
+            - generic [ref=e199]: Questions
+            - generic [ref=e200]: 2 endpoints
+            - img [ref=e201]
+          - generic [ref=e203]:
+            - button "GET /api/exams/:id/questions List all questions for an exam" [ref=e205] [cursor=pointer]:
+              - generic [ref=e206]: GET
+              - code [ref=e207]: /api/exams/:id/questions
+              - generic [ref=e208]: List all questions for an exam
+              - img [ref=e209]
+            - button "POST /api/exams/:id/questions Add a question with choices" [ref=e212] [cursor=pointer]:
+              - generic [ref=e213]: POST
+              - code [ref=e214]: /api/exams/:id/questions
+              - generic [ref=e215]: Add a question with choices
+              - img [ref=e216]
+        - generic [ref=e218]:
+          - button "Students 3 endpoints" [ref=e219] [cursor=pointer]:
+            - img [ref=e220]
+            - generic [ref=e225]: Students
+            - generic [ref=e226]: 3 endpoints
+            - img [ref=e227]
+          - generic [ref=e229]:
+            - button "GET /api/students List all registered students" [ref=e231] [cursor=pointer]:
+              - generic [ref=e232]: GET
+              - code [ref=e233]: /api/students
+              - generic [ref=e234]: List all registered students
+              - img [ref=e235]
+            - button "POST /api/students Register a new student" [ref=e238] [cursor=pointer]:
+              - generic [ref=e239]: POST
+              - code [ref=e240]: /api/students
+              - generic [ref=e241]: Register a new student
+              - img [ref=e242]
+            - button "GET /api/students/:id Get a student with their answer history" [ref=e245] [cursor=pointer]:
+              - generic [ref=e246]: GET
+              - code [ref=e247]: /api/students/:id
+              - generic [ref=e248]: Get a student with their answer history
+              - img [ref=e249]
+        - generic [ref=e251]:
+          - button "Scanning 1 endpoints" [ref=e252] [cursor=pointer]:
+            - img [ref=e253]
+            - generic [ref=e258]: Scanning
+            - generic [ref=e259]: 1 endpoints
+            - img [ref=e260]
+          - button "POST /api/scan/upload Upload answer sheet image for optical scanning" [ref=e264] [cursor=pointer]:
+            - generic [ref=e265]: POST
+            - code [ref=e266]: /api/scan/upload
+            - generic [ref=e267]: Upload answer sheet image for optical scanning
+            - img [ref=e268]
+        - generic [ref=e270]:
+          - button "Grading & Results 2 endpoints" [ref=e271] [cursor=pointer]:
+            - img [ref=e272]
+            - generic [ref=e273]: Grading & Results
+            - generic [ref=e274]: 2 endpoints
+            - img [ref=e275]
+          - generic [ref=e277]:
+            - button "GET /api/results/exam/:id Get all results for an exam" [ref=e279] [cursor=pointer]:
+              - generic [ref=e280]: GET
+              - code [ref=e281]: /api/results/exam/:id
+              - generic [ref=e282]: Get all results for an exam
+              - img [ref=e283]
+            - button "POST /api/results Save a graded result manually" [ref=e286] [cursor=pointer]:
+              - generic [ref=e287]: POST
+              - code [ref=e288]: /api/results
+              - generic [ref=e289]: Save a graded result manually
+              - img [ref=e290]
+        - generic [ref=e292]:
+          - button "AI Vision 4 endpoints" [ref=e293] [cursor=pointer]:
+            - img [ref=e294]
+            - generic [ref=e302]: AI Vision
+            - generic [ref=e303]: 4 endpoints
+            - img [ref=e304]
+          - generic [ref=e306]:
+            - button "GET /api/ai/status Check if the AI model is loaded and ready" [ref=e308] [cursor=pointer]:
+              - generic [ref=e309]: GET
+              - code [ref=e310]: /api/ai/status
+              - generic [ref=e311]: Check if the AI model is loaded and ready
+              - img [ref=e312]
+            - button "POST /api/ai/ocr Extract handwritten text from image crop" [ref=e315] [cursor=pointer]:
+              - generic [ref=e316]: POST
+              - code [ref=e317]: /api/ai/ocr
+              - generic [ref=e318]: Extract handwritten text from image crop
+              - img [ref=e319]
+            - button "POST /api/ai/evaluate Score extracted text against model answer" [ref=e322] [cursor=pointer]:
+              - generic [ref=e323]: POST
+              - code [ref=e324]: /api/ai/evaluate
+              - generic [ref=e325]: Score extracted text against model answer
+              - img [ref=e326]
+            - button "POST /api/ai/correct Submit teacher correction to RAG loop" [ref=e329] [cursor=pointer]:
+              - generic [ref=e330]: POST
+              - code [ref=e331]: /api/ai/correct
+              - generic [ref=e332]: Submit teacher correction to RAG loop
+              - img [ref=e333]
+        - generic [ref=e335]:
+          - button "Health 1 endpoints" [ref=e336] [cursor=pointer]:
+            - img [ref=e337]
+            - generic [ref=e339]: Health
+            - generic [ref=e340]: 1 endpoints
+            - img [ref=e341]
+          - button "GET /api/health Server health check — returns status and uptime" [ref=e345] [cursor=pointer]:
+            - generic [ref=e346]: GET
+            - code [ref=e347]: /api/health
+            - generic [ref=e348]: Server health check — returns status and uptime
+            - img [ref=e349]

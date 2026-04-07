@@ -1,0 +1,376 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - img [ref=e6]
+      - generic [ref=e10]: SmartGrader
+    - generic [ref=e11]:
+      - button "Search" [ref=e12] [cursor=pointer]:
+        - img
+      - button "Notifications" [ref=e14] [cursor=pointer]:
+        - img
+      - button "Switch to dark mode" [ref=e15] [cursor=pointer]:
+        - img
+      - button "User menu" [ref=e17] [cursor=pointer]: SG
+  - complementary [ref=e18]:
+    - navigation [ref=e19]:
+      - generic [ref=e20]:
+        - paragraph [ref=e21]: Main
+        - generic [ref=e22]:
+          - link "Dashboard" [ref=e23] [cursor=pointer]:
+            - /url: /
+            - img [ref=e24]
+            - generic [ref=e29]: Dashboard
+          - link "Exams" [ref=e30] [cursor=pointer]:
+            - /url: /exams
+            - img [ref=e31]
+            - generic [ref=e34]: Exams
+          - link "Scanner" [ref=e35] [cursor=pointer]:
+            - /url: /scanner
+            - img [ref=e36]
+            - generic [ref=e41]: Scanner
+          - link "Students" [ref=e42] [cursor=pointer]:
+            - /url: /students
+            - img [ref=e43]
+            - generic [ref=e46]: Students
+          - link "Results" [ref=e47] [cursor=pointer]:
+            - /url: /results
+            - img [ref=e48]
+            - generic [ref=e50]: Results
+      - generic [ref=e51]:
+        - paragraph [ref=e53]: Documentation
+        - generic [ref=e54]:
+          - link "Academic Thesis" [ref=e55] [cursor=pointer]:
+            - /url: /academic-docs
+            - img [ref=e56]
+            - generic [ref=e58]: Academic Thesis
+          - link "Sample Data" [ref=e59] [cursor=pointer]:
+            - /url: /samples
+            - img [ref=e60]
+            - generic [ref=e65]: Sample Data
+          - link "API Reference" [ref=e66] [cursor=pointer]:
+            - /url: /documentation
+            - img [ref=e67]
+            - generic [ref=e71]: API Reference
+          - link "Legacy App" [ref=e72] [cursor=pointer]:
+            - /url: /legacy
+            - img [ref=e73]
+            - generic [ref=e76]: Legacy App
+      - generic [ref=e77]:
+        - paragraph [ref=e79]: System
+        - generic [ref=e80]:
+          - link "AI Configuration" [ref=e81] [cursor=pointer]:
+            - /url: /ai-config
+            - img [ref=e82]
+            - generic [ref=e90]: AI Configuration
+          - link "Settings" [ref=e91] [cursor=pointer]:
+            - /url: /settings
+            - img [ref=e92]
+            - generic [ref=e95]: Settings
+          - link "Help & Guide" [ref=e96] [cursor=pointer]:
+            - /url: /help
+            - img [ref=e97]
+            - generic [ref=e100]: Help & Guide
+    - generic [ref=e103]: SmartGrader v0.3.0
+  - main [ref=e104]:
+    - generic [ref=e554]:
+      - generic [ref=e556]:
+        - generic [ref=e557]:
+          - heading "Sample Data" [level=2] [ref=e558]
+          - generic [ref=e559]:
+            - img "Pre-generated sample data used for testing the SmartGrader scanner and grading pipeline. Files are stored in old sheets/, old files/, and debug_output/ in the project root." [ref=e560]
+            - tooltip "Pre-generated sample data used for testing the SmartGrader scanner and grading pipeline. Files are stored in old sheets/, old files/, and debug_output/ in the project root.": Pre-generated sample data used for testing the SmartGrader scanner and grading pipeline. Files are stored in old sheets/, old files/, and debug_output/ in the project root.
+        - paragraph [ref=e563]: Browse sample exam sheets, scanned answer images, scanner debug output, and answer keys.
+      - generic [ref=e565]:
+        - generic [ref=e566]:
+          - img [ref=e567]
+          - heading "Exam Sheet Samples" [level=3] [ref=e570]
+          - generic [ref=e571]: 8 files
+        - generic [ref=e572]:
+          - generic [ref=e573]:
+            - generic [ref=e574]:
+              - img [ref=e575]
+              - generic [ref=e578]: HTML
+            - generic [ref=e579]:
+              - paragraph [ref=e580]: qcm_exam_1.html
+              - paragraph [ref=e581]: Mathematics — 20 questions, 4 choices each
+              - generic [ref=e582]:
+                - button "Open" [ref=e583] [cursor=pointer]:
+                  - img [ref=e584]
+                  - text: Open
+                - button [ref=e588] [cursor=pointer]:
+                  - img [ref=e589]
+          - generic [ref=e593]:
+            - generic [ref=e594]:
+              - img [ref=e595]
+              - generic [ref=e598]: HTML
+            - generic [ref=e599]:
+              - paragraph [ref=e600]: qcm_exam_2.html
+              - paragraph [ref=e601]: Biology — 15 questions, 5 choices each
+              - generic [ref=e602]:
+                - button "Open" [ref=e603] [cursor=pointer]:
+                  - img [ref=e604]
+                  - text: Open
+                - button [ref=e608] [cursor=pointer]:
+                  - img [ref=e609]
+          - generic [ref=e613]:
+            - generic [ref=e614]:
+              - img [ref=e615]
+              - generic [ref=e618]: HTML
+            - generic [ref=e619]:
+              - paragraph [ref=e620]: qcm_exam_3.html
+              - paragraph [ref=e621]: Physics — 20 questions, 4 choices each
+              - generic [ref=e622]:
+                - button "Open" [ref=e623] [cursor=pointer]:
+                  - img [ref=e624]
+                  - text: Open
+                - button [ref=e628] [cursor=pointer]:
+                  - img [ref=e629]
+          - generic [ref=e633]:
+            - generic [ref=e634]:
+              - img [ref=e635]
+              - generic [ref=e638]: HTML
+            - generic [ref=e639]:
+              - paragraph [ref=e640]: qcm_exam_4.html
+              - paragraph [ref=e641]: Chemistry — 25 questions, 4 choices each
+              - generic [ref=e642]:
+                - button "Open" [ref=e643] [cursor=pointer]:
+                  - img [ref=e644]
+                  - text: Open
+                - button [ref=e648] [cursor=pointer]:
+                  - img [ref=e649]
+          - generic [ref=e653]:
+            - generic [ref=e654]:
+              - img [ref=e655]
+              - generic [ref=e658]: HTML
+            - generic [ref=e659]:
+              - paragraph [ref=e660]: qcm_exam_5_final.html
+              - paragraph [ref=e661]: Computer Science — 30 questions, final version
+              - generic [ref=e662]:
+                - button "Open" [ref=e663] [cursor=pointer]:
+                  - img [ref=e664]
+                  - text: Open
+                - button [ref=e668] [cursor=pointer]:
+                  - img [ref=e669]
+          - generic [ref=e673]:
+            - generic [ref=e674]:
+              - img [ref=e675]
+              - generic [ref=e682]: PDF
+            - generic [ref=e683]:
+              - paragraph [ref=e684]: QCM Answer Sheet.pdf
+              - paragraph [ref=e685]: Generic A4 answer sheet, 20 bubbles per column
+              - generic [ref=e686]:
+                - button "Open" [ref=e687] [cursor=pointer]:
+                  - img [ref=e688]
+                  - text: Open
+                - button [ref=e692] [cursor=pointer]:
+                  - img [ref=e693]
+          - generic [ref=e697]:
+            - generic [ref=e698]:
+              - img [ref=e699]
+              - generic [ref=e706]: PDF
+            - generic [ref=e707]:
+              - paragraph [ref=e708]: QCM Answer Sheet v2.pdf
+              - paragraph [ref=e709]: Revised layout with larger bubbles
+              - generic [ref=e710]:
+                - button "Open" [ref=e711] [cursor=pointer]:
+                  - img [ref=e712]
+                  - text: Open
+                - button [ref=e716] [cursor=pointer]:
+                  - img [ref=e717]
+          - generic [ref=e721]:
+            - generic [ref=e722]:
+              - img [ref=e723]
+              - generic [ref=e730]: PDF
+            - generic [ref=e731]:
+              - paragraph [ref=e732]: QCM Answer Sheet v3.pdf
+              - paragraph [ref=e733]: Final production layout with alignment markers
+              - generic [ref=e734]:
+                - button "Open" [ref=e735] [cursor=pointer]:
+                  - img [ref=e736]
+                  - text: Open
+                - button [ref=e740] [cursor=pointer]:
+                  - img [ref=e741]
+      - generic [ref=e746]:
+        - generic [ref=e747]:
+          - img [ref=e748]
+          - heading "Scanned Sheet Samples" [level=3] [ref=e753]
+          - generic [ref=e754]: 6 images
+        - generic [ref=e755]:
+          - generic [ref=e756]:
+            - generic [ref=e757]:
+              - img [ref=e758]
+              - generic [ref=e762]: JPG
+            - generic [ref=e763]:
+              - paragraph [ref=e764]: QCM Answer Sheet_page-0001.jpg
+              - paragraph [ref=e765]: Scanned sheet — student A, exam 1
+              - generic [ref=e766]:
+                - generic [ref=e767]: ~1.2 MB
+                - button "View" [ref=e768] [cursor=pointer]:
+                  - img [ref=e769]
+                  - text: View
+          - generic [ref=e772]:
+            - generic [ref=e773]:
+              - img [ref=e774]
+              - generic [ref=e778]: JPG
+            - generic [ref=e779]:
+              - paragraph [ref=e780]: QCM Answer Sheet_page-0002.jpg
+              - paragraph [ref=e781]: Scanned sheet — student B, exam 1
+              - generic [ref=e782]:
+                - generic [ref=e783]: ~1.1 MB
+                - button "View" [ref=e784] [cursor=pointer]:
+                  - img [ref=e785]
+                  - text: View
+          - generic [ref=e788]:
+            - generic [ref=e789]:
+              - img [ref=e790]
+              - generic [ref=e794]: JPG
+            - generic [ref=e795]:
+              - paragraph [ref=e796]: QCM Answer Sheet_page-0003.jpg
+              - paragraph [ref=e797]: Scanned sheet — student C, exam 1
+              - generic [ref=e798]:
+                - generic [ref=e799]: ~1.3 MB
+                - button "View" [ref=e800] [cursor=pointer]:
+                  - img [ref=e801]
+                  - text: View
+          - generic [ref=e804]:
+            - generic [ref=e805]:
+              - img [ref=e806]
+              - generic [ref=e810]: JPG
+            - generic [ref=e811]:
+              - paragraph [ref=e812]: scanned_result.jpg
+              - paragraph [ref=e813]: Post-processing result overlay
+              - generic [ref=e814]:
+                - generic [ref=e815]: ~0.8 MB
+                - button "View" [ref=e816] [cursor=pointer]:
+                  - img [ref=e817]
+                  - text: View
+          - generic [ref=e820]:
+            - generic [ref=e821]:
+              - img [ref=e822]
+              - generic [ref=e826]: JPG
+            - generic [ref=e827]:
+              - paragraph [ref=e828]: test_sheet_filled.jpg
+              - paragraph [ref=e829]: Manually filled test sheet
+              - generic [ref=e830]:
+                - generic [ref=e831]: ~1.0 MB
+                - button "View" [ref=e832] [cursor=pointer]:
+                  - img [ref=e833]
+                  - text: View
+          - generic [ref=e836]:
+            - generic [ref=e837]:
+              - img [ref=e838]
+              - generic [ref=e842]: JPG
+            - generic [ref=e843]:
+              - paragraph [ref=e844]: test_sheet_partial.jpg
+              - paragraph [ref=e845]: Partially filled sheet (edge case)
+              - generic [ref=e846]:
+                - generic [ref=e847]: ~0.9 MB
+                - button "View" [ref=e848] [cursor=pointer]:
+                  - img [ref=e849]
+                  - text: View
+        - paragraph [ref=e852]:
+          - text: Files located in
+          - code [ref=e853]: old sheets/
+          - text: directory. Serve with a static file server to preview.
+      - generic [ref=e855]:
+        - generic [ref=e856]:
+          - img [ref=e857]
+          - heading "Scanner Debug Pipeline Output" [level=3] [ref=e859]
+          - generic [ref=e860]: 5 stages
+        - paragraph [ref=e861]:
+          - text: Images in
+          - code [ref=e862]: debug_output/
+          - text: show each preprocessing stage. Generated when
+          - code [ref=e863]: DEBUG_SCANNER=True
+          - text: .
+        - generic [ref=e864]:
+          - generic [ref=e865]:
+            - generic [ref=e866]:
+              - generic [ref=e867]: "01"
+              - img [ref=e869]
+              - generic [ref=e873]: Original
+              - generic [ref=e874]: Raw scan input
+              - button "View" [ref=e875] [cursor=pointer]
+            - img [ref=e876]
+          - generic [ref=e878]:
+            - generic [ref=e879]:
+              - generic [ref=e880]: "02"
+              - img [ref=e882]
+              - generic [ref=e886]: Grayscale
+              - generic [ref=e887]: RGB → Grayscale conversion
+              - button "View" [ref=e888] [cursor=pointer]
+            - img [ref=e889]
+          - generic [ref=e891]:
+            - generic [ref=e892]:
+              - generic [ref=e893]: "03"
+              - img [ref=e895]
+              - generic [ref=e899]: Noise Reduced
+              - generic [ref=e900]: Gaussian blur applied
+              - button "View" [ref=e901] [cursor=pointer]
+            - img [ref=e902]
+          - generic [ref=e904]:
+            - generic [ref=e905]:
+              - generic [ref=e906]: "04"
+              - img [ref=e908]
+              - generic [ref=e912]: Contrast Enhanced
+              - generic [ref=e913]: CLAHE equalisation
+              - button "View" [ref=e914] [cursor=pointer]
+            - img [ref=e915]
+          - generic [ref=e918]:
+            - generic [ref=e919]: "05"
+            - img [ref=e921]
+            - generic [ref=e925]: Threshold
+            - generic [ref=e926]: Adaptive binary threshold
+            - button "View" [ref=e927] [cursor=pointer]
+      - generic [ref=e929]:
+        - generic [ref=e930]:
+          - img [ref=e931]
+          - heading "Answer Keys" [level=3] [ref=e935]
+          - generic [ref=e936]: 5 JSON files
+        - generic [ref=e937]:
+          - generic [ref=e938]:
+            - button "answer_key_exam_1.json Exam 1 — Mathematics 20Q" [active] [ref=e939] [cursor=pointer]:
+              - img [ref=e940]
+              - code [ref=e945]: answer_key_exam_1.json
+              - generic [ref=e946]: Exam 1 — Mathematics
+              - generic [ref=e947]: 20Q
+              - img [ref=e1001]
+            - generic [ref=e1003]:
+              - generic [ref=e1004]: "{ \"exam_id\": 1, \"exam_title\": \"...\", \"total_questions\": 20, \"answers\": { \"1\": { \"question_number\": 1, \"correct_answer\": \"A\", \"question_text\": \"...\" } } }"
+              - generic [ref=e1005]:
+                - button "View Full JSON" [ref=e1006] [cursor=pointer]:
+                  - img [ref=e1007]
+                  - text: View Full JSON
+                - button "Download" [ref=e1010] [cursor=pointer]:
+                  - img [ref=e1011]
+                  - text: Download
+          - button "answer_key_exam_2.json Exam 2 — Biology 15Q" [ref=e951] [cursor=pointer]:
+            - img [ref=e952]
+            - code [ref=e957]: answer_key_exam_2.json
+            - generic [ref=e958]: Exam 2 — Biology
+            - generic [ref=e959]: 15Q
+            - img [ref=e960]
+          - button "answer_key_exam_3.json Exam 3 — Physics 20Q" [ref=e963] [cursor=pointer]:
+            - img [ref=e964]
+            - code [ref=e969]: answer_key_exam_3.json
+            - generic [ref=e970]: Exam 3 — Physics
+            - generic [ref=e971]: 20Q
+            - img [ref=e972]
+          - button "answer_key_exam_4.json Exam 4 — Chemistry 25Q" [ref=e975] [cursor=pointer]:
+            - img [ref=e976]
+            - code [ref=e981]: answer_key_exam_4.json
+            - generic [ref=e982]: Exam 4 — Chemistry
+            - generic [ref=e983]: 25Q
+            - img [ref=e984]
+          - button "answer_key_exam_5.json Exam 5 — Computer Science 30Q" [ref=e987] [cursor=pointer]:
+            - img [ref=e988]
+            - code [ref=e993]: answer_key_exam_5.json
+            - generic [ref=e994]: Exam 5 — Computer Science
+            - generic [ref=e995]: 30Q
+            - img [ref=e996]
+        - paragraph [ref=e998]:
+          - text: Located in
+          - code [ref=e999]: old sheets/
+          - text: . Use these keys with the
+          - code [ref=e1000]: POST /api/results
+          - text: endpoint for manual grading validation.

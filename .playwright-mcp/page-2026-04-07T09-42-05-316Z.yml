@@ -1,0 +1,222 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - img [ref=e6]
+      - generic [ref=e10]: SmartGrader
+    - generic [ref=e11]:
+      - button "Search" [ref=e12] [cursor=pointer]:
+        - img
+      - button "Notifications" [ref=e14] [cursor=pointer]:
+        - img
+      - button "Switch to dark mode" [ref=e15] [cursor=pointer]:
+        - img
+      - button "User menu" [ref=e17] [cursor=pointer]: SG
+  - complementary [ref=e18]:
+    - navigation [ref=e19]:
+      - generic [ref=e20]:
+        - paragraph [ref=e21]: Main
+        - generic [ref=e22]:
+          - link "Dashboard" [ref=e23] [cursor=pointer]:
+            - /url: /
+            - img [ref=e24]
+            - generic [ref=e29]: Dashboard
+          - link "Exams" [ref=e30] [cursor=pointer]:
+            - /url: /exams
+            - img [ref=e31]
+            - generic [ref=e34]: Exams
+          - link "Scanner" [ref=e35] [cursor=pointer]:
+            - /url: /scanner
+            - img [ref=e36]
+            - generic [ref=e41]: Scanner
+          - link "Students" [ref=e42] [cursor=pointer]:
+            - /url: /students
+            - img [ref=e43]
+            - generic [ref=e46]: Students
+          - link "Results" [ref=e47] [cursor=pointer]:
+            - /url: /results
+            - img [ref=e48]
+            - generic [ref=e50]: Results
+      - generic [ref=e51]:
+        - paragraph [ref=e53]: Documentation
+        - generic [ref=e54]:
+          - link "Academic Thesis" [ref=e55] [cursor=pointer]:
+            - /url: /academic-docs
+            - img [ref=e56]
+            - generic [ref=e58]: Academic Thesis
+          - link "Sample Data" [ref=e59] [cursor=pointer]:
+            - /url: /samples
+            - img [ref=e60]
+            - generic [ref=e65]: Sample Data
+          - link "API Reference" [ref=e66] [cursor=pointer]:
+            - /url: /documentation
+            - img [ref=e67]
+            - generic [ref=e71]: API Reference
+          - link "Legacy App" [ref=e72] [cursor=pointer]:
+            - /url: /legacy
+            - img [ref=e73]
+            - generic [ref=e76]: Legacy App
+      - generic [ref=e77]:
+        - paragraph [ref=e79]: System
+        - generic [ref=e80]:
+          - link "AI Configuration" [ref=e81] [cursor=pointer]:
+            - /url: /ai-config
+            - img [ref=e82]
+            - generic [ref=e90]: AI Configuration
+          - link "Settings" [ref=e91] [cursor=pointer]:
+            - /url: /settings
+            - img [ref=e92]
+            - generic [ref=e95]: Settings
+          - link "Help & Guide" [ref=e96] [cursor=pointer]:
+            - /url: /help
+            - img [ref=e97]
+            - generic [ref=e100]: Help & Guide
+    - generic [ref=e103]: SmartGrader v0.3.0
+  - main [ref=e104]:
+    - generic [ref=e106]:
+      - generic [ref=e107]:
+        - generic [ref=e108]:
+          - generic [ref=e109]:
+            - heading "Students" [level=2] [ref=e110]
+            - generic [ref=e111]:
+              - img "Students are linked to exam results. Add students here before scanning their answer sheets." [ref=e112]
+              - tooltip "Students are linked to exam results. Add students here before scanning their answer sheets.": Students are linked to exam results. Add students here before scanning their answer sheets.
+          - paragraph [ref=e115]: Manage your student roster
+        - button "Add Student" [ref=e117] [cursor=pointer]:
+          - img
+          - text: Add Student
+      - generic [ref=e118]:
+        - generic [ref=e119]:
+          - img
+          - textbox "Search by name or ID..." [ref=e120]
+        - generic [ref=e127]: 10 students
+      - generic [ref=e128]:
+        - generic [ref=e129]:
+          - generic [ref=e131]: AB
+          - generic [ref=e132]:
+            - heading "Ahmed Benali" [level=4] [ref=e133]
+            - generic [ref=e134]:
+              - generic [ref=e135]:
+                - img [ref=e136]
+                - text: "2026001"
+              - generic [ref=e139]:
+                - img [ref=e140]
+                - text: ahmed@univ.dz
+          - button "Edit student" [ref=e143] [cursor=pointer]:
+            - img
+        - generic [ref=e144]:
+          - generic [ref=e146]: AB
+          - generic [ref=e147]:
+            - heading "Amina Boudiaf" [level=4] [ref=e148]
+            - generic [ref=e149]:
+              - generic [ref=e150]:
+                - img [ref=e151]
+                - text: "2026004"
+              - generic [ref=e154]:
+                - img [ref=e155]
+                - text: amina@univ.dz
+          - button "Edit student" [ref=e158] [cursor=pointer]:
+            - img
+        - generic [ref=e159]:
+          - generic [ref=e161]: FZ
+          - generic [ref=e162]:
+            - heading "Fatima Zahra" [level=4] [ref=e163]
+            - generic [ref=e164]:
+              - generic [ref=e165]:
+                - img [ref=e166]
+                - text: "2026002"
+              - generic [ref=e169]:
+                - img [ref=e170]
+                - text: fatima@univ.dz
+          - button "Edit student" [ref=e173] [cursor=pointer]:
+            - img
+        - generic [ref=e174]:
+          - generic [ref=e176]: KZ
+          - generic [ref=e177]:
+            - heading "Karim Zidane" [level=4] [ref=e178]
+            - generic [ref=e179]:
+              - generic [ref=e180]:
+                - img [ref=e181]
+                - text: "2026009"
+              - generic [ref=e184]:
+                - img [ref=e185]
+                - text: karim@univ.dz
+          - button "Edit student" [ref=e188] [cursor=pointer]:
+            - img
+        - generic [ref=e189]:
+          - generic [ref=e191]: LB
+          - generic [ref=e192]:
+            - heading "Lina Benmoussa" [level=4] [ref=e193]
+            - generic [ref=e194]:
+              - generic [ref=e195]:
+                - img [ref=e196]
+                - text: "2026010"
+              - generic [ref=e199]:
+                - img [ref=e200]
+                - text: lina@univ.dz
+          - button "Edit student" [ref=e203] [cursor=pointer]:
+            - img
+        - generic [ref=e204]:
+          - generic [ref=e206]: MA
+          - generic [ref=e207]:
+            - heading "Mohamed Amine" [level=4] [ref=e208]
+            - generic [ref=e209]:
+              - generic [ref=e210]:
+                - img [ref=e211]
+                - text: "2026003"
+              - generic [ref=e214]:
+                - img [ref=e215]
+                - text: amine@univ.dz
+          - button "Edit student" [ref=e218] [cursor=pointer]:
+            - img
+        - generic [ref=e219]:
+          - generic [ref=e221]: NE
+          - generic [ref=e222]:
+            - heading "Nour El Houda" [level=4] [ref=e223]
+            - generic [ref=e224]:
+              - generic [ref=e225]:
+                - img [ref=e226]
+                - text: "2026008"
+              - generic [ref=e229]:
+                - img [ref=e230]
+                - text: nour@univ.dz
+          - button "Edit student" [ref=e233] [cursor=pointer]:
+            - img
+        - generic [ref=e234]:
+          - generic [ref=e236]: RH
+          - generic [ref=e237]:
+            - heading "Rachid Hamidi" [level=4] [ref=e238]
+            - generic [ref=e239]:
+              - generic [ref=e240]:
+                - img [ref=e241]
+                - text: "2026007"
+              - generic [ref=e244]:
+                - img [ref=e245]
+                - text: rachid@univ.dz
+          - button "Edit student" [ref=e248] [cursor=pointer]:
+            - img
+        - generic [ref=e249]:
+          - generic [ref=e251]: SM
+          - generic [ref=e252]:
+            - heading "Sara Mebarki" [level=4] [ref=e253]
+            - generic [ref=e254]:
+              - generic [ref=e255]:
+                - img [ref=e256]
+                - text: "2026006"
+              - generic [ref=e259]:
+                - img [ref=e260]
+                - text: sara@univ.dz
+          - button "Edit student" [ref=e263] [cursor=pointer]:
+            - img
+        - generic [ref=e264]:
+          - generic [ref=e266]: YK
+          - generic [ref=e267]:
+            - heading "Youcef Khelifi" [level=4] [ref=e268]
+            - generic [ref=e269]:
+              - generic [ref=e270]:
+                - img [ref=e271]
+                - text: "2026005"
+              - generic [ref=e274]:
+                - img [ref=e275]
+                - text: youcef@univ.dz
+          - button "Edit student" [ref=e278] [cursor=pointer]:
+            - img

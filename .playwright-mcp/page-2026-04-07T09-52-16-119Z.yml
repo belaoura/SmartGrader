@@ -1,0 +1,128 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - img [ref=e6]
+      - generic [ref=e10]: SmartGrader
+    - generic [ref=e11]:
+      - button "Search" [ref=e12] [cursor=pointer]:
+        - img
+      - button "Notifications" [ref=e14] [cursor=pointer]:
+        - img
+      - button "Switch to dark mode" [ref=e15] [cursor=pointer]:
+        - img
+      - button "User menu" [ref=e17] [cursor=pointer]: SG
+  - complementary [ref=e18]:
+    - navigation [ref=e19]:
+      - generic [ref=e20]:
+        - paragraph [ref=e21]: Main
+        - generic [ref=e22]:
+          - link "Dashboard" [ref=e23] [cursor=pointer]:
+            - /url: /
+            - img [ref=e24]
+            - generic [ref=e29]: Dashboard
+          - link "Exams" [ref=e30] [cursor=pointer]:
+            - /url: /exams
+            - img [ref=e31]
+            - generic [ref=e34]: Exams
+          - link "Scanner" [ref=e35] [cursor=pointer]:
+            - /url: /scanner
+            - img [ref=e36]
+            - generic [ref=e41]: Scanner
+          - link "Students" [ref=e42] [cursor=pointer]:
+            - /url: /students
+            - img [ref=e43]
+            - generic [ref=e46]: Students
+          - link "Results" [ref=e47] [cursor=pointer]:
+            - /url: /results
+            - img [ref=e48]
+            - generic [ref=e50]: Results
+      - generic [ref=e51]:
+        - paragraph [ref=e53]: Documentation
+        - generic [ref=e54]:
+          - link "Academic Thesis" [ref=e55] [cursor=pointer]:
+            - /url: /academic-docs
+            - img [ref=e56]
+            - generic [ref=e58]: Academic Thesis
+          - link "Sample Data" [ref=e59] [cursor=pointer]:
+            - /url: /samples
+            - img [ref=e60]
+            - generic [ref=e65]: Sample Data
+          - link "API Reference" [ref=e66] [cursor=pointer]:
+            - /url: /documentation
+            - img [ref=e67]
+            - generic [ref=e71]: API Reference
+          - link "Legacy App" [ref=e72] [cursor=pointer]:
+            - /url: /legacy
+            - img [ref=e73]
+            - generic [ref=e76]: Legacy App
+      - generic [ref=e77]:
+        - paragraph [ref=e79]: System
+        - generic [ref=e80]:
+          - link "AI Configuration" [ref=e81] [cursor=pointer]:
+            - /url: /ai-config
+            - img [ref=e82]
+            - generic [ref=e90]: AI Configuration
+          - link "Settings" [ref=e91] [cursor=pointer]:
+            - /url: /settings
+            - img [ref=e92]
+            - generic [ref=e95]: Settings
+          - link "Help & Guide" [ref=e96] [cursor=pointer]:
+            - /url: /help
+            - img [ref=e97]
+            - generic [ref=e100]: Help & Guide
+    - generic [ref=e103]: SmartGrader v0.3.0
+  - main [ref=e104]:
+    - generic [ref=e106]:
+      - generic [ref=e108]:
+        - generic [ref=e109]:
+          - heading "Scanner" [level=2] [ref=e110]
+          - generic [ref=e111]:
+            - img "MCQ mode uses computer vision (OpenCV) to detect filled bubbles. AI mode uses Qwen2.5-VL to extract and evaluate written answers." [ref=e112]
+            - tooltip "MCQ mode uses computer vision (OpenCV) to detect filled bubbles. AI mode uses Qwen2.5-VL to extract and evaluate written answers.": MCQ mode uses computer vision (OpenCV) to detect filled bubbles. AI mode uses Qwen2.5-VL to extract and evaluate written answers.
+        - paragraph [ref=e115]: Scan and grade exam answer sheets
+      - generic [ref=e116]:
+        - button "MCQ Optical Scanning Scan printed bubble sheets using computer vision. Detects filled circles and auto-grades against the answer key." [ref=e117] [cursor=pointer]:
+          - img [ref=e119]
+          - generic [ref=e124]:
+            - heading "MCQ Optical Scanning" [level=3] [ref=e125]
+            - paragraph [ref=e126]: Scan printed bubble sheets using computer vision. Detects filled circles and auto-grades against the answer key.
+        - button "AI Short Answer Grading Use Qwen2.5-VL vision model to read handwritten answers and score them against exam criteria." [ref=e127] [cursor=pointer]:
+          - img [ref=e129]
+          - generic [ref=e137]:
+            - heading "AI Short Answer Grading" [level=3] [ref=e138]
+            - paragraph [ref=e139]: Use Qwen2.5-VL vision model to read handwritten answers and score them against exam criteria.
+      - generic [ref=e141]:
+        - generic [ref=e143]:
+          - generic [ref=e144]: "1"
+          - generic [ref=e145]: Select Exam
+        - generic [ref=e148]:
+          - generic [ref=e149]: "2"
+          - generic [ref=e150]: Upload Sheet
+        - generic [ref=e153]:
+          - generic [ref=e154]: "3"
+          - generic [ref=e155]: Scan & Grade
+      - generic [ref=e156]:
+        - generic [ref=e157]:
+          - generic [ref=e158]:
+            - generic [ref=e159]:
+              - img [ref=e161]
+              - heading "Select Exam" [level=3] [ref=e164]
+            - combobox [ref=e165] [cursor=pointer]:
+              - generic [ref=e166]: Choose an exam...
+              - img: ▼
+            - textbox [ref=e167]
+          - generic [ref=e168]:
+            - generic [ref=e169]:
+              - img [ref=e171]
+              - heading "Upload Answer Sheet" [level=3] [ref=e174]
+            - generic [ref=e175] [cursor=pointer]:
+              - img [ref=e176]
+              - paragraph [ref=e179]: Drag & drop a scanned sheet, or click to browse
+              - paragraph [ref=e180]: PDF, PNG, JPG
+          - button "Scan & Grade" [disabled]:
+            - img
+            - text: Scan & Grade
+        - generic [ref=e182]:
+          - img [ref=e184]
+          - heading "Ready to Scan" [level=3] [ref=e189]
+          - paragraph [ref=e190]: Select an exam and upload a filled answer sheet to begin scanning.

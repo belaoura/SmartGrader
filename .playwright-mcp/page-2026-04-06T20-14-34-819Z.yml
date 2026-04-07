@@ -1,0 +1,58 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - heading "SmartGrader" [level=1] [ref=e5]
+    - button [ref=e7] [cursor=pointer]:
+      - img
+  - complementary [ref=e8]:
+    - navigation [ref=e9]:
+      - link "Dashboard" [ref=e10] [cursor=pointer]:
+        - /url: /
+        - img [ref=e11]
+        - generic [ref=e16]: Dashboard
+      - link "Exams" [ref=e17] [cursor=pointer]:
+        - /url: /exams
+        - img [ref=e18]
+        - generic [ref=e21]: Exams
+      - link "Scanner" [ref=e22] [cursor=pointer]:
+        - /url: /scanner
+        - img [ref=e23]
+        - generic [ref=e28]: Scanner
+      - link "Students" [ref=e29] [cursor=pointer]:
+        - /url: /students
+        - img [ref=e30]
+        - generic [ref=e35]: Students
+      - link "Results" [ref=e36] [cursor=pointer]:
+        - /url: /results
+        - img [ref=e37]
+        - generic [ref=e39]: Results
+      - link "Settings" [ref=e40] [cursor=pointer]:
+        - /url: /settings
+        - img [ref=e41]
+        - generic [ref=e44]: Settings
+    - generic [ref=e45]: SmartGrader v0.2.0
+  - main [ref=e46]:
+    - generic [ref=e48]:
+      - generic [ref=e49]:
+        - heading "Students" [level=2] [ref=e50]
+        - button "Add Student" [ref=e51] [cursor=pointer]:
+          - img
+          - text: Add Student
+      - table [ref=e55]:
+        - rowgroup [ref=e56]:
+          - row "Name Matricule Email" [ref=e57]:
+            - columnheader "Name" [ref=e58]
+            - columnheader "Matricule" [ref=e59]
+            - columnheader "Email" [ref=e60]
+        - rowgroup [ref=e61]:
+          - row "Ahmed Benali 2026001 ahmed@univ.dz" [ref=e62]:
+            - cell "Ahmed Benali" [ref=e63]
+            - cell "2026001" [ref=e64]
+            - cell "ahmed@univ.dz" [ref=e65]
+          - row "Fatima Zahra 2026002 fatima@univ.dz" [ref=e66]:
+            - cell "Fatima Zahra" [ref=e67]
+            - cell "2026002" [ref=e68]
+            - cell "fatima@univ.dz" [ref=e69]
+          - row "Mohamed Amine 2026003 amine@univ.dz" [ref=e70]:
+            - cell "Mohamed Amine" [ref=e71]
+            - cell "2026003" [ref=e72]
+            - cell "amine@univ.dz" [ref=e73]
