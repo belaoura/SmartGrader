@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
   ClipboardList,
@@ -12,7 +12,11 @@ import {
   Brain,
   Settings,
   HelpCircle,
+  Users,
+  Upload,
+  LogOut,
 } from "lucide-react";
+import { useAuth } from "@/hooks/use-auth";
 import { cn } from "@/lib/utils";
 
 const navGroups = [
@@ -72,6 +76,14 @@ function NavItem({ icon: Icon, label, to, onClose }) {
 }
 
 export default function Sidebar({ open, onClose }) {
+  const { user, logout, isAdmin } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await logout();
+    navigate("/login", { replace: true });
+  };
+
   return (
     <>
       {/* Mobile overlay */}
@@ -119,17 +131,47 @@ export default function Sidebar({ open, onClose }) {
               </div>
             </div>
           ))}
+
+          {isAdmin && (
+            <div>
+              <div className="mx-3 my-2 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+              <p className="px-3 pt-3 pb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground select-none">
+                Admin
+              </p>
+              <div className="space-y-0.5">
+                <NavItem icon={Users} label="Teachers" to="/admin/teachers" onClose={onClose} />
+                <NavItem icon={Upload} label="Import Students" to="/admin/import" onClose={onClose} />
+              </div>
+            </div>
+          )}
         </nav>
 
         {/* Footer */}
-        <div className="border-t border-border px-4 py-3 flex items-center gap-2">
-          <span
-            className="inline-block h-2 w-2 rounded-full bg-primary shadow-sm"
-            style={{ boxShadow: "0 0 6px rgba(99,102,241,0.6)" }}
-          />
-          <span className="text-xs text-muted-foreground font-medium">
-            SmartGrader v0.3.0
-          </span>
+        <div className="border-t border-border px-4 py-3 space-y-2">
+          {user && (
+            <div className="flex items-center justify-between">
+              <div className="min-w-0">
+                <div className="text-sm font-medium truncate">{user.name}</div>
+                <div className="text-xs text-muted-foreground truncate">{user.email || user.role}</div>
+              </div>
+              <button
+                onClick={handleLogout}
+                className="shrink-0 rounded-lg p-2 text-muted-foreground hover:bg-accent hover:text-accent-foreground transition-colors"
+                title="Sign out"
+              >
+                <LogOut className="h-4 w-4" />
+              </button>
+            </div>
+          )}
+          <div className="flex items-center gap-2">
+            <span
+              className="inline-block h-2 w-2 rounded-full bg-primary shadow-sm"
+              style={{ boxShadow: "0 0 6px rgba(99,102,241,0.6)" }}
+            />
+            <span className="text-xs text-muted-foreground font-medium">
+              SmartGrader v0.3.0
+            </span>
+          </div>
         </div>
       </aside>
     </>
