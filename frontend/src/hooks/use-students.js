@@ -16,3 +16,15 @@ export function useCreateStudent() {
     onSuccess: () => qc.invalidateQueries({ queryKey: ["students"] }),
   });
 }
+
+export function useUpdateStudent() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, ...data }) => fetchAPI(`/students/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["students"] }),
+  });
+}

@@ -1,7 +1,7 @@
 import { Mail, Hash, Pencil } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-export default function StudentList({ students }) {
+export default function StudentList({ students, onEdit }) {
   if (students.length === 0) {
     return (
       <div className="text-center text-muted-foreground py-12 px-6">
@@ -47,7 +47,7 @@ export default function StudentList({ students }) {
             size="icon"
             className="h-8 w-8 cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity duration-200"
             title="Edit student"
-            onClick={() => alert(`Edit: ${s.name} (${s.matricule})`)}
+            onClick={() => onEdit?.(s)}
           >
             <Pencil className="h-3.5 w-3.5 text-muted-foreground" />
           </Button>

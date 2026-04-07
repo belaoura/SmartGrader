@@ -35,3 +35,20 @@ def get_student(student_id):
     if student is None:
         raise NotFoundError("Student", student_id)
     return jsonify(student.to_dict())
+
+
+@students_bp.route("/students/<int:student_id>", methods=["PUT"])
+def update_student(student_id):
+    """Update a student's information."""
+    student = Student.query.get_or_404(student_id)
+    data = request.get_json()
+
+    if "name" in data:
+        student.name = data["name"]
+    if "matricule" in data:
+        student.matricule = data["matricule"]
+    if "email" in data:
+        student.email = data["email"]
+
+    db.session.commit()
+    return jsonify(student.to_dict())

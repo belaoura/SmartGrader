@@ -119,6 +119,12 @@ const TECH_STACK = [
   { name: "BitsAndBytes",      version: "0.43",       desc: "4-bit NF4 model quantisation",         color: "bg-indigo-500/10  text-indigo-600"  },
 ];
 
+const METHOD_STYLES = {
+  GET:    { label: "GET",    bg: "bg-emerald-500/15 text-emerald-700 dark:text-emerald-400" },
+  POST:   { label: "POST",  bg: "bg-blue-500/15 text-blue-700 dark:text-blue-400" },
+  PUT:    { label: "PUT",   bg: "bg-amber-500/15 text-amber-700 dark:text-amber-400" },
+  DELETE: { label: "DELETE", bg: "bg-red-500/15 text-red-700 dark:text-red-400" },
+};
 
 function MethodBadge({ method }) {
   const s = METHOD_STYLES[method] || METHOD_STYLES.GET;

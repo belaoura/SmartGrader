@@ -15,6 +15,7 @@ const PAGE_SIZE = 10;
 
 export default function Students() {
   const [formOpen, setFormOpen] = useState(false);
+  const [editStudent, setEditStudent] = useState(null);
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const { data: students, isLoading } = useStudents();
@@ -96,7 +97,7 @@ export default function Students() {
               </div>
             ) : (
               <>
-                <StudentList students={paginated} />
+                <StudentList students={paginated} onEdit={(s) => { setEditStudent(s); setFormOpen(true); }} />
                 <Pagination
                   currentPage={page}
                   totalPages={totalPages}
@@ -110,7 +111,11 @@ export default function Students() {
         </Card>
       )}
 
-      <StudentForm open={formOpen} onOpenChange={setFormOpen} />
+      <StudentForm
+        open={formOpen}
+        onOpenChange={(open) => { setFormOpen(open); if (!open) setEditStudent(null); }}
+        student={editStudent}
+      />
     </div>
   );
 }
