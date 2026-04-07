@@ -5,6 +5,8 @@ import logging
 from flask import Flask, jsonify
 from flask_cors import CORS
 from flask_migrate import Migrate
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 
 from app.config import config_by_name
 from app.models import db
@@ -12,6 +14,7 @@ from app.logging_config import setup_logging
 from app.errors import SmartGraderError
 
 migrate = Migrate()
+limiter = Limiter(key_func=get_remote_address)
 logger = logging.getLogger("smartgrader")
 
 
@@ -35,6 +38,7 @@ def create_app(config_name=None):
     db.init_app(app)
     migrate.init_app(app, db)
     CORS(app)
+    limiter.init_app(app)
 
     # Setup logging
     setup_logging(

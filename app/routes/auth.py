@@ -6,12 +6,14 @@ from flask import Blueprint, request, jsonify, make_response, current_app, g
 from app.auth import require_auth, set_auth_cookies, clear_auth_cookies, decode_token, encode_access_token
 from app.services.auth_service import login_teacher, login_student, logout_user
 from app.models.user import User
+from app import limiter
 
 logger = logging.getLogger("smartgrader.routes.auth")
 auth_bp = Blueprint("auth", __name__)
 
 
 @auth_bp.route("/auth/login", methods=["POST"])
+@limiter.limit("5 per minute")
 def login():
     """Teacher login with email and password."""
     data = request.get_json()
@@ -26,6 +28,7 @@ def login():
 
 
 @auth_bp.route("/auth/scan", methods=["POST"])
+@limiter.limit("5 per minute")
 def scan_login():
     """Student login via barcode scan (matricule)."""
     data = request.get_json()
