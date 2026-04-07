@@ -1,5 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import AppLayout from "@/components/layout/AppLayout";
+import ProtectedRoute from "@/components/ProtectedRoute";
+import LoginPage from "@/pages/LoginPage";
 import Dashboard from "@/pages/Dashboard";
 import Exams from "@/pages/Exams";
 import ExamDetail from "@/pages/ExamDetail";
@@ -13,24 +15,40 @@ import AIConfig from "@/pages/AIConfig";
 import SampleData from "@/pages/SampleData";
 import LegacyCode from "@/pages/LegacyCode";
 import Help from "@/pages/Help";
+import TeacherManagement from "@/pages/TeacherManagement";
+import StudentImport from "@/pages/StudentImport";
 
 export default function App() {
   return (
     <Routes>
-      <Route element={<AppLayout />}>
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/exams" element={<Exams />} />
-        <Route path="/exams/:id" element={<ExamDetail />} />
-        <Route path="/scanner" element={<Scanner />} />
-        <Route path="/students" element={<Students />} />
-        <Route path="/results" element={<Results />} />
-        <Route path="/documentation" element={<Documentation />} />
-        <Route path="/academic-docs" element={<AcademicDocs />} />
-        <Route path="/samples" element={<SampleData />} />
-        <Route path="/legacy" element={<LegacyCode />} />
-        <Route path="/ai-config" element={<AIConfig />} />
-        <Route path="/settings" element={<Settings />} />
-        <Route path="/help" element={<Help />} />
+      {/* Public route */}
+      <Route path="/login" element={<LoginPage />} />
+
+      {/* Teacher routes */}
+      <Route element={<ProtectedRoute role="teacher" />}>
+        <Route element={<AppLayout />}>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/exams" element={<Exams />} />
+          <Route path="/exams/:id" element={<ExamDetail />} />
+          <Route path="/scanner" element={<Scanner />} />
+          <Route path="/students" element={<Students />} />
+          <Route path="/results" element={<Results />} />
+          <Route path="/documentation" element={<Documentation />} />
+          <Route path="/academic-docs" element={<AcademicDocs />} />
+          <Route path="/samples" element={<SampleData />} />
+          <Route path="/legacy" element={<LegacyCode />} />
+          <Route path="/ai-config" element={<AIConfig />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/help" element={<Help />} />
+        </Route>
+      </Route>
+
+      {/* Admin routes */}
+      <Route element={<ProtectedRoute role="teacher" requireAdmin />}>
+        <Route element={<AppLayout />}>
+          <Route path="/admin/teachers" element={<TeacherManagement />} />
+          <Route path="/admin/import" element={<StudentImport />} />
+        </Route>
       </Route>
     </Routes>
   );
