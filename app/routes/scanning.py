@@ -6,6 +6,7 @@ from flask import Blueprint, request, jsonify, current_app
 from werkzeug.utils import secure_filename
 from app.services.scanner_service import scan_and_grade
 from app.errors import SmartGraderError
+from app.auth import require_auth, require_role
 
 logger = logging.getLogger("smartgrader.routes.scanning")
 scanning_bp = Blueprint("scanning", __name__)
@@ -17,6 +18,8 @@ def _allowed_file(filename):
 
 
 @scanning_bp.route("/scan/upload", methods=["POST"])
+@require_auth
+@require_role("teacher")
 def upload_and_scan():
     if "file" not in request.files:
         return jsonify({"error": "No file provided"}), 400

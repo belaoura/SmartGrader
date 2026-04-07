@@ -9,17 +9,22 @@ from app.services.ai_service import (
     run_ocr, run_evaluation, save_correction, get_corrections, get_ai_status,
 )
 from app.errors import SmartGraderError
+from app.auth import require_auth, require_role
 
 logger = logging.getLogger("smartgrader.routes.ai")
 ai_bp = Blueprint("ai", __name__)
 
 
 @ai_bp.route("/ai/status", methods=["GET"])
+@require_auth
+@require_role("teacher")
 def status():
     return jsonify(get_ai_status())
 
 
 @ai_bp.route("/ai/ocr", methods=["POST"])
+@require_auth
+@require_role("teacher")
 def ocr():
     if "file" not in request.files:
         return jsonify({"error": "No file provided"}), 400
@@ -54,6 +59,8 @@ def ocr():
 
 
 @ai_bp.route("/ai/evaluate", methods=["POST"])
+@require_auth
+@require_role("teacher")
 def evaluate():
     data = request.get_json()
     if not data or "answers" not in data:
@@ -67,6 +74,8 @@ def evaluate():
 
 
 @ai_bp.route("/ai/correct", methods=["POST"])
+@require_auth
+@require_role("teacher")
 def correct():
     data = request.get_json()
     required = ["question_id", "student_text", "ai_score", "teacher_score"]
@@ -86,6 +95,8 @@ def correct():
 
 
 @ai_bp.route("/ai/corrections/<int:question_id>", methods=["GET"])
+@require_auth
+@require_role("teacher")
 def list_corrections(question_id):
     corrections = get_corrections(question_id)
     return jsonify(corrections)
