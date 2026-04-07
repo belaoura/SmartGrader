@@ -49,9 +49,9 @@ function SectionHeader({ icon: Icon, title, count, color }) {
   return (
     <div className="flex items-center gap-3 mb-4">
       <Icon className={`h-5 w-5 ${color}`} />
-      <h3 className="font-heading font-semibold text-lg" style={{ color: "var(--color-foreground)" }}>{title}</h3>
+      <h3 className="font-heading font-semibold text-lg text-foreground">{title}</h3>
       {count && (
-        <span className="text-xs px-2 py-0.5 rounded-full bg-white/10 font-medium" style={{ color: "var(--color-muted-foreground)" }}>
+        <span className="text-xs px-2 py-0.5 rounded-full bg-white/10 font-medium text-muted-foreground">
           {count}
         </span>
       )}
@@ -94,15 +94,14 @@ export default function SampleData() {
                 </div>
                 {/* Info */}
                 <div className="p-3 flex-1 flex flex-col gap-2">
-                  <p className="text-xs font-mono font-medium leading-tight" style={{ color: "var(--color-foreground)" }}>
+                  <p className="text-xs font-mono font-medium leading-tight text-foreground">
                     {sheet.name}
                   </p>
-                  <p className="text-xs flex-1" style={{ color: "var(--color-muted-foreground)" }}>{sheet.desc}</p>
+                  <p className="text-xs flex-1 text-muted-foreground">{sheet.desc}</p>
                   <div className="flex gap-2 mt-auto pt-1">
                     <button
                       onClick={() => window.open(`/api/files/old files/${sheet.file}`, "_blank")}
-                      className="flex-1 flex items-center justify-center gap-1 text-xs py-1.5 rounded-lg border border-white/10 hover:bg-white/10 cursor-pointer transition-all duration-200"
-                      style={{ color: "var(--color-muted-foreground)" }}
+                      className="flex-1 flex items-center justify-center gap-1 text-xs py-1.5 rounded-lg border border-white/10 hover:bg-white/10 cursor-pointer transition-all duration-200 text-muted-foreground"
                     >
                       <ExternalLink className="h-3 w-3" /> Open
                     </button>
@@ -111,8 +110,7 @@ export default function SampleData() {
                         const win = window.open(`/api/files/old files/${sheet.file}`, "_blank");
                         if (win) win.onload = () => win.print();
                       }}
-                      className="flex items-center justify-center gap-1 text-xs py-1.5 px-2 rounded-lg border border-white/10 hover:bg-white/10 cursor-pointer transition-all duration-200"
-                      style={{ color: "var(--color-muted-foreground)" }}
+                      className="flex items-center justify-center gap-1 text-xs py-1.5 px-2 rounded-lg border border-white/10 hover:bg-white/10 cursor-pointer transition-all duration-200 text-muted-foreground"
                     >
                       <Printer className="h-3 w-3" />
                     </button>
@@ -137,16 +135,15 @@ export default function SampleData() {
                   <span className="text-xs px-2 py-0.5 rounded bg-cyan-500/15 text-cyan-500 font-mono font-bold">JPG</span>
                 </div>
                 <div className="p-3 flex flex-col gap-1">
-                  <p className="text-xs font-mono font-medium leading-tight" style={{ color: "var(--color-foreground)" }}>
+                  <p className="text-xs font-mono font-medium leading-tight text-foreground">
                     {sheet.name}
                   </p>
-                  <p className="text-xs" style={{ color: "var(--color-muted-foreground)" }}>{sheet.desc}</p>
+                  <p className="text-xs text-muted-foreground">{sheet.desc}</p>
                   <div className="flex items-center justify-between mt-2">
                     <span className="text-xs opacity-50">{sheet.size}</span>
                     <button
                       onClick={() => setImageModal({ open: true, src: `/api/files/old sheets/${sheet.name}`, title: sheet.name })}
-                      className="flex items-center gap-1 text-xs px-2 py-1 rounded-lg border border-white/10 hover:bg-white/10 cursor-pointer transition-all duration-200"
-                      style={{ color: "var(--color-muted-foreground)" }}
+                      className="flex items-center gap-1 text-xs px-2 py-1 rounded-lg border border-white/10 hover:bg-white/10 cursor-pointer transition-all duration-200 text-muted-foreground"
                     >
                       <Eye className="h-3 w-3" /> View
                     </button>
@@ -155,7 +152,7 @@ export default function SampleData() {
               </div>
             ))}
           </div>
-          <p className="text-xs mt-3" style={{ color: "var(--color-muted-foreground)" }}>
+          <p className="text-xs mt-3 text-muted-foreground">
             Files located in <code className="font-mono bg-black/20 px-1 rounded">old sheets/</code> directory. Serve with a static file server to preview.
           </p>
         </div>
@@ -165,7 +162,7 @@ export default function SampleData() {
       <section>
         <div className="glass rounded-xl p-6">
           <SectionHeader icon={FolderOpen} title="Scanner Debug Pipeline Output" count="5 stages" color="text-orange-500" />
-          <p className="text-xs mb-4" style={{ color: "var(--color-muted-foreground)" }}>
+          <p className="text-xs mb-4 text-muted-foreground">
             Images in <code className="font-mono bg-black/20 px-1 rounded">debug_output/</code> show each preprocessing stage. Generated when
             <code className="font-mono bg-black/20 px-1 rounded ml-1">DEBUG_SCANNER=True</code>.
           </p>
@@ -177,8 +174,8 @@ export default function SampleData() {
                   <div className={`w-12 h-12 rounded-lg ${stage.bg} flex items-center justify-center border ${stage.border}`}>
                     <Image className={`h-6 w-6 ${stage.color} opacity-70`} />
                   </div>
-                  <span className="font-heading font-semibold text-xs" style={{ color: "var(--color-foreground)" }}>{stage.label}</span>
-                  <span className="text-xs" style={{ color: "var(--color-muted-foreground)" }}>{stage.desc}</span>
+                  <span className="font-heading font-semibold text-xs text-foreground">{stage.label}</span>
+                  <span className="text-xs text-muted-foreground">{stage.desc}</span>
                   <button
                     onClick={() => setImageModal({ open: true, src: `/api/files/debug_output/${stage.file}`, title: stage.label })}
                     className={`text-xs px-2 py-1 rounded-lg border ${stage.border} hover:opacity-80 cursor-pointer transition-all duration-200 ${stage.color}`}
@@ -209,8 +206,8 @@ export default function SampleData() {
                     onClick={() => setExpandedKey(isOpen ? null : idx)}
                   >
                     <FileJson className="h-4 w-4 text-emerald-500 shrink-0" />
-                    <code className="text-sm font-mono flex-1" style={{ color: "var(--color-foreground)" }}>{key.name}</code>
-                    <span className="text-xs" style={{ color: "var(--color-muted-foreground)" }}>{key.exam}</span>
+                    <code className="text-sm font-mono flex-1 text-foreground">{key.name}</code>
+                    <span className="text-xs text-muted-foreground">{key.exam}</span>
                     <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 font-medium">
                       {key.questions}Q
                     </span>
@@ -218,7 +215,7 @@ export default function SampleData() {
                   </button>
                   {isOpen && (
                     <div className="border-t border-white/10 px-4 py-3 bg-black/10">
-                      <pre className="text-xs font-mono" style={{ color: "var(--color-muted-foreground)" }}>{`{
+                      <pre className="text-xs font-mono text-muted-foreground">{`{
   "exam_id": ${idx + 1},
   "exam_title": "...",
   "total_questions": ${key.questions},
@@ -233,15 +230,13 @@ export default function SampleData() {
                       <div className="flex gap-2 mt-3">
                         <button
                           onClick={() => setJsonModal({ open: true, filename: key.file, title: key.file })}
-                          className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg border border-white/10 hover:bg-white/10 cursor-pointer transition-all duration-200"
-                          style={{ color: "var(--color-muted-foreground)" }}
+                          className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg border border-white/10 hover:bg-white/10 cursor-pointer transition-all duration-200 text-muted-foreground"
                         >
                           <Eye className="h-3 w-3" /> View Full JSON
                         </button>
                         <button
                           onClick={() => alert("Feature coming soon \u2014 requires static file serving to be configured.")}
-                          className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg border border-white/10 hover:bg-white/10 cursor-pointer transition-all duration-200"
-                          style={{ color: "var(--color-muted-foreground)" }}
+                          className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg border border-white/10 hover:bg-white/10 cursor-pointer transition-all duration-200 text-muted-foreground"
                         >
                           <Download className="h-3 w-3" /> Download
                         </button>
@@ -252,7 +247,7 @@ export default function SampleData() {
               );
             })}
           </div>
-          <p className="text-xs mt-3" style={{ color: "var(--color-muted-foreground)" }}>
+          <p className="text-xs mt-3 text-muted-foreground">
             Located in <code className="font-mono bg-black/20 px-1 rounded">old sheets/</code>. Use these keys with the
             <code className="font-mono bg-black/20 px-1 rounded ml-1">POST /api/results</code> endpoint for manual grading validation.
           </p>

@@ -344,8 +344,8 @@ export default function Documentation() {
 
           {/* Directory tree */}
           <div className="glass rounded-xl p-6">
-            <h3 className="font-heading font-semibold mb-4" style={{ color: "var(--color-foreground)" }}>Directory Structure</h3>
-            <pre className="text-xs font-mono leading-relaxed overflow-x-auto" style={{ color: "var(--color-muted-foreground)" }}>{`app/
+            <h3 className="font-heading font-semibold mb-4 text-foreground">Directory Structure</h3>
+            <pre className="text-xs font-mono leading-relaxed overflow-x-auto text-muted-foreground">{`app/
   __init__.py          # Flask app factory (create_app)
   config.py            # All configuration values
   errors.py            # Custom exceptions with HTTP codes
@@ -371,7 +371,7 @@ frontend/              # React + Vite SPA`}</pre>
       {activeTab === "stack" && (
         <div className="space-y-4">
           <div className="glass rounded-xl p-6">
-            <h3 className="font-heading font-semibold text-lg mb-4" style={{ color: "var(--color-foreground)" }}>Full Technology Stack</h3>
+            <h3 className="font-heading font-semibold text-lg mb-4 text-foreground">Full Technology Stack</h3>
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {TECH_STACK.map((tech, i) => (
                 <div key={i} className="flex items-start gap-3 p-3 rounded-lg border border-white/10 hover:bg-white/5 transition-all duration-200">
@@ -380,10 +380,10 @@ frontend/              # React + Vite SPA`}</pre>
                   </div>
                   <div className="min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <span className="font-medium text-sm" style={{ color: "var(--color-foreground)" }}>{tech.name}</span>
-                      <span className="text-xs px-1.5 py-0.5 rounded bg-white/10 font-mono" style={{ color: "var(--color-muted-foreground)" }}>v{tech.version}</span>
+                      <span className="font-medium text-sm text-foreground">{tech.name}</span>
+                      <span className="text-xs px-1.5 py-0.5 rounded bg-white/10 font-mono text-muted-foreground">v{tech.version}</span>
                     </div>
-                    <p className="text-xs mt-0.5" style={{ color: "var(--color-muted-foreground)" }}>{tech.desc}</p>
+                    <p className="text-xs mt-0.5 text-muted-foreground">{tech.desc}</p>
                   </div>
                 </div>
               ))}
@@ -404,8 +404,8 @@ frontend/              # React + Vite SPA`}</pre>
                     <Icon className={`h-6 w-6 ${link.color}`} />
                   </div>
                   <div>
-                    <h4 className="font-heading font-semibold" style={{ color: "var(--color-foreground)" }}>{link.label}</h4>
-                    <p className="text-xs mt-1 leading-relaxed" style={{ color: "var(--color-muted-foreground)" }}>{link.desc}</p>
+                    <h4 className="font-heading font-semibold text-foreground">{link.label}</h4>
+                    <p className="text-xs mt-1 leading-relaxed text-muted-foreground">{link.desc}</p>
                   </div>
                 </div>
                 <Button variant="outline" size="sm" className="self-start cursor-pointer" onClick={link.onClick}>
