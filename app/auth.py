@@ -15,7 +15,7 @@ logger = logging.getLogger("smartgrader.auth")
 def encode_access_token(user):
     """Create a short-lived access JWT for the given user."""
     payload = {
-        "sub": user.id,
+        "sub": str(user.id),
         "role": user.role,
         "ver": user.token_version,
         "type": "access",
@@ -29,7 +29,7 @@ def encode_access_token(user):
 def encode_refresh_token(user):
     """Create a long-lived refresh JWT for the given user."""
     payload = {
-        "sub": user.id,
+        "sub": str(user.id),
         "ver": user.token_version,
         "type": "refresh",
         "exp": datetime.now(timezone.utc) + timedelta(
@@ -56,13 +56,16 @@ def set_auth_cookies(response, user):
     access_token = encode_access_token(user)
     refresh_token = encode_refresh_token(user)
 
-    is_prod = not current_app.config.get("DEBUG", False)
+    is_secure = (
+        not current_app.config.get("DEBUG", False)
+        and not current_app.config.get("TESTING", False)
+    )
 
     response.set_cookie(
         "access_token",
         access_token,
         httponly=True,
-        secure=is_prod,
+        secure=is_secure,
         samesite="Lax",
         max_age=current_app.config["JWT_ACCESS_TOKEN_EXPIRES"],
         path="/",
@@ -71,7 +74,7 @@ def set_auth_cookies(response, user):
         "refresh_token",
         refresh_token,
         httponly=True,
-        secure=is_prod,
+        secure=is_secure,
         samesite="Lax",
         max_age=current_app.config["JWT_REFRESH_TOKEN_EXPIRES"],
         path="/api/auth/refresh",
@@ -98,7 +101,7 @@ def require_auth(f):
         if not payload or payload.get("type") != "access":
             return jsonify({"error": "Invalid or expired token"}), 401
 
-        user = User.query.get(payload["sub"])
+        user = User.query.get(int(payload["sub"]))
         if not user:
             return jsonify({"error": "User not found"}), 401
         if not user.is_active:
