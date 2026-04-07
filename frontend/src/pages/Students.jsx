@@ -11,7 +11,7 @@ import { useStudents } from "@/hooks/use-students";
 import StudentList from "@/components/students/StudentList";
 import StudentForm from "@/components/students/StudentForm";
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 5;
 
 export default function Students() {
   const [formOpen, setFormOpen] = useState(false);

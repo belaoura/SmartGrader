@@ -10,7 +10,7 @@ import { useExams } from "@/hooks/use-exams";
 import ExamList from "@/components/exams/ExamList";
 import ExamForm from "@/components/exams/ExamForm";
 
-const PAGE_SIZE = 8;
+const PAGE_SIZE = 5;
 
 export default function Exams() {
   const [formOpen, setFormOpen] = useState(false);

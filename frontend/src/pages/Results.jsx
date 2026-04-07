@@ -13,7 +13,7 @@ import ResultsTable from "@/components/results/ResultsTable";
 import ExportButton from "@/components/results/ExportButton";
 import { BarChart2, Users, TrendingUp, ClipboardList } from "lucide-react";
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 5;
 
 function SummaryCard({ icon: Icon, label, value, color = "indigo" }) {
   const colorMap = {
