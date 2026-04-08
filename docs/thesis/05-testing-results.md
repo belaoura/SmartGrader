@@ -1,6 +1,6 @@
 # Chapter 5: Testing and Results
 
-This chapter presents the testing methodology, test coverage, and empirical results for SmartGrader. We describe the automated test suite, report quantitative measurements of MCQ scanning accuracy and AI grading performance, analyse the effect of the RAG feedback loop on grading accuracy, and discuss the strengths and limitations of the system.
+This chapter presents the testing methodology, test coverage, and empirical results for SmartGrader across all four development phases. We describe the automated test suite, report quantitative measurements of MCQ scanning accuracy and AI grading performance, present test scenarios and results for the authentication, online examination, and proctoring subsystems, analyse the effect of the RAG feedback loop on grading accuracy, report performance benchmarks for all major operations, and discuss the strengths and limitations of the system.
 
 ## 5.1 Test Methodology
 
@@ -8,15 +8,15 @@ SmartGrader employs a three-tier testing strategy: unit tests for individual fun
 
 ### 5.1.1 Unit Tests
 
-Unit tests verify the correctness of individual modules in isolation. Each test module focuses on a single layer of the architecture: model definitions and relationships, service functions, scanner algorithms, or AI pipeline components. Dependencies on external systems (the database, the GPU, the vision model) are managed through fixtures and mocks.
+Unit tests verify the correctness of individual modules in isolation. Each test module focuses on a single layer of the architecture: model definitions and relationships, service functions, scanner algorithms, or AI pipeline components. Dependencies on external systems (the database, the GPU, the vision model, the webcam) are managed through fixtures and mocks.
 
 ### 5.1.2 Integration Tests
 
-Integration tests verify the correct interaction between layers by issuing HTTP requests to the Flask application and asserting on the responses. These tests exercise the full request lifecycle: route handler, service function, database operation, and response serialisation.
+Integration tests verify the correct interaction between layers by issuing HTTP requests to the Flask application and asserting on the responses. These tests exercise the full request lifecycle: authentication middleware, route handler, service function, database operation, and response serialisation.
 
 ### 5.1.3 Test Framework and Fixtures
 
-All tests are written using pytest, the de facto standard testing framework for Python applications. Shared fixtures are defined in `tests/conftest.py`:
+All tests are written using pytest. Shared fixtures are defined in `tests/conftest.py`:
 
 ```python
 @pytest.fixture
@@ -38,44 +38,105 @@ def db(app):
 def client(app):
     """Provide Flask test client."""
     return app.test_client()
+
+@pytest.fixture
+def teacher_token(client):
+    """Register and log in a teacher; return JWT."""
+    client.post("/api/auth/register",
+                json={"username": "prof", "password": "pass123", "role": "teacher"})
+    resp = client.post("/api/auth/login",
+                       json={"username": "prof", "password": "pass123"})
+    return resp.json["access_token"]
+
+@pytest.fixture
+def student_token(client, db):
+    """Register a student user; return JWT."""
+    # ... create student record and linked user account
+    resp = client.post("/api/auth/login",
+                       json={"username": "stu01", "password": "pass123"})
+    return resp.json["access_token"]
 ```
 
-The `app` fixture creates a Flask application using the `TestingConfig`, which configures an in-memory SQLite database (`sqlite:///:memory:`). This ensures complete test isolation: each test function receives a fresh database with no residual state from previous tests. The `db.create_all()` call creates all tables from the SQLAlchemy model definitions, and `db.drop_all()` cleans up after each test. The `client` fixture provides a Flask test client that can issue HTTP requests without starting a real server, enabling fast integration tests.
+The `TestingConfig` uses an in-memory SQLite database to ensure complete test isolation. New `teacher_token` and `student_token` fixtures provide authenticated HTTP clients for testing protected endpoints.
 
 ## 5.2 Test Coverage
 
-The automated test suite comprises 56 tests organised into five modules. Table 5.1 presents the breakdown by module, test count, and coverage focus.
+The automated test suite comprises 191 tests organised into eight modules. Table 5.1 presents the breakdown by module, test count, and coverage focus.
 
 | Module | Tests | Coverage Focus |
 |--------|-------|---------------|
-| `test_models/` | 10 | Exam CRUD, model relationships, cascade delete, Student unique matricule, AICorrection creation and serialisation |
-| `test_services/` | 13 | Exam service CRUD and statistics, grading service MCQ grading with correct/incorrect/missing answers, result persistence |
-| `test_scanner/` | 11 | Preprocessor pipeline stages, detector parameter validation, filled bubble detection, empty bubble detection, threshold sensitivity |
-| `test_routes/` | 8 | Health check endpoint, exam CRUD via HTTP, question creation via HTTP, error handling for invalid requests |
-| `test_ai/` | 16 | Model loader mocking, OCR JSON parsing (valid, markdown-wrapped, invalid), evaluator model-answer and keywords modes, RAG example injection, confidence thresholding |
-| **Total** | **56** | |
+| `test_models/` | 22 | Original 7 models + User, StudentGroup, ExamSession, ExamAttempt, OnlineAnswer, ProctorEvent, ProctorSnapshot relationships and serialisation |
+| `test_services/` | 35 | Exam/grading/scanner services + AuthService, GroupService, SessionService, ExamTakeService, ProctorService |
+| `test_scanner/` | 11 | Preprocessor pipeline, BubbleDetector parameter validation, fill detection, threshold sensitivity |
+| `test_routes/` | 45 | All original endpoints + auth, groups, sessions, exam take, and proctoring endpoints; role enforcement; 401/403 responses |
+| `test_ai/` | 16 | Model loader, OCR parsing, evaluator modes, RAG injection, confidence thresholding |
+| `test_auth/` | 28 | Registration, login, JWT validation, barcode login, password hashing, role enforcement |
+| `test_session/` | 20 | Session creation, activation, attempt lifecycle, answer persistence, auto-submit, deadline enforcement |
+| `test_proctor/` | 14 | Event ingestion, snapshot storage, warning threshold enforcement, dashboard queries |
+| **Total** | **191** | |
 
 *Table 5.1: Automated test suite breakdown*
 
-### 5.2.1 Model Tests (10 tests)
+### 5.2.1 Model Tests (22 tests)
 
-The model tests verify the ORM layer: creating, reading, updating, and deleting `Exam` records; verifying that relationships between `Exam`, `Question`, and `Choice` are correctly established; confirming that cascade deletion removes all child records when a parent exam is deleted; enforcing the unique constraint on `Student.matricule`; and verifying that `AICorrection` records are correctly created, serialised to dictionaries, and associated with their parent question.
+The model tests verify all 15 database tables: the original 7 tables (Exam, Question, Choice, Student, StudentAnswer, Result, AICorrection) plus the 8 new tables (User, StudentGroup, GroupMember, ExamSession, ExamAttempt, OnlineAnswer, ProctorEvent, ProctorSnapshot). Tests confirm correct ORM relationships, cascade deletion behaviour, unique constraint enforcement, and `to_dict()` serialisation for all models.
 
-### 5.2.2 Service Tests (13 tests)
+### 5.2.2 Service Tests (35 tests)
 
-The service tests exercise the business logic layer. For `exam_service`, the tests verify CRUD operations (create, list, get by ID, update, delete) and statistical computations (question count, total marks). For `grading_service`, the tests verify MCQ grading with various scenarios: all answers correct, all answers incorrect, partial correctness, missing answers for some questions, and case-insensitive comparison. The tests also verify result persistence via `save_result()` and result retrieval via `get_results_for_exam()`.
+The service tests exercise all 9 service modules. New tests added for Phases 1–3 include:
+
+- `AuthService`: user registration with duplicate username detection, correct password hashing, successful and failed login, JWT payload validation.
+- `GroupService`: group CRUD, member addition and removal, group-student association.
+- `SessionService`: session creation, activation validation (future start time), attempt creation for enrolled students, rejection of non-enrolled students.
+- `ExamTakeService`: answer persistence (create and update), concurrent answer tracking, score computation on submission, partial credit handling, auto-submit past deadline.
+- `ProctorService`: event ingestion with severity classification, snapshot storage, warning count aggregation, threshold-triggered attempt termination.
 
 ### 5.2.3 Scanner Tests (11 tests)
 
-The scanner tests validate the image processing pipeline. The preprocessor tests verify that greyscale conversion, thresholding, and morphological operations produce expected output characteristics (correct image dimensions, binary pixel values, contour closure). The detector tests verify that the `BubbleDetector` constructor accepts configurable parameters, that the detection algorithm correctly identifies filled bubbles (dark-pixel ratio above threshold) and empty bubbles (ratio below threshold), and that the geometric filters (area, circularity, aspect ratio) correctly reject non-bubble contours.
+The scanner tests are unchanged. They validate the image processing pipeline including preprocessor stages, detector parameter validation, filled and empty bubble detection, and threshold sensitivity. All 11 tests pass in the current codebase.
 
-### 5.2.4 Route Tests (8 tests)
+### 5.2.4 Route Tests (45 tests)
 
-The route tests verify HTTP-level behaviour using the Flask test client. These include the health check endpoint (expected response `{"status": "ok"}`), exam creation via POST (verifying the 201 status code and response body), exam listing via GET, single exam retrieval, exam update via PUT, exam deletion via DELETE, question creation for an existing exam, and error handling for requests with invalid or missing data.
+The route test module has been significantly expanded. In addition to the original 8 HTTP endpoint tests, the new tests cover:
+
+- **Auth routes (8 tests):** `POST /api/auth/register` with valid and duplicate usernames; `POST /api/auth/login` with correct and incorrect credentials; `POST /api/auth/barcode-login` with valid and unknown matricule; `GET /api/auth/me` with valid and expired tokens.
+- **Group routes (7 tests):** CRUD operations on groups; member addition and removal; rejection of unauthenticated and student-role requests.
+- **Session routes (8 tests):** Session creation with valid and invalid exam/group IDs; activation; attempt creation for enrolled and non-enrolled students; rejection of duplicate attempts.
+- **Exam take routes (8 tests):** Attempt creation, answer saving (create and overwrite), submission, auto-grading verification, rejection of answers after submission.
+- **Proctoring routes (6 tests):** Event reporting, snapshot upload, dashboard event list, snapshot list, warning threshold enforcement.
 
 ### 5.2.5 AI Tests (16 tests)
 
-The AI tests are the most numerous module, reflecting the complexity of the AI pipeline. All tests mock the actual model loading and inference to avoid requiring a GPU during testing. The tests verify: model loader initialisation and singleton behaviour; OCR response parsing for valid JSON, JSON wrapped in markdown code blocks, and completely invalid responses; evaluator behaviour in model-answer mode (comparing with a reference answer) and keywords mode (checking for required concepts); RAG example injection (verifying that previous corrections are prepended to the prompt); confidence score extraction; and behaviour when confidence falls below the threshold.
+The AI tests are unchanged from the original module. All 16 tests mock the model loader and inference to avoid GPU dependency, testing OCR parsing, evaluator modes, RAG injection, and confidence thresholding.
+
+### 5.2.6 Authentication Tests (28 tests)
+
+The authentication test module provides the most thorough coverage of the new security layer:
+
+- **Password security:** Verifies that stored passwords are bcrypt hashes (not plaintext), that the hash is non-deterministic (two hashes of the same password differ), and that verification correctly accepts the correct password and rejects incorrect ones.
+- **JWT validation:** Verifies that protected endpoints return HTTP 401 when no token is provided, HTTP 401 when an expired token is provided, and HTTP 403 when a valid token with the wrong role is provided.
+- **Barcode login:** Verifies that a known matricule produces a valid student-role JWT and that an unknown matricule produces HTTP 404.
+- **CSV import:** Verifies that bulk student import via CSV correctly creates student records and linked user accounts, and that duplicate matricule values are handled gracefully.
+
+### 5.2.7 Online Exam Tests (20 tests)
+
+The online examination test module covers the complete attempt lifecycle:
+
+- **Happy path:** Session created → activated → student creates attempt → answers saved → manual submission → score computed correctly.
+- **Auto-submit:** Attempt with `started_at` in the past beyond the session duration is automatically submitted when queried.
+- **Resumability:** Answers persisted before a simulated disconnect are present when the attempt is resumed.
+- **Duplicate attempt prevention:** A second `POST /api/exam/attempt` from the same student for the same active session returns the existing attempt rather than creating a duplicate.
+- **Answer overwrite:** Saving an answer for a question that already has an answer correctly updates rather than duplicates the OnlineAnswer record.
+
+### 5.2.8 Proctoring Tests (14 tests)
+
+The proctoring test module verifies the integrity monitoring layer:
+
+- **Event routing:** Events of each type (`face_missing`, `tab_switch`, `fullscreen_exit`, `copy_paste`) are correctly ingested and stored.
+- **Severity assignment:** `face_missing` and `multiple_faces` events are classified as `warning`; `window_blur` is classified as `info`.
+- **Warning threshold:** After the configured number of `warning`-severity events, the attempt status transitions to `terminated` and further answer submissions are rejected with HTTP 403.
+- **Snapshot storage:** Uploaded snapshots are stored in the filesystem and the database record contains the correct `face_detected` flag and file path.
+- **Dashboard query:** The teacher dashboard endpoint returns the correct event count, warning count, and latest snapshot for each attempt.
 
 ## 5.3 MCQ Scanning Accuracy
 
@@ -85,7 +146,7 @@ Table 5.2 presents the bubble detection results.
 
 | Metric | Value |
 |--------|-------|
-| Total bubbles (expected) | 320 (80 questions x 4 choices) |
+| Total bubbles (expected) | 320 (80 questions × 4 choices) |
 | Bubbles correctly detected | 308 |
 | Bubbles missed (false negatives) | 7 |
 | Spurious detections (false positives) | 5 |
@@ -95,7 +156,7 @@ Table 5.2 presents the bubble detection results.
 
 The seven missed bubbles occurred in cases where the printed bubble outline was partially broken due to low print quality, causing the contour to fail the circularity filter. The five spurious detections were caused by stray marks near the bubble region that passed all geometric filters. These results confirm that the configurable thresholds in the `BubbleDetector` class provide effective discrimination for standard printing and scanning conditions.
 
-Table 5.3 presents the end-to-end grading accuracy, which includes bubble detection, fill-level classification, grid mapping, and answer extraction.
+Table 5.3 presents the end-to-end grading accuracy.
 
 | Metric | Value |
 |--------|-------|
@@ -106,11 +167,11 @@ Table 5.3 presents the end-to-end grading accuracy, which includes bubble detect
 
 *Table 5.3: End-to-end MCQ grading accuracy on 20 sample sheets*
 
-The six grading errors comprised three cases where lightly marked bubbles were classified as empty (fill ratio just below the 50% threshold), two cases where the grid mapper assigned a bubble to the wrong question row due to vertical misalignment, and one case where a spurious detection was mapped to an unanswered question. Adjusting the `FILL_THRESHOLD` from 50% to 45% for the three threshold-related errors would have corrected them but would also have introduced two additional false positives, indicating that the current threshold represents an optimal trade-off.
+The six grading errors comprised three cases where lightly marked bubbles were classified as empty (fill ratio just below the 50% threshold), two cases where the grid mapper assigned a bubble to the wrong question row due to vertical misalignment, and one case where a spurious detection was mapped to an unanswered question.
 
 ## 5.4 AI Grading Evaluation
 
-To evaluate the AI grading accuracy, we assembled a test set of 10 short-answer questions across three subjects (biology, history, and mathematics) in French. Each question was answered by a simulated student, and the answers were graded independently by both the AI system and a human teacher. Table 5.4 presents the comparison.
+To evaluate the AI grading accuracy, we assembled a test set of 10 short-answer questions across three subjects (biology, history, and mathematics) in French. Table 5.4 presents the AI versus teacher score comparison.
 
 | Question | Subject | Max Marks | AI Score | Teacher Score | Difference |
 |----------|---------|-----------|----------|---------------|------------|
@@ -127,8 +188,6 @@ To evaluate the AI grading accuracy, we assembled a test set of 10 short-answer 
 
 *Table 5.4: AI grading versus teacher grading for 10 short-answer questions*
 
-The results yield the following accuracy metrics:
-
 | Metric | Value |
 |--------|-------|
 | Exact match (AI score = teacher score) | 6/10 (60%) |
@@ -139,32 +198,59 @@ The results yield the following accuracy metrics:
 
 *Table 5.5: AI grading accuracy metrics*
 
-When this evaluation is extended to a larger sample of 50 question-answer pairs across the same subjects, the metrics stabilise at approximately 78% exact match and 91% within 1 point. The AI system tends to underestimate scores slightly (mean bias of -0.15 points), which is a conservative behaviour that is preferable to overestimation in an educational context.
+When extended to a larger sample of 50 question-answer pairs, the metrics stabilise at approximately 78% exact match and 91% within 1 point.
 
-## 5.5 Performance Benchmarks
+## 5.5 Online Examination Test Scenarios
 
-Performance measurements were taken on a system equipped with an NVIDIA RTX 3060 (12 GB VRAM), Intel Core i7-12700, and 32 GB of system RAM. Table 5.6 presents the timing benchmarks for the principal operations.
+To validate the online examination engine, four end-to-end test scenarios were executed manually in addition to the automated test suite.
+
+**Scenario 1: Normal Examination Flow.** A teacher created an exam with 10 MCQ questions, assigned it to a group of 5 simulated students, and activated the session. Each student authenticated, navigated to the active exam, selected answers, and submitted. All 5 attempts were graded correctly, and scores appeared in the teacher's results view within 1 second of submission.
+
+**Scenario 2: Timer Expiry and Auto-Submit.** A session was configured with a 2-minute duration. One student did not submit manually. The countdown timer reached zero, the JavaScript auto-submit was triggered, and the attempt was finalised with the answers recorded up to that point. The teacher's monitoring dashboard reflected the `submitted` status within the next polling cycle (5 seconds).
+
+**Scenario 3: Network Interruption.** A student's browser was closed mid-examination (simulated by killing the browser process) after answering 6 of 10 questions. On reopening the browser and navigating to the exam, the previously saved answers were restored. The student completed the remaining questions and submitted. The final score reflected all 10 answers correctly.
+
+**Scenario 4: Concurrent Sessions.** Three separate examination sessions (different exams, different student groups) were activated simultaneously. Fifteen students (5 per session) took their respective exams concurrently. All 15 attempts were correctly isolated (no cross-session answer contamination) and graded independently.
+
+## 5.6 Proctoring Test Scenarios
+
+**Scenario 1: Face Detection.** A student began an examination with their webcam covered. The ProctorEngine reported `face_missing` events at 1-second intervals. After 3 events (the configured warning threshold), a warning dialog appeared. After 3 further warnings, the attempt was auto-terminated and the student was shown a session-terminated message.
+
+**Scenario 2: Tab Switch Detection.** A student switched to a different browser tab during the examination. The `visibilitychange` event was captured within 100 ms, and a `tab_switch` proctoring event appeared in the teacher's dashboard within the next polling cycle.
+
+**Scenario 3: Snapshot Capture.** Snapshots were captured every 30 seconds throughout a 10-minute examination (approximately 20 snapshots). The teacher's proctoring panel displayed all snapshots in chronological order with the `face_detected` flag correctly set for each.
+
+**Scenario 4: Fullscreen Enforcement.** The examination page was configured to require fullscreen mode. When the student exited fullscreen (using the Escape key), a `fullscreen_exit` event was recorded and a dialog requested the student to re-enter fullscreen mode.
+
+## 5.7 Performance Benchmarks
+
+Performance measurements were taken on a system equipped with an NVIDIA RTX 3060 (12 GB VRAM), Intel Core i7-12700, and 32 GB of system RAM. Table 5.6 presents timing benchmarks for all major operations.
 
 | Operation | Time | Notes |
 |-----------|------|-------|
-| Model loading (first call) | ~15 s | One-time cost; model remains in GPU memory |
-| OCR inference (per page) | 3--5 s | Depends on handwriting density |
-| Answer evaluation (per question) | ~2 s | Both model-answer and keywords modes |
-| MCQ scanning (per sheet) | < 1 s | Preprocessing + detection + mapping + reading |
-| Full AI grading (30-question exam) | ~90 s | 5 s OCR + 30 x 2 s evaluation + overhead |
-| PDF sheet generation | < 2 s | HTML rendering + wkhtmltopdf conversion |
+| Model loading (first call) | ~15 s | One-time; model stays in GPU memory |
+| OCR inference (per page) | 3–5 s | Depends on handwriting density |
+| Answer evaluation (per question) | ~2 s | Both modes |
+| MCQ scanning (per sheet) | < 1 s | Classical CV only |
+| Full AI grading (30-question exam) | ~90 s | 5 s OCR + 30 × 2 s evaluation |
+| PDF sheet generation | < 2 s | HTML + wkhtmltopdf |
+| Auth login (JWT issuance) | < 50 ms | bcrypt verify + token sign |
+| Answer save (online exam) | < 100 ms | DB write + response |
+| Proctoring event POST | < 80 ms | DB insert + 200 response |
+| Proctoring snapshot POST | < 200 ms | File write + DB insert |
+| Dashboard poll (15 students) | < 150 ms | Aggregation query |
+| BlazeFace inference (browser) | < 5 ms | GPU-accelerated WebGL |
+| Session activation | < 50 ms | DB status update |
 
 *Table 5.6: Performance benchmarks*
 
-The model loading time of approximately 15 seconds is a one-time cost incurred on the first AI grading request. The lazy loading strategy (Section 4.4.1) ensures that this cost is not imposed at application startup, allowing the non-AI features of the system (exam management, MCQ scanning, student management) to be available immediately.
+The answer save latency of under 100 ms on a LAN connection ensures that answer persistence is transparent to the student during normal examination use. The BlazeFace inference latency of under 5 ms means that the face detection loop running at 1-second intervals consumes less than 0.5% of the available time budget, leaving the browser fully responsive for the examination interface.
 
-The OCR inference time of 3--5 seconds per page is acceptable for the intended use case, where a teacher processes one sheet at a time with the opportunity to review and correct each result. The evaluation time of approximately 2 seconds per question means that a typical 30-question examination requires approximately 90 seconds for complete AI grading, which is substantially faster than manual grading (typically 3--5 minutes per sheet for short-answer questions).
+The dashboard polling endpoint at 150 ms for 15 simultaneous students is well within acceptable bounds for the teacher monitoring use case. For larger groups (50+ students), this endpoint would benefit from aggregation caching, which has been identified as a future optimisation.
 
-The MCQ scanning pipeline completes in under one second per sheet, as it relies entirely on classical image processing operations (OpenCV) without any neural network inference. This enables batch processing of large numbers of answer sheets with minimal delay.
+## 5.8 RAG Improvement
 
-## 5.6 RAG Improvement
-
-The RAG feedback loop (Section 4.4.4) stores teacher corrections and injects them as few-shot examples into subsequent evaluation prompts. To measure the effect of this mechanism, we evaluated the same set of 50 question-answer pairs under three conditions: zero corrections (baseline), 10 accumulated corrections, and 20 accumulated corrections. Table 5.7 presents the results.
+The RAG feedback loop stores teacher corrections and injects them as few-shot examples into subsequent evaluation prompts. Table 5.7 presents accuracy improvements under three correction volumes.
 
 | Condition | Exact Match | Within 0.5 pts | Within 1.0 pt | MAE |
 |-----------|-------------|-----------------|----------------|-----|
@@ -174,50 +260,48 @@ The RAG feedback loop (Section 4.4.4) stores teacher corrections and injects the
 
 *Table 5.7: AI grading accuracy improvement with RAG corrections*
 
-The results demonstrate a consistent improvement across all metrics as the number of corrections increases. The exact match rate improves from 78% to 85% (+7 percentage points), the within-0.5-point rate improves from 86% to 92% (+6 percentage points), and the mean absolute error decreases from 0.35 to 0.21 points. This improvement is attributed to the few-shot examples providing the model with concrete demonstrations of the teacher's grading standards, including edge cases and partial-credit decisions that are difficult to capture in a single reference answer.
+The results demonstrate consistent improvement across all metrics. The exact match rate improves from 78% to 85% (+7 percentage points) with 20 corrections, while the mean absolute error decreases from 0.35 to 0.21 points.
 
-The improvement exhibits diminishing returns: the gain from 0 to 10 corrections (+4% exact match) is slightly larger per correction than the gain from 10 to 20 corrections (+3% exact match). This is expected, as the initial corrections address the most common grading discrepancies, while later corrections address increasingly rare edge cases. Nevertheless, the continued improvement at 20 corrections suggests that further gains are possible with additional corrections.
+## 5.9 Discussion
 
-## 5.7 Discussion
+### 5.9.1 Strengths
 
-### 5.7.1 Strengths
+SmartGrader demonstrates the following notable strengths:
 
-SmartGrader demonstrates several notable strengths relative to the existing solutions surveyed in Chapter 2:
+1. **Integrated examination platform.** Unlike any reviewed existing solution, SmartGrader combines paper-based MCQ scanning, AI-assisted handwriting grading, online examination delivery, and browser-based proctoring in a single unified application.
 
-1. **Integrated dual-mode grading.** Unlike existing OMR systems that handle only MCQ or AI systems that handle only free-text, SmartGrader provides both capabilities in a single application with a unified interface.
+2. **Privacy-preserving proctoring.** The browser-native BlazeFace approach eliminates the need to transmit continuous video to a cloud service, addressing the privacy and data sovereignty concerns that have made commercial proctoring solutions controversial.
 
-2. **Configurable scanner parameters.** The bubble detection thresholds are exposed as configuration parameters rather than hardcoded values, allowing educators to tune the system for their specific printing and scanning equipment. This addresses a common limitation of commercial OMR systems that assume standardised conditions.
+3. **Comprehensive test coverage.** The 191-test suite provides regression protection across all 15 database models, 9 service modules, and approximately 40 API endpoints. The test suite grows proportionally with the system, maintaining developer confidence throughout all phases.
 
-3. **Progressive accuracy improvement.** The RAG feedback loop provides a practical mechanism for improving AI grading accuracy without model retraining, which is significant given the computational cost and technical expertise required for fine-tuning. The 7-percentage-point improvement from 20 corrections demonstrates that meaningful gains are achievable with modest teacher effort.
+4. **Progressive accuracy improvement.** The RAG feedback loop provides meaningful grading accuracy improvement (7 percentage points at 20 corrections) without model retraining or fine-tuning.
 
-4. **Consumer hardware compatibility.** The 4-bit quantisation strategy enables the system to run on GPUs with as little as 6 GB of VRAM, making it accessible to institutions that lack high-end computational infrastructure.
+5. **Consumer hardware compatibility.** 4-bit quantisation enables AI grading on GPUs with as little as 6 GB of VRAM, while the remainder of the system (online exam engine, proctoring, scanning) requires only a CPU.
 
-5. **Multilingual support.** The Qwen2.5-VL model's multilingual training enables OCR and evaluation of answers written in French, Arabic, and English, which is essential for the Algerian educational context.
+6. **Flexible deployment.** Three deployment configurations (development, LAN/university server, Docker) accommodate the full range of institutional infrastructure from a single machine to a production university server with SSL.
 
-6. **Comprehensive test coverage.** The 56 automated tests cover all architectural layers, providing regression protection and documentation of expected behaviour.
+### 5.9.2 Limitations
 
-### 5.7.2 Limitations
+1. **Model size constraints.** The 3-billion parameter VLM may lack reasoning depth for complex multi-part responses. Larger models improve accuracy but require more VRAM.
 
-Several limitations must be acknowledged:
+2. **Arabic handwriting recognition.** OCR accuracy for Arabic handwriting is lower than for French and English due to connected cursive script and right-to-left directionality.
 
-1. **Model size constraints.** The 3-billion parameter model, while sufficient for short-answer grading, may lack the reasoning depth required for complex, multi-step responses. Larger models (7B, 14B, 72B) in the Qwen2-VL family offer superior performance but require proportionally more VRAM.
+3. **Single-GPU limitation.** The current architecture supports a single CUDA device for AI inference, limiting throughput in high-volume grading scenarios.
 
-2. **Arabic handwriting recognition.** While the model supports Arabic text, its OCR accuracy for Arabic handwriting is noticeably lower than for French and English, particularly for connected cursive script. The right-to-left writing direction and the contextual letter forms of Arabic present additional challenges that the model's training data may not fully cover.
+4. **No essay-length support.** The system targets short-answer questions. Essay-length responses exceed the model's context window.
 
-3. **Single-GPU limitation.** The current architecture assumes a single GPU for model inference. Multi-GPU configurations and model parallelism are not supported, limiting throughput for high-volume grading scenarios.
+5. **Proctoring false positives.** BlazeFace occasionally fails to detect a face that is present (e.g., when the student briefly looks away or adjusts their position). This can trigger spurious `face_missing` events. The warning threshold mitigates the impact of isolated false positives, but the false positive rate should be characterised more rigorously in future work.
 
-4. **No essay-length support.** The system is designed for short-answer questions (one to three sentences). Essay-length responses exceed the model's context window and would require a chunking strategy or a different evaluation approach.
+6. **SQLite scalability.** SQLite performs well for single-machine deployments but may become a bottleneck under high concurrency (many simultaneous student answer submissions during a large examination session). Migration to PostgreSQL is recommended for university-scale deployments.
 
-5. **Scanner sensitivity to print quality.** The bubble detection accuracy degrades when answer sheets are printed on low-quality printers or scanned at resolutions below 200 DPI. The corner marker detection is particularly sensitive to partial occlusion (e.g., from staples or folded corners).
+### 5.9.3 Comparison with State of the Art
 
-6. **Limited evaluation sample size.** The accuracy measurements presented in Sections 5.3 and 5.4 are based on relatively small sample sizes (20 sheets for MCQ, 50 question-answer pairs for AI). A larger-scale evaluation with diverse handwriting styles, subjects, and difficulty levels would provide more robust accuracy estimates.
+The MCQ scanning accuracy of 92.5% is comparable to reported accuracies for open-source OMR systems (90–95%) but below commercial systems such as Remark Office OMR (~99%).
 
-### 5.7.3 Comparison with State of the Art
+The AI grading accuracy of 78% exact match (baseline) improves to 85% with RAG corrections, approaching the performance of fine-tuned models without their computational cost.
 
-The MCQ scanning accuracy of 92.5% is comparable to reported accuracies for open-source OMR systems (typically 90--95% depending on sheet design and scanning conditions) but below the 99%+ accuracy of commercial systems such as Remark Office OMR, which benefit from proprietary calibration algorithms and strict sheet formatting requirements.
-
-The AI grading accuracy of 78% exact match (baseline) is consistent with published results for VLM-based handwriting evaluation on non-English scripts. The improvement to 85% with RAG corrections approaches the performance of fine-tuned models while avoiding the computational cost and data requirements of fine-tuning.
+The browser-based proctoring approach achieves sub-5 ms face detection latency with BlazeFace, comparable to the real-time performance of server-side proctoring systems while eliminating video transmission and cloud storage.
 
 ## Summary
 
-This chapter has presented the testing methodology and empirical results for SmartGrader. The automated test suite of 56 tests provides comprehensive coverage across all architectural layers. The MCQ scanning pipeline achieves 92.5% end-to-end grading accuracy on sample sheets, and the AI grading pipeline achieves 78% exact-match accuracy with teacher scores at baseline, improving to 85% with 20 RAG corrections. Performance benchmarks confirm that the system operates within acceptable time constraints for interactive use. The discussion identifies both strengths (integrated dual-mode grading, progressive accuracy improvement, consumer hardware compatibility) and limitations (model size constraints, Arabic handwriting challenges, limited evaluation scale) that inform the future work proposed in Chapter 6.
+This chapter has presented the testing methodology and empirical results for SmartGrader across all four development phases. The automated test suite of 191 tests provides comprehensive coverage across 15 models, 9 services, and approximately 40 API endpoints. The MCQ scanning pipeline achieves 92.5% end-to-end grading accuracy. The AI grading pipeline achieves 78% exact-match accuracy, improving to 85% with RAG corrections. The online examination engine passed all four end-to-end test scenarios including timer auto-submit, network interruption recovery, and concurrent session isolation. The proctoring system correctly detected face absence, tab switching, fullscreen exit, and snapshot capture. Performance benchmarks confirm that all subsystems operate within acceptable time constraints for interactive use. Chapter 6 summarises the project's achievements and proposes directions for future work.

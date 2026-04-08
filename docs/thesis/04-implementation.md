@@ -1,10 +1,10 @@
 # Chapter 4: Implementation
 
-This chapter presents the implementation of SmartGrader, detailing the development environment, project structure, backend services, AI integration, and frontend application. The discussion follows the layered architecture established in Chapter 3 and draws upon the actual source code to illustrate key design decisions and algorithmic choices.
+This chapter presents the implementation of SmartGrader across all four development phases. It covers the development environment and tools, the backend implementation (Flask application factory, SQLAlchemy models, service layer, scanner pipeline), the authentication system, the online examination engine, the anti-cheat proctoring layer, the AI integration, the frontend application, and the deployment configurations. The discussion follows the layered architecture established in Chapter 3.
 
 ## 4.1 Development Environment
 
-SmartGrader is developed using a modern technology stack that spans backend processing, computer vision, artificial intelligence, and frontend user interfaces. Table 4.1 enumerates the principal technologies and their roles within the system.
+SmartGrader is developed using a technology stack that spans backend processing, computer vision, machine learning, browser-native AI inference, and frontend user interfaces. Table 4.1 enumerates the principal technologies and their roles within the system.
 
 | Technology | Version | Role |
 |------------|---------|------|
@@ -12,6 +12,8 @@ SmartGrader is developed using a modern technology stack that spans backend proc
 | Flask | 3.1 | Lightweight web framework and REST API server |
 | SQLAlchemy | 2.0 | Object-relational mapper for database access |
 | Flask-Migrate | - | Alembic-based database migration management |
+| Flask-JWT-Extended | - | JWT token generation and validation decorators |
+| bcrypt | - | Password hashing for user authentication |
 | OpenCV | 4.11 | Computer vision library for image processing |
 | NumPy | - | Numerical computation for array operations |
 | PyTorch | 2.x | Deep learning framework (GPU inference) |
@@ -23,25 +25,25 @@ SmartGrader is developed using a modern technology stack that spans backend proc
 | Tailwind CSS | 4.0 | Utility-first CSS framework |
 | shadcn/ui | - | Accessible component library built on Radix UI |
 | TanStack Query | 5.x | Server state management for React |
+| TensorFlow.js | 4.x | Browser-native machine learning inference |
+| @tensorflow-models/blazeface | - | BlazeFace model for browser face detection |
 | Recharts | - | Charting library for dashboard visualisations |
 | pytest | - | Python testing framework |
+| Gunicorn | - | Production WSGI server |
+| Nginx | - | Reverse proxy and static file server |
+| Docker / Docker Compose | - | Containerised deployment |
 | wkhtmltopdf | - | PDF generation from HTML templates |
 
 *Table 4.1: Technology stack for SmartGrader*
 
-The development machine requires a CUDA-compatible GPU with at least 6 GB of VRAM to run the Qwen2.5-VL-3B model under 4-bit quantisation. Development was conducted on an NVIDIA RTX-series GPU with CUDA 12.x drivers. The backend runs on Python 3.10 to ensure compatibility with all dependencies, while the frontend is built with Node.js 18+ for the Vite development server and production build pipeline.
-
-Version control is managed with Git, and the project follows a monorepo structure with the Flask backend and React frontend co-located in a single repository. Environment configuration is centralised in a single `config.py` module that supports development, testing, and production profiles selectable via the `FLASK_ENV` environment variable.
-
 ## 4.2 Project Structure
 
-The SmartGrader codebase is organised into clearly separated directories that reflect the layered architecture described in Chapter 3. The following listing presents the top-level structure:
+The SmartGrader codebase is organised into clearly separated directories that reflect the layered architecture described in Chapter 3. The following listing presents the full structure:
 
 ```
 app/                          # Flask backend application
   __init__.py                 # Application factory (create_app)
-  config.py                   # Centralised configuration (Config, DevelopmentConfig,
-                              #   TestingConfig, ProductionConfig)
+  config.py                   # Centralised configuration
   errors.py                   # Custom exception hierarchy
   logging_config.py           # Structured logging setup
   models/                     # SQLAlchemy ORM models
@@ -49,72 +51,109 @@ app/                          # Flask backend application
     student.py                #   Student, StudentAnswer
     result.py                 #   Result
     ai_correction.py          #   AICorrection (RAG feedback)
+    user.py                   #   User (authentication)
+    group.py                  #   StudentGroup, GroupMember
+    session.py                #   ExamSession, ExamAttempt, OnlineAnswer
+    proctor.py                #   ProctorEvent, ProctorSnapshot
   services/                   # Business logic layer
-    exam_service.py           #   Exam CRUD operations and statistics
+    exam_service.py           #   Exam CRUD and statistics
     grading_service.py        #   MCQ grading and result persistence
-    scanner_service.py        #   Orchestrates the scanner pipeline
-    ai_service.py             #   Orchestrates the AI pipeline
+    scanner_service.py        #   Scanner pipeline orchestration
+    ai_service.py             #   AI pipeline orchestration
+    auth_service.py           #   JWT, bcrypt, user management
+    group_service.py          #   Student group CRUD
+    session_service.py        #   Exam session lifecycle
+    exam_take_service.py      #   Attempt creation, answer persistence, grading
+    proctor_service.py        #   Event/snapshot ingestion, dashboard queries
   scanner/                    # Image processing pipeline
-    preprocessor.py           #   Greyscale, thresholding, morphology
-    marker_finder.py          #   Corner marker detection
-    detector.py               #   Bubble detection (BubbleDetector)
-    grid_mapper.py            #   Spatial mapping of bubbles to questions
-    answer_reader.py          #   Fill-level analysis and answer extraction
+    preprocessor.py
+    marker_finder.py
+    detector.py
+    grid_mapper.py
+    answer_reader.py
   ai/                         # Vision-language model integration
-    model_loader.py           #   Lazy singleton model loader (4-bit)
-    ocr_pipeline.py           #   Handwritten text extraction
-    answer_evaluator.py       #   AI-based answer scoring
-    prompt_templates.py       #   Prompt strings for OCR and evaluation
+    model_loader.py
+    ocr_pipeline.py
+    answer_evaluator.py
+    prompt_templates.py
+  auth/                       # Authentication utilities
+    decorators.py             #   @require_auth, @require_role
+    token_utils.py            #   JWT generation and validation
   routes/                     # Flask blueprints (REST API)
-    exams.py                  #   /api/exams endpoints
-    questions.py              #   /api/exams/<id>/questions endpoints
-    students.py               #   /api/students endpoints
-    scanning.py               #   /api/scan endpoints
-    grading.py                #   /api/results endpoints
-    ai.py                     #   /api/ai endpoints
+    exams.py
+    questions.py
+    students.py
+    scanning.py
+    grading.py
+    ai.py
+    auth.py                   #   /api/auth endpoints
+    groups.py                 #   /api/groups endpoints
+    sessions.py               #   /api/sessions endpoints
+    exam_take.py              #   /api/exam endpoints
+    proctor.py                #   /api/proctor endpoints
 
 frontend/                     # React single-page application
   src/
     components/               # Reusable UI components
-      layout/                 #   Sidebar, Header, ThemeToggle
-      dashboard/              #   StatCard, RecentExams, Charts
-      exams/                  #   ExamForm, QuestionForm, ChoiceEditor
-      scanner/                #   ScanUpload, BubblePreview, AIGrading
-      students/               #   StudentTable, StudentForm
-      results/                #   ResultsTable, ScoreDistribution
-    pages/                    # Seven top-level pages
-      Dashboard.jsx           #   Overview with statistics and charts
-      Exams.jsx               #   Exam list and creation
-      ExamDetail.jsx          #   Single exam with questions management
-      Scanner.jsx             #   MCQ scanning and AI grading tabs
-      Students.jsx            #   Student registry
-      Results.jsx             #   Grading results with filtering
-      Settings.jsx            #   Application settings and theme
-    hooks/                    # TanStack Query custom hooks
-      use-exams.js            #   Exam CRUD mutations and queries
-      use-students.js         #   Student queries and mutations
-      use-results.js          #   Result fetching and aggregation
-      use-ai.js               #   AI status, OCR, and evaluation
-      use-theme.js            #   Dark/light theme persistence
+      layout/
+      dashboard/
+      exams/
+      scanner/
+      students/
+      results/
+      auth/                   #   LoginForm, RegisterForm
+      exam/                   #   ExamTake, QuestionCard, Timer
+      proctor/                #   ProctorEngine, EventLog, SnapshotGrid
+      groups/                 #   GroupForm, MemberList
+      sessions/               #   SessionCard, MonitorDashboard
+    pages/
+      Dashboard.jsx
+      Exams.jsx
+      ExamDetail.jsx
+      Scanner.jsx
+      Students.jsx
+      Results.jsx
+      Settings.jsx
+      Login.jsx               #   Authentication page
+      ExamTake.jsx            #   Student examination page
+      ProctorDashboard.jsx    #   Teacher proctoring view
+      Groups.jsx              #   Student group management
+      Sessions.jsx            #   Session management
+    hooks/
+      use-exams.js
+      use-students.js
+      use-results.js
+      use-ai.js
+      use-theme.js
+      use-auth.js             #   Login, logout, JWT storage
+      use-exam-take.js        #   Attempt lifecycle, answer saving
+      use-proctor.js          #   ProctorEngine integration
+      use-sessions.js         #   Session CRUD and activation
+      use-groups.js           #   Group management
 
-tests/                        # 56 automated pytest tests
-  conftest.py                 # Shared fixtures (app, db, client)
-  test_models/                # 10 model-layer tests
-  test_services/              # 13 service-layer tests
+tests/                        # 191 automated pytest tests
+  conftest.py
+  test_models/                # 22 model-layer tests
+  test_services/              # 35 service-layer tests
   test_scanner/               # 11 scanner pipeline tests
-  test_routes/                # 8 HTTP endpoint tests
+  test_routes/                # 45 HTTP endpoint tests
   test_ai/                    # 16 AI module tests
+  test_auth/                  # 28 authentication tests
+  test_session/               # 20 online exam tests
+  test_proctor/               # 14 proctoring tests
 
-schema.sql                    # Raw SQL schema (7 tables + indexes)
+nginx/                        # Nginx configuration
+  nginx.conf                  #   Reverse proxy and SSL config
+docker-compose.yml            # Docker Compose deployment
+Dockerfile                    # Application container image
+schema.sql                    # Raw SQL schema (15 tables + indexes)
 ```
-
-This structure enforces a strict separation of concerns. The `models/` directory contains only data definitions and serialisation methods. The `services/` directory encapsulates business logic that orchestrates model operations without knowledge of HTTP request handling. The `routes/` directory handles HTTP concerns exclusively -- request parsing, response formatting, and status codes -- and delegates all logic to the service layer. The `scanner/` and `ai/` directories are self-contained processing pipelines that operate independently of the web framework and can be tested in isolation.
 
 ## 4.3 Backend Implementation
 
 ### 4.3.1 Application Factory
 
-SmartGrader employs the Flask application factory pattern, a design approach recommended by the Flask documentation for applications that require multiple configurations (development, testing, production) and clean extension initialisation. The factory function `create_app()` resides in `app/__init__.py`:
+SmartGrader employs the Flask application factory pattern. The factory function `create_app()` in `app/__init__.py` initialises all extensions (SQLAlchemy, Flask-Migrate, Flask-JWT-Extended, CORS) and registers all blueprints including the new auth, groups, sessions, exam_take, and proctor blueprints:
 
 ```python
 def create_app(config_name=None):
@@ -128,334 +167,447 @@ def create_app(config_name=None):
 
     db.init_app(app)
     migrate.init_app(app, db)
-    CORS(app)
+    jwt.init_app(app)
+    CORS(app, origins=app.config.get("CORS_ORIGINS", "*"))
 
     setup_logging(
         log_level=app.config.get("LOG_LEVEL", "INFO"),
         log_file=app.config.get("LOG_FILE"),
     )
 
-    # Register error handlers and blueprints
     from app.routes import register_blueprints
     register_blueprints(app)
 
     return app
 ```
 
-The factory accepts an optional `config_name` parameter, defaulting to the `FLASK_ENV` environment variable. It initialises the SQLAlchemy database, Flask-Migrate for schema migrations, and CORS for cross-origin requests from the React frontend. Error handlers are registered for both application-specific exceptions (via the `SmartGraderError` hierarchy) and standard HTTP errors. Blueprints are registered last, after all extensions are initialised, to ensure that route handlers have access to the fully configured application context.
+The `CORS_ORIGINS` configuration parameter is set to `"*"` in development and to the specific frontend URL in production, enforcing the CORS hardening required for the university server deployment mode.
 
 ### 4.3.2 Configuration Management
 
-The `Config` class in `app/config.py` centralises all application parameters into a single location. This includes Flask settings (secret key, database URI), scanner thresholds (fill threshold, circle area bounds, circularity minimum), PDF generation parameters (A4 dimensions, margins, DPI), and AI model settings (model identifier, device, token limits, confidence threshold). Three subclasses -- `DevelopmentConfig`, `TestingConfig`, and `ProductionConfig` -- override specific values. Notably, `TestingConfig` uses an in-memory SQLite database (`sqlite:///:memory:`) to ensure that tests run in complete isolation:
+The `Config` class in `app/config.py` centralises all application parameters. New configuration keys added for Phases 1–4 include:
 
-```python
-class TestingConfig(Config):
-    TESTING = True
-    SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"
-    LOG_LEVEL = "WARNING"
-```
-
-The scanner thresholds deserve particular attention. The `FILL_THRESHOLD` parameter (default: 50) determines the percentage of dark pixels within a bubble's bounding region required to classify it as filled. The `CIRCULARITY_MIN` parameter (default: 0.65) filters out non-circular contours that could be mistaken for bubbles. These values were determined empirically through iterative testing on sample answer sheets and represent a balance between sensitivity (detecting lightly marked bubbles) and specificity (rejecting noise and stray marks).
+- `JWT_SECRET_KEY`, `JWT_ACCESS_TOKEN_EXPIRES`: JWT signing key and token lifetime.
+- `PROCTOR_WARNING_THRESHOLD`: Number of integrity violations before automatic attempt termination (default: 3).
+- `PROCTOR_SNAPSHOT_INTERVAL`: Snapshot capture interval in seconds.
+- `CORS_ORIGINS`: Allowed origins for CORS policy enforcement.
+- `GUNICORN_WORKERS`, `GUNICORN_BIND`: Gunicorn process count and bind address for production.
 
 ### 4.3.3 SQLAlchemy Models
 
-The data model comprises seven tables mapped to six Python classes (the `StudentAnswer` model shares a module with `Student`). All models inherit from `db.Model` and define their table name, column schema, and relationships explicitly.
+The data model has expanded from 7 to 15 tables across Phases 1–4. The new models follow the same design conventions as the original: each inherits from `db.Model`, defines columns as class attributes, and implements a `to_dict()` method.
 
-The `Exam` model is the root entity, with one-to-many relationships to both `Question` and `Result`:
-
-```python
-class Exam(db.Model):
-    __tablename__ = "exams"
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(200), nullable=False)
-    subject = db.Column(db.String(100))
-    date = db.Column(db.String(20))
-    total_marks = db.Column(db.Float)
-
-    questions = db.relationship(
-        "Question", backref="exam",
-        cascade="all, delete-orphan", lazy="dynamic"
-    )
-    results = db.relationship(
-        "Result", backref="exam",
-        cascade="all, delete-orphan", lazy="dynamic"
-    )
-```
-
-The `cascade="all, delete-orphan"` parameter ensures referential integrity: when an exam is deleted, all associated questions, choices, student answers, and results are automatically removed. The `lazy="dynamic"` loading strategy returns a query object rather than a materialised list, allowing the service layer to apply additional filters (e.g., ordering, pagination) without loading the entire relationship into memory.
-
-The `AICorrection` model supports the RAG feedback loop. Each record stores the student's text, the AI's original score and feedback, and the teacher's corrected score and feedback:
+The `User` model supports both teacher and student accounts:
 
 ```python
-class AICorrection(db.Model):
-    __tablename__ = "ai_corrections"
+class User(db.Model):
+    __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)
-    question_id = db.Column(db.Integer, db.ForeignKey("questions.id"), nullable=False)
-    student_text = db.Column(db.Text, nullable=False)
-    ai_score = db.Column(db.Float, nullable=False)
-    ai_feedback = db.Column(db.Text)
-    teacher_score = db.Column(db.Float, nullable=False)
-    teacher_feedback = db.Column(db.Text)
+    username = db.Column(db.String(80), unique=True, nullable=False)
+    password_hash = db.Column(db.String(256), nullable=False)
+    role = db.Column(db.String(20), nullable=False)  # 'teacher' or 'student'
+    student_id = db.Column(db.Integer, db.ForeignKey("students.id"), nullable=True)
     created_at = db.Column(db.String(30), nullable=False)
 ```
 
-This table serves as the knowledge base for retrieval-augmented generation: when evaluating a new student answer, the system queries this table for previous corrections on the same question and injects them as few-shot examples into the evaluation prompt.
+The `ExamAttempt` model tracks the lifecycle of each student's examination sitting:
+
+```python
+class ExamAttempt(db.Model):
+    __tablename__ = "exam_attempts"
+    id = db.Column(db.Integer, primary_key=True)
+    session_id = db.Column(db.Integer, db.ForeignKey("exam_sessions.id"), nullable=False)
+    student_id = db.Column(db.Integer, db.ForeignKey("students.id"), nullable=False)
+    started_at = db.Column(db.String(30), nullable=False)
+    submitted_at = db.Column(db.String(30), nullable=True)
+    status = db.Column(db.String(20), nullable=False, default="in_progress")
+    score = db.Column(db.Float, nullable=True)
+    percentage = db.Column(db.Float, nullable=True)
+```
 
 ### 4.3.4 Service Layer Pattern
 
-The service layer mediates between the route handlers and the data models. Each service module exposes a set of pure functions that encapsulate a complete business operation, including validation, data retrieval, computation, and persistence. This pattern decouples the HTTP layer from the business logic, facilitating unit testing (services can be tested without HTTP request context) and code reuse (the same service function can be called from routes, CLI commands, or background tasks).
+The service layer has been extended with five new modules: `AuthService`, `GroupService`, `SessionService`, `ExamTakeService`, and `ProctorService`. Each follows the same stateless function pattern as the original services.
 
-The grading service illustrates this pattern. The `grade_mcq_answers()` function accepts an exam identifier and a dictionary of detected answers, retrieves the exam's questions and correct choices from the database, computes the score, and returns a structured result:
+The `ExamTakeService.submit_attempt()` function illustrates the auto-grading logic executed on submission:
 
 ```python
-def grade_mcq_answers(exam_id, detected_answers):
-    exam = get_exam_by_id(exam_id)
-    questions = exam.questions.order_by(Question.id).all()
+def submit_attempt(attempt_id):
+    attempt = get_attempt_by_id(attempt_id)
+    if attempt.status != "in_progress":
+        raise ValidationError("Attempt already finalised.")
+
+    answers = OnlineAnswer.query.filter_by(attempt_id=attempt_id).all()
+    questions = (Question.query
+                 .filter_by(exam_id=attempt.session.exam_id)
+                 .all())
 
     total_marks = 0
     obtained_marks = 0
-    details = []
-
     for question in questions:
         total_marks += question.marks
-        correct_choice = question.choices.filter_by(is_correct=1).first()
-        correct_label = correct_choice.choice_label.upper() if correct_choice else None
-        detected_label = detected_answers.get(question.id)
-
-        if detected_label:
-            detected_label = detected_label.upper()
-
-        is_correct = (detected_label == correct_label
-                      if detected_label and correct_label else False)
-        if is_correct:
-            obtained_marks += question.marks
-
-        details.append({
-            "question_id": question.id,
-            "detected": detected_label,
-            "correct": correct_label,
-            "is_correct": is_correct,
-            "marks": question.marks,
-        })
+        correct = question.choices.filter_by(is_correct=1).first()
+        student_answer = next(
+            (a for a in answers if a.question_id == question.id), None
+        )
+        if student_answer and correct:
+            if student_answer.selected_choice_id == correct.id:
+                obtained_marks += question.marks
 
     percentage = (obtained_marks / total_marks * 100) if total_marks > 0 else 0
+    attempt.score = obtained_marks
+    attempt.percentage = round(percentage, 1)
+    attempt.status = "submitted"
+    attempt.submitted_at = datetime.utcnow().isoformat()
+    db.session.commit()
 
-    return {
-        "exam_id": exam_id,
-        "total_marks": total_marks,
-        "obtained_marks": obtained_marks,
-        "percentage": round(percentage, 1),
-        "answered": sum(1 for d in details if d["detected"]),
-        "total_questions": len(questions),
-        "details": details,
-    }
+    return attempt.to_dict()
 ```
-
-The function iterates over each question, retrieves the correct choice via the `is_correct` flag, performs a case-insensitive comparison with the detected answer, and accumulates the score. The result dictionary includes both aggregate statistics (total marks, obtained marks, percentage) and per-question details that enable the frontend to display a detailed breakdown with colour-coded correct and incorrect answers.
 
 ### 4.3.5 Scanner Pipeline
 
-The scanner pipeline transforms a raw scanned image of a completed MCQ answer sheet into a structured set of detected answers. The pipeline consists of five sequential stages, each implemented as a separate module within the `scanner/` package.
+The scanner pipeline is unchanged from the original design: preprocessing, marker detection, bubble detection, grid mapping, and answer reading. The five-stage pipeline is documented in detail in Section 4.3.5 of the original implementation chapter.
 
-**Stage 1: Preprocessing (`preprocessor.py`).** The input image undergoes greyscale conversion (`cv2.cvtColor`), Gaussian blur for noise reduction (`cv2.GaussianBlur` with a 5x5 kernel), and adaptive thresholding (`cv2.adaptiveThreshold` with Gaussian weighting, block size 11, and constant 4). A morphological closing operation (`cv2.morphologyEx` with a 2x2 kernel) fills small gaps in bubble outlines that may result from printing or scanning artefacts. The result is a clean binary image where filled regions appear as white contours on a black background.
+## 4.4 Authentication Implementation
 
-**Stage 2: Marker Detection (`marker_finder.py`).** The system locates the four corner alignment markers that were printed on the answer sheet during PDF generation. These markers serve as reference points for establishing a coordinate transformation that compensates for rotation, scaling, and translation introduced by the scanning process. The marker finder uses contour detection and geometric filtering to identify the square markers, then sorts them into top-left, top-right, bottom-left, and bottom-right positions based on their centroid coordinates.
+### 4.4.1 Password Hashing
 
-**Stage 3: Bubble Detection (`detector.py`).** The `BubbleDetector` class identifies individual answer bubbles within the preprocessed image. The detection algorithm operates on the binary image and applies a cascade of geometric filters to the detected contours:
-
-```python
-class BubbleDetector:
-    def __init__(self, area_min=60, area_max=600,
-                 circularity_min=0.65, aspect_min=0.6,
-                 aspect_max=1.5, radius_min=6, radius_max=25,
-                 duplicate_distance=10):
-        # Store configurable thresholds
-        ...
-
-    def detect(self, image, top_y, bottom_y, margin=40):
-        """Detect bubbles in the region between top_y and bottom_y."""
-        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        blurred = cv2.GaussianBlur(gray, (5, 5), 0)
-        thresh = cv2.adaptiveThreshold(
-            blurred, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
-            cv2.THRESH_BINARY_INV, 11, 4
-        )
-        kernel = np.ones((2, 2), np.uint8)
-        thresh = cv2.morphologyEx(thresh, cv2.MORPH_CLOSE, kernel)
-
-        contours, _ = cv2.findContours(
-            thresh, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE
-        )
-        img_width = image.shape[1]
-        bubbles = self._filter_contours(
-            contours, top_y, bottom_y, img_width, margin
-        )
-        bubbles = self._remove_duplicates(bubbles)
-        bubbles = self._remove_outliers(bubbles)
-        return bubbles
-```
-
-The `_filter_contours()` method applies six geometric criteria to each contour: minimum and maximum area (to exclude noise and large shapes), minimum circularity (computed as $4\pi A / P^2$ where $A$ is the contour area and $P$ is the perimeter), aspect ratio bounds (to reject elongated shapes), radius bounds, and positional constraints based on expected column positions within the image. The `_remove_duplicates()` method eliminates contours whose centroids lie within a configurable distance of each other, and `_remove_outliers()` removes detections that deviate significantly from the expected grid pattern.
-
-**Stage 4: Grid Mapping (`grid_mapper.py`).** The detected bubbles are spatially organised into a grid structure that maps each bubble to its corresponding question number and choice label. The mapper divides the bubbles into rows (one per question) and columns (one per choice) based on their vertical and horizontal coordinates. Column boundaries are determined by the expected fractions of the image width, as defined in the configuration (`LEFT_COL_MIN`, `LEFT_COL_MAX`, `RIGHT_COL_MIN`, `RIGHT_COL_MAX`).
-
-**Stage 5: Answer Reading (`answer_reader.py`).** For each bubble in the mapped grid, the answer reader computes the fill level by counting the number of dark pixels within the bubble's bounding region and comparing the ratio against the `FILL_THRESHOLD`. A bubble is classified as filled if its dark-pixel ratio exceeds the threshold (default: 50%). The reader then selects the filled bubble for each question row, producing a dictionary mapping question identifiers to choice labels (e.g., `{1: "A", 2: "C", 3: "B"}`).
-
-## 4.4 AI Integration
-
-### 4.4.1 Model Loading and Quantisation
-
-SmartGrader employs the Qwen2.5-VL-3B-Instruct vision-language model for both optical character recognition and answer evaluation. The model is loaded using a lazy singleton pattern implemented in `model_loader.py`: the model is not loaded at application startup but rather on the first invocation of `get_model()`, after which it remains in GPU memory for subsequent requests.
-
-To operate within the VRAM constraints of consumer-grade GPUs (6--8 GB), the model is loaded with 4-bit quantisation using the BitsAndBytes library:
+User passwords are hashed using bcrypt via the `bcrypt` library. The `AuthService.register_user()` function generates a salted hash:
 
 ```python
-from transformers import Qwen2VLForConditionalGeneration, AutoProcessor
-from transformers import BitsAndBytesConfig
+import bcrypt
 
-bnb_config = BitsAndBytesConfig(
-    load_in_4bit=True,
-    bnb_4bit_compute_dtype=torch.float16,
-)
-
-model = Qwen2VLForConditionalGeneration.from_pretrained(
-    "Qwen/Qwen2.5-VL-3B-Instruct",
-    quantization_config=bnb_config,
-    device_map="auto",
-)
-processor = AutoProcessor.from_pretrained("Qwen/Qwen2.5-VL-3B-Instruct")
+def register_user(username, password, role, student_id=None):
+    if User.query.filter_by(username=username).first():
+        raise ConflictError(f"Username '{username}' already exists.")
+    hashed = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
+    user = User(
+        username=username,
+        password_hash=hashed.decode("utf-8"),
+        role=role,
+        student_id=student_id,
+        created_at=datetime.utcnow().isoformat(),
+    )
+    db.session.add(user)
+    db.session.commit()
+    return user
 ```
 
-The `load_in_4bit=True` parameter compresses the model weights from 16-bit floating point to 4-bit integers, reducing VRAM consumption from approximately 6 GB to approximately 2.5 GB. The `bnb_4bit_compute_dtype=torch.float16` parameter specifies that intermediate computations during inference should use half-precision floating point, balancing performance and numerical stability. The `device_map="auto"` parameter allows the Transformers library to automatically distribute model layers across available GPU devices.
+### 4.4.2 JWT Token Generation
 
-The `generate()` function constructs a multi-modal message containing both the image and the text prompt, processes it through the model's chat template, and decodes only the newly generated tokens (excluding the input tokens) to obtain the model's response. A GPU availability check raises a descriptive `AIModelError` if no CUDA device is detected, providing a clear message rather than a cryptic hardware error.
+On successful login, `AuthService.login()` verifies the password hash and delegates to Flask-JWT-Extended to generate a signed access token:
 
-### 4.4.2 OCR Pipeline
+```python
+from flask_jwt_extended import create_access_token
 
-The OCR stage extracts handwritten text from a scanned exam paper. Rather than processing individual question regions, SmartGrader adopts a full-page approach: the entire scanned page is submitted to the vision model along with a list of question numbers, and the model extracts all answers simultaneously. This approach leverages the model's spatial understanding to associate handwritten text with the correct question regions.
+def login(username, password):
+    user = User.query.filter_by(username=username).first()
+    if not user or not bcrypt.checkpw(
+        password.encode("utf-8"), user.password_hash.encode("utf-8")
+    ):
+        raise AuthenticationError("Invalid username or password.")
 
-The OCR prompt template is defined in `prompt_templates.py`:
-
-```
-Look at this scanned exam paper. Students wrote their answers directly
-on the paper. Extract the handwritten answer for each question listed
-below. The text may be in French, Arabic, or English.
-
-Questions to extract: {question_list}
-
-Return ONLY valid JSON, no other text:
-{"answers": [
-  {"question": <number>, "text": "<extracted text>"},
-  ...
-]}
+    token = create_access_token(
+        identity=user.id,
+        additional_claims={"role": user.role, "username": user.username}
+    )
+    return {"access_token": token, "role": user.role, "user_id": user.id}
 ```
 
-Several design decisions merit explanation. The prompt explicitly states that students wrote answers "directly on the paper" to guide the model's spatial reasoning. The multilingual instruction ("French, Arabic, or English") reflects the Algerian educational context where examinations may be conducted in any of these three languages. The strict JSON output format enables deterministic parsing of the model's response. A retry mechanism with an `OCR_RETRY_PROMPT` handles cases where the model's initial response is not valid JSON, requesting the same extraction in a simplified format.
+### 4.4.3 Route Decorators
 
-The OCR pipeline parses the model's JSON response and returns a list of question-answer pairs. The parser handles edge cases including markdown code block wrappers (` ```json ... ``` `) that the model occasionally produces despite the "ONLY valid JSON" instruction.
+The `app/auth/decorators.py` module provides two decorators that wrap Flask-JWT-Extended's `@jwt_required()`:
 
-### 4.4.3 Answer Evaluation
+```python
+from functools import wraps
+from flask_jwt_extended import verify_jwt_in_request, get_jwt
+from app.errors import AuthenticationError, AuthorizationError
 
-The evaluation stage scores a student's extracted answer against the teacher's grading criteria. SmartGrader supports two evaluation modes:
+def require_auth(fn):
+    @wraps(fn)
+    def wrapper(*args, **kwargs):
+        verify_jwt_in_request()
+        return fn(*args, **kwargs)
+    return wrapper
 
-**Model Answer Mode.** The student's answer is compared against a reference answer (the model answer) provided by the teacher. The evaluation prompt instructs the model to grade the student's response by semantic comparison with the reference:
-
-```
-You are grading a student's answer.
-
-Question: {question_text}
-Reference answer: {model_answer}
-Student's answer: {student_text}
-Maximum marks: {max_marks}
-
-Grade the student's answer by comparing it to the reference.
-Return ONLY valid JSON, no other text:
-{"score": <number>, "max": {max_marks}, "feedback": "<brief explanation>",
- "confidence": <0.0-1.0>}
-```
-
-**Keywords Mode.** The student's answer is evaluated against a list of required concepts (keywords) that must appear in a correct response. This mode is particularly useful for factual questions where specific terminology is expected:
-
-```
-You are grading a student's answer.
-
-Question: {question_text}
-Required concepts: {keywords_list}
-Student's answer: {student_text}
-Maximum marks: {max_marks}
-
-Check which required concepts appear in the student's answer.
-Return ONLY valid JSON, no other text:
-{"score": <number>, "max": {max_marks}, "found_concepts": [...],
- "missing_concepts": [...], "confidence": <0.0-1.0>}
+def require_role(role):
+    def decorator(fn):
+        @wraps(fn)
+        def wrapper(*args, **kwargs):
+            verify_jwt_in_request()
+            claims = get_jwt()
+            if claims.get("role") != role:
+                raise AuthorizationError(
+                    f"This action requires the '{role}' role."
+                )
+            return fn(*args, **kwargs)
+        return wrapper
+    return decorator
 ```
 
-Both modes return a confidence score between 0.0 and 1.0. The system uses the `CONFIDENCE_THRESHOLD` configuration parameter (default: 0.7) to flag low-confidence evaluations for mandatory teacher review. This mechanism ensures that uncertain AI judgements are not silently accepted as final scores.
+These decorators are applied directly to route handler functions:
 
-### 4.4.4 RAG Feedback Loop
-
-The Retrieval-Augmented Generation (RAG) mechanism improves the AI's grading accuracy over time by learning from teacher corrections. When a teacher disagrees with the AI's score and submits a correction, the system stores the correction in the `ai_corrections` table with the student's text, the AI's original score and feedback, and the teacher's corrected score and feedback.
-
-On subsequent evaluations of the same question, the system retrieves the most recent corrections from the database and injects them as few-shot examples into the evaluation prompt. The RAG header and example templates are:
-
-```
-Here are examples of how this question was graded previously:
-- Student wrote: "{student_text}" -> Score: {teacher_score}/{max_marks}
-  because: {teacher_feedback}
+```python
+@sessions_bp.route("/api/sessions", methods=["POST"])
+@require_role("teacher")
+def create_session():
+    ...
 ```
 
-These examples precede the main evaluation instruction, providing the model with concrete demonstrations of the teacher's grading standards for that specific question. As the corpus of corrections grows, the model receives increasingly representative examples, leading to progressive improvement in grading accuracy. Section 5.6 presents empirical measurements of this improvement.
+### 4.4.4 Barcode Login
 
-## 4.5 Frontend Implementation
+Student barcode login accepts a `matricule` value encoded in the barcode and issues a student-role JWT without requiring a password:
 
-### 4.5.1 Architecture
+```python
+@auth_bp.route("/api/auth/barcode-login", methods=["POST"])
+def barcode_login():
+    matricule = request.json.get("matricule")
+    student = Student.query.filter_by(matricule=matricule).first()
+    if not student:
+        raise NotFoundError("No student found with this matricule.")
+    user = User.query.filter_by(student_id=student.id).first()
+    if not user:
+        raise NotFoundError("No user account linked to this student.")
+    token = create_access_token(
+        identity=user.id,
+        additional_claims={"role": "student"}
+    )
+    return jsonify({"access_token": token}), 200
+```
 
-The frontend is a React 18 single-page application built with Vite as the module bundler and development server. Vite provides near-instantaneous hot module replacement during development and optimised production builds with code splitting. The styling layer combines Tailwind CSS 4.0 for utility-first responsive design with shadcn/ui for accessible, pre-styled UI components built on Radix UI primitives.
+## 4.5 Online Examination Engine
 
-### 4.5.2 Server State Management
+### 4.5.1 Session Service
 
-All communication with the Flask backend is managed through TanStack Query (React Query) custom hooks located in the `hooks/` directory. This library provides automatic caching, background refetching, optimistic updates, and request deduplication. Each hook module encapsulates the API calls for a specific domain:
+The `SessionService` manages the lifecycle of exam sessions. Sessions transition through three states: `scheduled` → `active` → `closed`. The `activate_session()` function validates that the scheduled start time has not passed and sets the status to `active`, making the session visible to enrolled students.
 
-- `use-exams.js`: queries for listing and fetching exams, mutations for creation, update, and deletion with automatic cache invalidation.
-- `use-students.js`: queries for the student registry with search and pagination support.
-- `use-results.js`: queries for exam results with filtering by exam and aggregation statistics.
-- `use-ai.js`: queries for AI model status, mutations for OCR processing and answer evaluation, and correction submission.
-- `use-theme.js`: manages the dark/light theme preference with persistence to local storage.
+### 4.5.2 Exam Take Service
 
-This approach eliminates manual state management for server data, reduces boilerplate code, and ensures that the UI remains synchronised with the backend state without explicit refresh logic.
+The `ExamTakeService` handles all student-facing examination interactions:
 
-### 4.5.3 Theme System
+- `create_attempt(session_id, student_id)`: Creates an ExamAttempt record, verifying that the student is enrolled in the session's group and does not already have an active attempt.
+- `save_answer(attempt_id, question_id, choice_id)`: Creates or updates an OnlineAnswer record within the attempt.
+- `submit_attempt(attempt_id)`: Finalises the attempt, computes the MCQ score, and sets the submission timestamp.
 
-SmartGrader implements a dark/light theme system using CSS custom properties and the `data-theme` attribute on the document root element. The theme toggle component switches between `data-theme="light"` and `data-theme="dark"`, which triggers a complete recomputation of all colour variables defined in the Tailwind configuration. The user's theme preference is persisted to the browser's local storage and restored on subsequent visits, with an initial default derived from the operating system's preferred colour scheme via the `prefers-color-scheme` media query.
+### 4.5.3 Answer Persistence
 
-### 4.5.4 Page Structure
+Each answer selection by the student triggers an immediate API call to persist the OnlineAnswer record. This ensures that if the student's browser closes unexpectedly, their answers are preserved and the attempt can be resumed or auto-submitted at the deadline. The persistence call is debounced with a 500 ms delay to avoid excessive API requests during rapid question navigation.
 
-The application comprises seven pages, each corresponding to a major functional area:
+### 4.5.4 Auto-Submission
 
-1. **Dashboard**: displays aggregate statistics (total exams, total students, average score, recent activity) with Recharts bar and pie charts for score distribution and exam-level performance summaries.
-2. **Exams**: lists all examinations in a sortable, searchable table with creation, edit, and delete actions.
-3. **Exam Detail**: displays a single examination's metadata, its list of questions with choices, the generated answer sheet preview, and per-question editing capabilities.
-4. **Scanner**: provides two tabbed interfaces -- the MCQ tab for uploading and processing scanned answer sheets via the computer vision pipeline, and the AI tab for uploading handwritten answer sheets and invoking the AI grading pipeline with OCR review and correction capabilities.
-5. **Students**: a searchable registry of students with CRUD operations and unique matricule validation.
-6. **Results**: displays grading results with filtering by examination, sortable columns, and exportable data.
-7. **Settings**: application configuration including theme selection, scanner threshold adjustments, and AI model status monitoring.
+Two mechanisms enforce the examination deadline:
 
-### 4.5.5 Responsive Layout
+**Client-side:** A JavaScript countdown timer component tracks the remaining time (computed from `start_time + duration_minutes - current_time`). On reaching zero, the timer component calls `submitAttempt()`, which issues `POST /api/exam/attempt/<id>/submit`. A confirmation dialog is skipped for timer-triggered submission to prevent the student from delaying.
 
-The layout employs a collapsible sidebar navigation pattern. On desktop viewports (width above 1024 pixels), the sidebar remains permanently visible alongside the main content area. On tablet and mobile viewports, the sidebar collapses into a hamburger menu overlay. All pages use responsive grid layouts that adapt from multi-column on desktop to single-column on mobile, ensuring usability across device form factors.
+**Server-side:** A lightweight background check (invoked on each student request) compares the attempt's `started_at` timestamp plus the session's `duration_minutes` against the current time. If the deadline has passed and the attempt status is still `in_progress`, the server calls `submit_attempt()` automatically before returning the response.
 
-## 4.6 Screenshots
+## 4.6 Anti-Cheat Implementation
 
-Annotated screenshots of each page of the SmartGrader application are included in Appendix D (User Manual). These screenshots illustrate the final state of the user interface after the implementation of all features described in this chapter, including the dashboard with sample data, the exam creation workflow, the scanner interface with bubble detection overlay, the AI grading interface with OCR results and correction form, and the results page with score distribution charts.
+### 4.6.1 ProctorEngine Architecture
+
+The `ProctorEngine` is a JavaScript module (`frontend/src/components/proctor/ProctorEngine.jsx`) that runs within the student examination page. It initialises on attempt start and cleans up on submission. Its architecture consists of three concurrent loops:
+
+1. **Face Detection Loop:** Runs at `PROCTOR_FACE_CHECK_INTERVAL` (default: 1000 ms). Captures a video frame from the webcam MediaStream, passes it to the BlazeFace model via TensorFlow.js, and reports a `face_missing` or `multiple_faces` event if the detection result is abnormal.
+
+2. **Snapshot Loop:** Runs at `PROCTOR_SNAPSHOT_INTERVAL` (default: 30 seconds). Captures a JPEG snapshot from the webcam, encodes it as a Base64 data URL, and transmits it via `POST /api/proctor/snapshot`.
+
+3. **Event Listeners:** Attached to `document.addEventListener` for `visibilitychange`, `fullscreenchange`, `blur`, `copy`, and `paste` events. Each triggered event is reported via `POST /api/proctor/event`.
+
+### 4.6.2 BlazeFace Integration
+
+TensorFlow.js and the BlazeFace model are loaded dynamically on examination start to avoid adding to the main bundle:
+
+```javascript
+import * as tf from "@tensorflow/tfjs";
+import * as blazeface from "@tensorflow-models/blazeface";
+
+async function loadModel() {
+  await tf.ready();
+  const model = await blazeface.load();
+  return model;
+}
+
+async function detectFaces(model, videoElement) {
+  const predictions = await model.estimateFaces(videoElement, false);
+  return predictions; // array of detected faces
+}
+```
+
+The ProctorEngine calls `detectFaces()` at each tick of the face detection loop. If `predictions.length === 0`, a `face_missing` event is generated. If `predictions.length > 1`, a `multiple_faces` event is generated. Both events increment the local warning counter, and a warning overlay is displayed to the student.
+
+### 4.6.3 Warning Escalation
+
+The warning escalation system operates as follows:
+
+1. Each `face_missing` and `multiple_faces` event increments both a local counter (React state) and a server-side counter (maintained in the ExamAttempt record or derived from ProctorEvent count).
+2. At `WARNING_THRESHOLD / 2`, the student sees a yellow warning banner: "Your face is not visible. Please ensure your face is in view of the camera."
+3. At `WARNING_THRESHOLD - 1`, the student sees a red warning dialog that must be acknowledged to continue.
+4. At `WARNING_THRESHOLD`, the attempt is automatically submitted and the student is shown a session-terminated message.
+
+### 4.6.4 Proctoring Dashboard
+
+The teacher-facing `ProctorDashboard` page polls `GET /api/sessions/<id>/attempts` every 5 seconds to display the live status of all students. For each student, it shows:
+
+- Attempt status (in progress / submitted / terminated)
+- Warning count and severity distribution
+- Most recent snapshot thumbnail
+- Time elapsed since last activity
+
+Clicking a student row opens a detailed panel showing the complete event timeline (sorted by `occurred_at`) and a scrollable grid of snapshots. Each snapshot is annotated with the `face_detected` flag, making it easy for the teacher to review intervals where no face was visible.
+
+## 4.7 AI Integration
+
+The AI grading pipeline is unchanged from the original implementation. The Qwen2.5-VL-3B-Instruct model is loaded with 4-bit quantisation via BitsAndBytes, using a lazy singleton pattern. The two-stage OCR + Evaluation pipeline and the RAG feedback loop are as described in the original design and are fully operational in the production system.
+
+## 4.8 Frontend Implementation
+
+### 4.8.1 Architecture
+
+The frontend is a React 18 single-page application built with Vite. The styling layer combines Tailwind CSS 4.0 with shadcn/ui. TanStack Query manages all server state. The routing layer uses React Router v6, with protected routes that redirect unauthenticated users to the login page.
+
+### 4.8.2 Authentication State
+
+The `use-auth.js` hook manages the authentication lifecycle:
+
+```javascript
+export function useAuth() {
+  const queryClient = useQueryClient();
+
+  const loginMutation = useMutation({
+    mutationFn: ({ username, password }) =>
+      api.post("/auth/login", { username, password }),
+    onSuccess: (data) => {
+      localStorage.setItem("token", data.access_token);
+      queryClient.setQueryData(["me"], data);
+    },
+  });
+
+  const logout = () => {
+    localStorage.removeItem("token");
+    queryClient.clear();
+  };
+
+  return { loginMutation, logout };
+}
+```
+
+The stored JWT is automatically attached to all API requests by an Axios request interceptor that reads `localStorage.getItem("token")` and injects it into the `Authorization` header.
+
+### 4.8.3 Student Examination Page
+
+The `ExamTake.jsx` page provides the student-facing examination interface:
+
+1. **Header:** Displays the examination title, remaining time (countdown), and warning count.
+2. **Question Panel:** Renders each question with radio buttons for MCQ choices. Selecting a choice immediately triggers `use-exam-take.js`'s `saveAnswer` mutation.
+3. **Navigation:** Previous/next buttons for question-by-question navigation. A question grid overview allows jumping to any question.
+4. **Proctor Overlay:** The `ProctorEngine` component is mounted as an invisible child; it manages the webcam stream and detection loops without rendering visible UI elements beyond the warning banners.
+5. **Submit Button:** Available at all times; triggers a confirmation dialog (unless timer-triggered).
+
+### 4.8.4 Page Structure
+
+The application has been extended from the original seven pages to thirteen pages:
+
+| Page | Route | Role |
+|------|-------|------|
+| Login | `/login` | Public |
+| Dashboard | `/` | Teacher |
+| Exams | `/exams` | Teacher |
+| Exam Detail | `/exams/:id` | Teacher |
+| Scanner | `/scanner` | Teacher |
+| Students | `/students` | Teacher |
+| Groups | `/groups` | Teacher |
+| Sessions | `/sessions` | Teacher |
+| Proctor Dashboard | `/sessions/:id/proctor` | Teacher |
+| Results | `/results` | Teacher |
+| Settings | `/settings` | Teacher |
+| Exam Take | `/exam` | Student |
+
+### 4.8.5 Responsive Layout and Theme
+
+The layout, theme system, and server state management architecture are unchanged from the original implementation, using the collapsible sidebar pattern, CSS custom properties for dark/light themes, and TanStack Query for caching.
+
+## 4.9 Deployment Configurations
+
+### 4.9.1 LAN Mode (Gunicorn)
+
+For classroom or departmental deployments on a local area network, SmartGrader is served by Gunicorn with multiple worker processes:
+
+```bash
+gunicorn "app:create_app('production')" \
+  --workers 4 \
+  --bind 0.0.0.0:5000 \
+  --timeout 120 \
+  --access-logfile logs/access.log
+```
+
+The number of workers is set to `2 * CPU_CORES + 1` as recommended by the Gunicorn documentation, providing concurrency for simultaneous student examination sessions.
+
+### 4.9.2 University Server Mode (Nginx + Gunicorn)
+
+For university server deployment, Nginx acts as a reverse proxy, handling SSL/TLS termination and static file serving:
+
+```nginx
+server {
+    listen 443 ssl;
+    server_name smartgrader.university.dz;
+
+    ssl_certificate     /etc/ssl/certs/smartgrader.crt;
+    ssl_certificate_key /etc/ssl/private/smartgrader.key;
+
+    location /api/ {
+        proxy_pass http://127.0.0.1:5000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        add_header Access-Control-Allow-Origin "https://smartgrader.university.dz";
+    }
+
+    location / {
+        root /var/www/smartgrader/dist;
+        try_files $uri $uri/ /index.html;
+    }
+}
+```
+
+The `add_header Access-Control-Allow-Origin` directive restricts cross-origin requests to the university's domain, enforcing the CORS hardening requirement.
+
+### 4.9.3 Docker Mode
+
+The Docker Compose configuration defines two services:
+
+```yaml
+services:
+  api:
+    build: .
+    environment:
+      - FLASK_ENV=production
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+      - CORS_ORIGINS=http://localhost
+    volumes:
+      - ./instance:/app/instance
+      - ./uploads:/app/uploads
+    ports:
+      - "5000:5000"
+
+  nginx:
+    image: nginx:alpine
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./frontend/dist:/usr/share/nginx/html
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - api
+```
+
+The `instance/` volume persists the SQLite database across container restarts, and the `uploads/` volume preserves uploaded scan images and proctoring snapshots.
+
+## 4.10 Screenshots
+
+Annotated screenshots of each page of the SmartGrader application are included in Appendix D (User Manual). These screenshots illustrate the final state of the user interface after the implementation of all four phases, including the login page, the teacher dashboard with monitoring statistics, the student examination interface with the timer and warning overlays, the proctoring dashboard with event timelines and snapshots, the group management page, and the session scheduling interface.
 
 <!-- TODO: Insert annotated screenshots when available -->
-<!-- Figure 4.1: Dashboard page -->
-<!-- Figure 4.2: Exam creation form -->
-<!-- Figure 4.3: Scanner MCQ tab with detection results -->
-<!-- Figure 4.4: Scanner AI tab with OCR and evaluation -->
-<!-- Figure 4.5: Results page with score distribution -->
-<!-- Figure 4.6: Settings page with theme toggle -->
 
 ## Summary
 
-This chapter has presented the implementation of SmartGrader across its backend, scanner, AI, and frontend layers. The Flask application factory pattern provides clean configuration management and extension initialisation. The service layer pattern decouples business logic from HTTP handling, facilitating both testing and future extensibility. The scanner pipeline employs a five-stage approach -- preprocessing, marker detection, bubble detection, grid mapping, and answer reading -- that transforms raw scanned images into structured answers through a series of well-defined image processing operations. The AI integration leverages 4-bit quantisation to run a 3-billion parameter vision-language model on consumer hardware, with a RAG feedback loop that progressively improves grading accuracy from teacher corrections. The React frontend provides a modern, responsive, and accessible user interface with server state management via TanStack Query and a comprehensive dark/light theme system. Chapter 5 presents the testing methodology and empirical results that validate this implementation.
+This chapter has presented the implementation of SmartGrader across its four development phases. Phase 1 established JWT authentication with bcrypt password hashing, role-based route decorators, and barcode login for students. Phase 2 delivered the online examination engine with session management, answer persistence, and auto-submission on timer expiry. Phase 3 implemented the browser-native ProctorEngine using TensorFlow.js BlazeFace for face detection, browser event tracking, periodic snapshot capture, and teacher-facing proctoring dashboard. Phase 4 provided three production deployment configurations: LAN mode with Gunicorn, university server mode with Nginx and SSL, and Docker Compose for containerised deployment. The original scanner pipeline and AI integration from earlier phases remain fully operational, and the test suite has grown to 191 tests covering all architectural layers. Chapter 5 presents the testing methodology and empirical results that validate this implementation.
