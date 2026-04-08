@@ -2,6 +2,84 @@
 
 All notable changes to SmartGrader will be documented in this file.
 
+## [1.0.0] - 2026-04-07
+
+### Phase 1: Authentication & User Management
+
+#### Added
+- **JWT authentication** -- httpOnly cookie-based tokens for teachers and students
+- **Teacher login** -- Email/password with bcrypt hashing
+- **Student login** -- Barcode scan login flow optimized for classroom use
+- **Role-based access control** -- Teacher, student, and admin roles enforced at route level
+- **Admin panel** -- Full teacher account management (create, edit, deactivate)
+- **CSV student import** -- Bulk import students from spreadsheet exports
+- **Rate limiting** -- Flask-Limiter on all auth endpoints to prevent brute-force attacks
+- **User model** -- New `User` table with role, hashed password, and status fields
+- **New routes** -- `/api/auth/*` (login, logout, me) and `/api/admin/*` (teacher and student management)
+- **CLI tool** -- `python -m scripts.create_admin` to bootstrap the first admin account
+
+#### Dependencies added
+- PyJWT
+- bcrypt
+- Flask-Limiter
+
+---
+
+### Phase 2: Online Exam Engine
+
+#### Added
+- **Student groups** -- Class-based student collections for bulk exam assignment
+- **Exam sessions** -- Scheduled start/end time windows; students can only enter during the window
+- **Display modes** -- `all_at_once` (full paper view) or `one_by_one` (single question, Next button)
+- **Save modes** -- `auto_each` (save on every answer), `auto_periodic` (timed saves), `manual` (explicit submit)
+- **Randomization** -- Per-student randomized question order and choice order
+- **Result visibility** -- Teacher configures: `none` / `score_only` / `score_and_answers`
+- **Countdown timer** -- Live timer in student UI; auto-submits when time expires
+- **Answer persistence** -- Answers saved server-side continuously; page refresh safe
+- **Auto-submit** -- Server enforces submission on session end even if client is offline
+- **Teacher monitoring dashboard** -- Live view of active session: who started, who submitted, elapsed time
+- **New models** -- `StudentGroup`, `StudentGroupMember`, `ExamSession`, `ExamAssignment`, `ExamAttempt`, `OnlineAnswer`
+- **New routes** -- `/api/groups/*`, `/api/sessions/*`, `/api/student/exams/*`
+
+---
+
+### Phase 3: Anti-Cheat & Proctoring
+
+#### Added
+- **Face detection** -- TensorFlow.js BlazeFace runs in-browser; detects absence or multiple faces
+- **DOM event tracking** -- Tab switch, window focus loss, copy/paste attempts, and restricted keyboard shortcuts
+- **Full-screen lockdown** -- Optional mode that forces full-screen; exit attempt is flagged
+- **Periodic webcam snapshots** -- Captured every 60 seconds and uploaded to the server
+- **Event-triggered snapshots** -- Automatic snapshot on any detected cheat event
+- **Configurable cheat response** -- `log_only`, `warn` (student sees warning), or `warn_escalate` (blocks exam)
+- **On-demand snapshot** -- Teacher can request an immediate snapshot from the monitoring dashboard
+- **New models** -- `ProctorEvent`, `ProctorSnapshot`, `CaptureRequest`
+- **New routes** -- `/api/student/exams/*/proctor/*` (event report, snapshot upload) and `/api/sessions/*/proctor/*` (teacher view, capture request)
+
+---
+
+### Phase 4: Deployment
+
+#### Added
+- **LAN mode** -- `python run.py --lan` serves the built React frontend from Flask; single URL for classroom use
+- **Optional SSL** -- `python run.py --ssl` generates and uses a self-signed certificate for HTTPS
+- **University server guide** -- Gunicorn + Nginx + systemd setup documented in `deploy/`
+- **Docker support** -- Multi-stage `Dockerfile` + `docker-compose.yml` for containerized deployment
+- **CORS hardening** -- Strict origin whitelist; configurable via `.env`
+- **Environment config** -- `.env.example` with all required variables; `python-dotenv` loading
+
+---
+
+### General (v1.0.0)
+
+- Test suite expanded from 40 to **191 automated tests** covering auth, sessions, proctoring, and deployment
+- Database grown from 7 to **~15 models**
+- API expanded from 18 to **~40 endpoints**
+- Frontend grown to **20+ pages**
+- Version set to **v1.0.0**
+
+---
+
 ## [0.3.0] - 2026-04-07
 
 ### Added

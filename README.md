@@ -1,14 +1,44 @@
 # SmartGrader
 
-An intelligent exam management and grading system with computer vision scanning and AI-powered short answer evaluation. Built as a Final Year Project (PFE) for an Algerian university.
+An intelligent exam management and grading platform with computer vision OMR scanning, AI-powered short answer evaluation, online exam delivery with anti-cheat proctoring, and JWT-based authentication. Built as a Final Year Project (PFE) for an Algerian university.
 
 ## Features
 
+### Exam Management & OMR Scanning
 - **Exam Management** -- Create MCQ exams with 2-6 choices per question, configurable marks
 - **Answer Sheet Generation** -- Print A4 QCM sheets with alignment markers, student ID boxes, and bubble grids
 - **Optical Scanning** -- Upload scanned sheets; OpenCV detects filled bubbles and auto-grades
+
+### AI Grading
 - **AI Grading** -- Qwen2.5-VL-3B vision model reads handwritten answers and scores them
 - **RAG Feedback Loop** -- Teacher corrections improve future AI evaluations
+
+### Authentication & User Management
+- **JWT Authentication** -- Secure httpOnly cookie-based auth for teachers and students
+- **Role-Based Access** -- Teacher, student, and admin roles with enforced permissions
+- **Student Login** -- Barcode scan login flow for fast classroom use
+- **Admin Panel** -- Teacher account management; bulk student import via CSV
+- **Rate Limiting** -- Flask-Limiter protects all auth endpoints
+
+### Online Exam Engine
+- **Student Groups** -- Class-based assignment of exams to groups
+- **Exam Sessions** -- Scheduled time windows with start/end enforcement
+- **Flexible Display** -- All-at-once or one-by-one question display modes
+- **Save Modes** -- Auto-save per answer, periodic auto-save, or manual submit
+- **Randomization** -- Question and choice order randomization per student
+- **Result Visibility** -- Configurable: no result / score only / score + answers
+- **Countdown Timer** -- Auto-submits on expiry; student sees live remaining time
+- **Teacher Dashboard** -- Live monitoring of active exam sessions
+
+### Anti-Cheat & Proctoring
+- **Face Detection** -- Browser-side BlazeFace (TensorFlow.js) detects presence and multiple faces
+- **Event Tracking** -- Tab switch, focus loss, copy/paste, and keyboard shortcut events logged
+- **Full-Screen Lockdown** -- Optional enforced full-screen mode during exams
+- **Webcam Snapshots** -- Periodic (60s) and event-triggered snapshots stored server-side
+- **Cheat Response Levels** -- Configurable: log only / warn student / warn + escalate
+- **Teacher Snapshot Request** -- On-demand capture from the monitoring dashboard
+
+### General
 - **Dashboard & Analytics** -- Real-time stats, bar charts, pass/fail distribution
 - **Results & Export** -- View grades by exam, export to CSV, print result certificates
 - **Academic Documentation** -- Full 6-chapter PFE thesis with UML diagrams and bibliography
@@ -18,13 +48,18 @@ An intelligent exam management and grading system with computer vision scanning 
 | Layer | Technology |
 |-------|-----------|
 | Backend | Python 3.10, Flask 3.1, SQLAlchemy 2.0, Flask-Migrate |
+| Auth | PyJWT, bcrypt, Flask-Limiter |
 | Frontend | React 19, Vite, Tailwind CSS 4, shadcn/ui (base-nova), TanStack Query, Recharts |
+| Proctoring | TensorFlow.js, BlazeFace model |
 | Scanner | OpenCV 4.11 (contour detection, morphological operations, adaptive thresholding) |
 | AI Model | Qwen2.5-VL-3B-Instruct (4-bit NF4 quantization via BitsAndBytes) |
-| Database | SQLite (7 tables, cascading foreign keys) |
+| Database | SQLite (~15 tables, cascading foreign keys) |
+| Deployment | Gunicorn, Nginx, systemd, Docker, docker-compose |
 | Docs | Markdown, PlantUML, Pandoc, xhtml2pdf |
 
 ## Quick Start
+
+### Development Mode
 
 ```bash
 # Clone
@@ -33,33 +68,35 @@ cd SmartGrader
 
 # Backend
 pip install -r requirements.txt
-python -m scripts.seed_data   # seed 7 exams, 10 students, 50+ results
-python run.py                 # Flask API at http://localhost:5000
+python -m scripts.create_admin          # create first admin account
+python -m scripts.seed_data             # seed 7 exams, 10 students, 50+ results
+python run.py                           # Flask API at http://localhost:5000
 
 # Frontend (separate terminal)
 cd frontend
 npm install
-npm run dev                   # React app at http://localhost:3000
+npm run dev                             # React app at http://localhost:3000
 ```
 
-See [INSTALL.md](INSTALL.md) for detailed setup including CUDA/GPU configuration.
-
-## Deployment
-
 ### LAN Mode (Classroom)
+
+Serves the built frontend from Flask -- one process, one URL for the whole class.
+
 ```bash
 cd frontend && npm run build && cd ..
 python run.py --lan
+# Everything at http://<your-ip>:5000
 ```
-
-### University Server
-See [deploy/README.md](deploy/README.md) for full guide.
 
 ### Docker
+
 ```bash
-cp .env.example .env  # edit SECRET_KEY
+cp .env.example .env          # edit SECRET_KEY, FLASK_ENV, etc.
 docker-compose up -d
+# App at http://localhost (Nginx on port 80)
 ```
+
+See [INSTALL.md](INSTALL.md) for full setup including CUDA/GPU, university server deployment, and SSL configuration.
 
 ## Project Structure
 
@@ -67,20 +104,39 @@ docker-compose up -d
 app/
   __init__.py          # Flask app factory
   config.py            # All configuration
-  models/              # SQLAlchemy ORM (Exam, Question, Choice, Student, Result)
-  services/            # Business logic (exam, grading, scanner)
+  models/              # SQLAlchemy ORM
+    exam.py            # Exam, Question, Choice
+    student.py         # Student, StudentAnswer
+    result.py          # Result
+    user.py            # User (teacher/student/admin accounts)
+    group.py           # StudentGroup, StudentGroupMember
+    session.py         # ExamSession, ExamAssignment, ExamAttempt, OnlineAnswer
+    proctor.py         # ProctorEvent, ProctorSnapshot, CaptureRequest
+  services/            # Business logic (exam, grading, scanner, auth, session)
   scanner/             # OpenCV pipeline (preprocess, detect, map, read)
-  routes/              # Flask blueprints (exams, questions, students, scanning, grading, ai)
+  routes/              # Flask blueprints
+    auth.py            # /api/auth/*
+    admin.py           # /api/admin/*
+    exams.py           # /api/exams/*
+    questions.py       # /api/exams/<id>/questions
+    students.py        # /api/students/*
+    scanning.py        # /api/scan/upload
+    grading.py         # /api/results/*
+    groups.py          # /api/groups/*
+    sessions.py        # /api/sessions/*
+    student_exam.py    # /api/student/exams/*
   ai/                  # Vision model (loader, OCR, evaluator, RAG corrections)
 frontend/
-  src/pages/           # React pages (Dashboard, Exams, Scanner, Students, Results, ...)
-  src/components/      # UI components (tables, modals, charts, forms)
+  src/pages/           # React pages (Dashboard, Exams, Scanner, Students, Results,
+  |                    #   Login, ExamTaking, TeacherMonitor, AdminPanel, ...)
+  src/components/      # UI components (tables, modals, charts, forms, proctor)
   src/hooks/           # TanStack Query hooks
+deploy/                # Nginx config, systemd service, deploy scripts
 docs/
   thesis/              # 6 chapters + appendices (Markdown)
   figures/uml/         # 7 PlantUML diagrams
 legacy/                # Original PyQt5 desktop app (archived)
-scripts/               # Seed data, migration tools
+scripts/               # seed_data, create_admin, migrate_data
 ```
 
 ## Documentation
@@ -102,25 +158,61 @@ The application features a modern glassmorphism UI with light/dark mode:
 - **Exams** -- Card-row list with search, pagination, print, delete
 - **Scanner** -- Split layout with mode cards (MCQ / AI), step progress, upload zone
 - **Results** -- Summary stats, card-row results with pass/fail badges, CSV export
+- **Exam Taking** -- Student countdown timer, question navigator, auto-save
+- **Teacher Monitor** -- Live session dashboard, proctor events, snapshot requests
+- **Admin Panel** -- Teacher management, CSV student import
 - **Academic Docs** -- Thesis chapters, UML diagrams, bibliography, build tools
 
 ## API
 
-18 REST endpoints under `/api/`:
+~40 REST endpoints across 10+ groups under `/api/`:
 
 ```
+POST           /api/auth/login
+POST           /api/auth/student-login
+POST           /api/auth/logout
+GET            /api/auth/me
+
+GET/POST/PUT   /api/admin/teachers
+POST           /api/admin/students/import
+
 GET/POST       /api/exams
 GET/PUT/DELETE /api/exams/:id
 GET/POST       /api/exams/:id/questions
+
 GET/POST       /api/students
 GET/PUT        /api/students/:id
+
 POST           /api/scan/upload
+
 GET/POST       /api/results
+GET            /api/results/exam/:id
+
+GET/POST       /api/groups
+GET/PUT/DELETE /api/groups/:id
+POST           /api/groups/:id/members
+
+GET/POST       /api/sessions
+GET/PUT/DELETE /api/sessions/:id
+GET            /api/sessions/:id/monitor
+POST           /api/sessions/:id/proctor/snapshot
+
+GET            /api/student/exams
+POST           /api/student/exams/:id/start
+POST           /api/student/exams/:id/answer
+POST           /api/student/exams/:id/submit
+POST           /api/student/exams/:id/proctor/event
+POST           /api/student/exams/:id/proctor/snapshot
+
 GET            /api/ai/status
-POST           /api/ai/ocr | /api/ai/evaluate | /api/ai/correct
+POST           /api/ai/ocr
+POST           /api/ai/evaluate
+POST           /api/ai/correct
+GET            /api/ai/corrections
+
 GET            /api/health
 ```
 
 ## License
 
-PFE Academic Project -- All rights reserved.
+PFE Academic Project -- All rights reserved. v1.0.0

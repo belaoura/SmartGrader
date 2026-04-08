@@ -34,9 +34,25 @@ pip install -r requirements.txt
 
 ### Dependencies installed
 
-Flask, SQLAlchemy, Flask-Migrate, Flask-CORS, OpenCV (opencv-python-headless), NumPy, pdfkit, pytest.
+Flask, SQLAlchemy, Flask-Migrate, Flask-CORS, Flask-Limiter, PyJWT, bcrypt, OpenCV (opencv-python-headless), NumPy, pdfkit, pytest, python-dotenv, gunicorn.
 
-## 3. Database Setup
+## 3. Environment Configuration
+
+```bash
+cp .env.example .env
+```
+
+Edit `.env` and set at minimum:
+
+```
+SECRET_KEY=<long-random-string>
+JWT_SECRET=<another-long-random-string>
+FLASK_ENV=development
+```
+
+All other values have safe defaults for development.
+
+## 4. Database Setup
 
 The database auto-creates on first run. To seed sample data:
 
@@ -57,7 +73,15 @@ rm instance/smart_grader.db
 python -m scripts.seed_data
 ```
 
-## 4. CUDA and GPU Setup (for AI Grading)
+## 5. Create the First Admin Account
+
+```bash
+python -m scripts.create_admin
+```
+
+Follow the prompts to set admin email and password. This account can then create teacher accounts from the Admin Panel UI.
+
+## 6. CUDA and GPU Setup (for AI Grading)
 
 AI grading requires a CUDA-compatible NVIDIA GPU. MCQ optical scanning works without a GPU.
 
@@ -90,7 +114,7 @@ AutoProcessor.from_pretrained('Qwen/Qwen2.5-VL-3B-Instruct')
 "
 ```
 
-## 5. wkhtmltopdf (for PDF Answer Sheets)
+## 7. wkhtmltopdf (for PDF Answer Sheets)
 
 Required for generating printable PDF answer sheets.
 
@@ -101,14 +125,14 @@ Required for generating printable PDF answer sheets.
 sudo apt-get install wkhtmltopdf
 ```
 
-## 6. Frontend Setup
+## 8. Frontend Setup
 
 ```bash
 cd frontend
 npm install
 ```
 
-## 7. Running the Application
+## 9. Running the Application
 
 ### Development (two terminals)
 
@@ -123,23 +147,85 @@ npm run dev
 # App runs at http://localhost:3000
 ```
 
-### Production Build
+### LAN Mode (Classroom -- single process)
+
+Build the frontend once, then run Flask in LAN mode to serve everything from one URL:
 
 ```bash
-cd frontend
-npm run build
-# Output in frontend/dist/ -- serve with Flask or Nginx
+cd frontend && npm run build && cd ..
+python run.py --lan
+# Backend + frontend at http://<your-ip>:5000
 ```
 
-## 8. Running Tests
+Optional SSL (self-signed certificate generated automatically):
 
 ```bash
-pytest tests/ -v              # All 40+ tests
+python run.py --lan --ssl
+```
+
+Students connect to `https://<your-ip>:5000`. They will see a browser certificate warning for self-signed certs -- they can proceed by clicking "Advanced" > "Accept risk".
+
+### University Server (Gunicorn + Nginx + systemd)
+
+See `deploy/` directory for full configuration files. Summary:
+
+```bash
+# Install Gunicorn
+pip install gunicorn
+
+# Test Gunicorn manually
+gunicorn -w 4 -b 127.0.0.1:5000 "app:create_app()"
+
+# Copy systemd service file
+sudo cp deploy/smartgrader.service /etc/systemd/system/
+sudo systemctl enable smartgrader
+sudo systemctl start smartgrader
+
+# Configure Nginx reverse proxy
+sudo cp deploy/nginx.conf /etc/nginx/sites-available/smartgrader
+sudo ln -s /etc/nginx/sites-available/smartgrader /etc/nginx/sites-enabled/
+sudo nginx -t && sudo systemctl reload nginx
+```
+
+### Docker
+
+```bash
+# Copy and edit environment file
+cp .env.example .env
+# Edit SECRET_KEY, JWT_SECRET, FLASK_ENV=production
+
+# Build and start
+docker-compose up -d
+
+# Check logs
+docker-compose logs -f
+
+# Stop
+docker-compose down
+```
+
+The compose file starts:
+- `web` -- Flask + Gunicorn
+- `nginx` -- Nginx reverse proxy on port 80
+- Volumes for `instance/` (SQLite DB) and `uploads/`
+
+For HTTPS on the university server, obtain a certificate from Let's Encrypt:
+
+```bash
+sudo apt install certbot python3-certbot-nginx
+sudo certbot --nginx -d yourdomain.example.com
+```
+
+## 10. Running Tests
+
+```bash
+pytest tests/ -v              # All 191 tests
 pytest tests/test_models/ -v  # Model tests only
+pytest tests/test_auth/ -v    # Auth tests only
 pytest tests/ --tb=short      # Compact output
 ```
 
-## 9. Building the Thesis PDF
+## 11. Building the Thesis PDF
 
 ```bash
 # Using Python (recommended, no external tools needed)
@@ -175,4 +261,16 @@ Stop all Python processes accessing the database, then retry:
 ```bash
 taskkill /F /IM python.exe    # Windows
 pkill python                  # Linux
+```
+
+### JWT cookie not sent (HTTPS mismatch)
+
+If the frontend is on HTTP but the cookie has `Secure=True`, the browser will not send it. In development, ensure `COOKIE_SECURE=False` in `.env`. In production with HTTPS, set `COOKIE_SECURE=True`.
+
+### Docker container cannot write uploads
+
+The `uploads/` and `instance/` directories must be writable. If you see permission errors:
+
+```bash
+sudo chown -R 1000:1000 instance/ uploads/
 ```
