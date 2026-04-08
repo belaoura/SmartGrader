@@ -49,6 +49,10 @@ export default function CreateSession() {
     save_mode: "auto_each",
     randomize: false,
     show_result: "none",
+    proctoring_enabled: false,
+    lockdown_enabled: false,
+    cheat_response: "log_only",
+    warning_threshold: 3,
   });
   const [selectedStudents, setSelectedStudents] = useState([]);
   const [selectedGroups, setSelectedGroups] = useState([]);
@@ -76,6 +80,12 @@ export default function CreateSession() {
         save_mode: form.save_mode,
         randomize: form.randomize,
         show_result: form.show_result,
+        proctoring_enabled: form.proctoring_enabled,
+        lockdown_enabled: form.lockdown_enabled,
+        cheat_response: form.cheat_response,
+        warning_threshold: form.proctoring_enabled && form.cheat_response === "warn_escalate"
+          ? Number(form.warning_threshold)
+          : form.warning_threshold,
       });
 
       if (selectedStudents.length > 0 || selectedGroups.length > 0) {
@@ -196,6 +206,66 @@ export default function CreateSession() {
               />
               <Label htmlFor="randomize" className="cursor-pointer">Randomize question order</Label>
             </div>
+          </CardContent>
+        </Card>
+
+        {/* Proctoring */}
+        <Card className="glass">
+          <CardHeader><CardTitle className="text-base">Proctoring</CardTitle></CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex items-center gap-2">
+              <input
+                id="proctoring_enabled"
+                type="checkbox"
+                checked={form.proctoring_enabled}
+                onChange={(e) => set("proctoring_enabled", e.target.checked)}
+                className="accent-primary h-4 w-4"
+              />
+              <Label htmlFor="proctoring_enabled" className="cursor-pointer">Enable Proctoring</Label>
+            </div>
+
+            {form.proctoring_enabled && (
+              <div className="pl-6 space-y-4 border-l-2 border-border">
+                <div className="flex items-center gap-2">
+                  <input
+                    id="lockdown_enabled"
+                    type="checkbox"
+                    checked={form.lockdown_enabled}
+                    onChange={(e) => set("lockdown_enabled", e.target.checked)}
+                    className="accent-primary h-4 w-4"
+                  />
+                  <Label htmlFor="lockdown_enabled" className="cursor-pointer">Full-Screen Lockdown</Label>
+                </div>
+
+                <RadioGroup
+                  label="Cheat Response"
+                  name="cheat_response"
+                  value={form.cheat_response}
+                  onChange={(v) => set("cheat_response", v)}
+                  options={[
+                    { value: "log_only", label: "Log only (silent)" },
+                    { value: "warn", label: "Warn student" },
+                    { value: "warn_escalate", label: "Warn + escalate" },
+                  ]}
+                />
+
+                {form.cheat_response === "warn_escalate" && (
+                  <div className="space-y-2">
+                    <Label htmlFor="warning_threshold">Warning Threshold</Label>
+                    <Input
+                      id="warning_threshold"
+                      type="number"
+                      min={1}
+                      max={10}
+                      value={form.warning_threshold}
+                      onChange={(e) => set("warning_threshold", Number(e.target.value))}
+                      className="w-24"
+                    />
+                    <p className="text-xs text-muted-foreground">Number of warnings before exam is flagged</p>
+                  </div>
+                )}
+              </div>
+            )}
           </CardContent>
         </Card>
 

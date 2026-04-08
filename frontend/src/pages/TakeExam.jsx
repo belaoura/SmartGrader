@@ -11,6 +11,9 @@ import {
   useSaveAnswersBatch,
   useSubmitExam,
 } from "@/hooks/use-student-exam";
+import ProctorEngine from "@/components/ProctorEngine";
+import FullscreenLockdown from "@/components/FullscreenLockdown";
+import ProctorWarningBanner from "@/components/ProctorWarningBanner";
 
 function formatTime(seconds) {
   if (seconds < 0) seconds = 0;
@@ -27,6 +30,7 @@ export default function TakeExam() {
 
   const [questions, setQuestions] = useState([]);
   const [sessionConfig, setSessionConfig] = useState(null);
+  const [examData, setExamData] = useState(null);
   const [answers, setAnswers] = useState({}); // questionId -> choiceId
   const [currentIndex, setCurrentIndex] = useState(0);
   const [remainingSeconds, setRemainingSeconds] = useState(null);
@@ -45,6 +49,7 @@ export default function TakeExam() {
       onSuccess: (data) => {
         setQuestions(data.questions || []);
         setSessionConfig(data.session || data);
+        setExamData(data);
         setRemainingSeconds(data.remaining_seconds ?? null);
         setStarted(true);
       },
@@ -189,6 +194,17 @@ export default function TakeExam() {
 
   return (
     <div className="space-y-4 max-w-4xl">
+      {/* Proctoring components */}
+      {examData?.proctoring_enabled && (
+        <ProctorEngine sessionId={sessionId} onError={(msg) => setError(msg)} />
+      )}
+      {examData?.lockdown_enabled && (
+        <FullscreenLockdown onViolation={() => {}} />
+      )}
+      {examData?.proctoring_enabled && examData?.cheat_response !== "log_only" && (
+        <ProctorWarningBanner sessionId={sessionId} onCaptureRequest={() => {}} />
+      )}
+
       {/* Header bar */}
       <div className="flex items-center justify-between sticky top-20 z-30 bg-background/90 backdrop-blur-sm py-3 px-4 rounded-xl border border-border shadow-sm">
         <div className="font-semibold text-sm truncate">

@@ -1,11 +1,17 @@
 import { useParams, Link } from "react-router-dom";
-import { ArrowLeft, RefreshCw } from "lucide-react";
+import { ArrowLeft, RefreshCw, Camera, Flag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { PageHeader } from "@/components/ui/page-header";
 import { useSession, useMonitorSession } from "@/hooks/use-sessions";
+import {
+  useProctorSummary,
+  useProctorEvents,
+  useRequestCapture,
+  useToggleFlag,
+} from "@/hooks/use-proctor";
 
 function statusBadge(status) {
   switch (status) {
@@ -131,6 +137,11 @@ export default function SessionDetail() {
         ))}
       </div>
 
+      {/* Proctoring section */}
+      {session.proctoring_enabled && (
+        <ProctorMonitor sessionId={id} />
+      )}
+
       {/* Live monitor table */}
       <Card className="glass">
         <CardHeader className="flex flex-row items-center justify-between">
@@ -187,5 +198,145 @@ export default function SessionDetail() {
         </CardContent>
       </Card>
     </div>
+  );
+}
+
+function severityBadge(severity) {
+  switch (severity) {
+    case "high":
+      return <Badge className="bg-red-500/15 text-red-600 dark:text-red-400 border-red-500/30">High</Badge>;
+    case "medium":
+      return <Badge className="bg-yellow-500/15 text-yellow-600 dark:text-yellow-400 border-yellow-500/30">Medium</Badge>;
+    default:
+      return <Badge variant="outline" className="text-muted-foreground">Low</Badge>;
+  }
+}
+
+function ProctorMonitor({ sessionId }) {
+  const { data: summary, isLoading: loadingSummary } = useProctorSummary(sessionId);
+  const { data: eventsData, isLoading: loadingEvents } = useProctorEvents(sessionId);
+  const requestCapture = useRequestCapture();
+  const toggleFlag = useToggleFlag();
+
+  const students = summary?.students || [];
+  const events = eventsData?.events || [];
+
+  return (
+    <>
+      {/* Proctoring Summary Table */}
+      <Card className="glass">
+        <CardHeader className="flex flex-row items-center justify-between">
+          <CardTitle className="text-base">Proctoring Monitor</CardTitle>
+          <div className="flex items-center gap-2 text-xs text-muted-foreground">
+            <RefreshCw className="h-3.5 w-3.5 animate-spin-slow" />
+            Auto-refreshes every 10s
+          </div>
+        </CardHeader>
+        <CardContent className="p-0">
+          {loadingSummary && students.length === 0 ? (
+            <div className="space-y-2 p-6">
+              {[1, 2, 3].map((i) => <Skeleton key={i} className="h-10 rounded" />)}
+            </div>
+          ) : students.length === 0 ? (
+            <div className="py-10 text-center text-muted-foreground text-sm">
+              No proctoring data yet.
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-border bg-muted/30">
+                    <th className="text-left px-4 py-2 font-medium text-muted-foreground">Student</th>
+                    <th className="text-left px-4 py-2 font-medium text-muted-foreground">Matricule</th>
+                    <th className="text-center px-4 py-2 font-medium text-muted-foreground">Events</th>
+                    <th className="text-center px-4 py-2 font-medium text-muted-foreground">Warnings</th>
+                    <th className="text-center px-4 py-2 font-medium text-muted-foreground">Flagged</th>
+                    <th className="text-center px-4 py-2 font-medium text-muted-foreground">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-border">
+                  {students.map((s) => (
+                    <tr key={s.attempt_id || s.student_id} className="hover:bg-accent/30 transition-colors">
+                      <td className="px-4 py-2.5 font-medium">{s.name}</td>
+                      <td className="px-4 py-2.5 text-muted-foreground">{s.matricule || s.student_id || "—"}</td>
+                      <td className="px-4 py-2.5 text-center">{s.event_count ?? 0}</td>
+                      <td className="px-4 py-2.5 text-center">
+                        <span className={
+                          (s.warning_count ?? 0) >= 3
+                            ? "text-red-600 dark:text-red-400 font-semibold"
+                            : (s.warning_count ?? 0) > 0
+                            ? "text-yellow-600 dark:text-yellow-400 font-medium"
+                            : "text-muted-foreground"
+                        }>
+                          {s.warning_count ?? 0}
+                        </span>
+                      </td>
+                      <td className="px-4 py-2.5 text-center">
+                        {s.flagged ? (
+                          <Badge className="bg-red-500/15 text-red-600 dark:text-red-400 border-red-500/30">Flagged</Badge>
+                        ) : (
+                          <span className="text-muted-foreground text-xs">—</span>
+                        )}
+                      </td>
+                      <td className="px-4 py-2.5">
+                        <div className="flex items-center gap-2 justify-center">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => requestCapture.mutate({ sessionId, studentId: s.student_id })}
+                            disabled={requestCapture.isPending}
+                            title="Request snapshot capture"
+                          >
+                            <Camera className="h-3.5 w-3.5" />
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant={s.flagged ? "destructive" : "outline"}
+                            onClick={() => toggleFlag.mutate({ sessionId, attemptId: s.attempt_id })}
+                            disabled={toggleFlag.isPending}
+                            title={s.flagged ? "Unflag student" : "Flag student"}
+                          >
+                            <Flag className="h-3.5 w-3.5" />
+                          </Button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Event Timeline */}
+      <Card className="glass">
+        <CardHeader>
+          <CardTitle className="text-base">Event Timeline</CardTitle>
+        </CardHeader>
+        <CardContent>
+          {loadingEvents && events.length === 0 ? (
+            <div className="space-y-2">
+              {[1, 2, 3].map((i) => <Skeleton key={i} className="h-8 rounded" />)}
+            </div>
+          ) : events.length === 0 ? (
+            <div className="py-6 text-center text-muted-foreground text-sm">No events recorded yet.</div>
+          ) : (
+            <div className="space-y-2 max-h-80 overflow-y-auto">
+              {[...events].reverse().map((ev, idx) => (
+                <div key={ev.id || idx} className="flex items-center gap-3 text-sm py-1.5 border-b border-border last:border-0">
+                  <span className="text-xs text-muted-foreground w-32 shrink-0">
+                    {ev.created_at ? new Date(ev.created_at).toLocaleTimeString() : "—"}
+                  </span>
+                  <span className="font-medium flex-1 capitalize">{(ev.event_type || "").replace(/_/g, " ")}</span>
+                  <span className="text-muted-foreground text-xs flex-1">{ev.student_name || ""}</span>
+                  {severityBadge(ev.severity)}
+                </div>
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    </>
   );
 }

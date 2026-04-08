@@ -140,6 +140,10 @@ def _build_attempt_response(attempt, session):
         "questions": question_list,
         "remaining_seconds": remaining,
         "total_questions": len(question_list),
+        "proctoring_enabled": session.proctoring_enabled,
+        "lockdown_enabled": session.lockdown_enabled,
+        "cheat_response": session.cheat_response,
+        "warning_threshold": session.warning_threshold,
     }
 
 
