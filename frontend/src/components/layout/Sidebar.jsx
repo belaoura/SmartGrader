@@ -15,6 +15,7 @@ import {
   Users,
   Upload,
   LogOut,
+  Monitor,
 } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { cn } from "@/lib/utils";
@@ -28,6 +29,8 @@ const navGroups = [
       { icon: ScanLine,        label: "Scanner",   to: "/scanner" },
       { icon: GraduationCap,   label: "Students",  to: "/students" },
       { icon: BarChart3,       label: "Results",   to: "/results" },
+      { icon: Users,           label: "Groups",       to: "/groups" },
+      { icon: Monitor,         label: "Online Exams", to: "/sessions" },
     ],
   },
   {
