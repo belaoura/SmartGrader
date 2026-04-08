@@ -539,6 +539,31 @@ def assemble_html(cover_html: str, toc_html: str, chapters_html: list) -> str:
 """
 
 
+def link_callback(uri: str, rel: str) -> str:
+    """
+    Resolve relative image/resource URIs to absolute filesystem paths so
+    xhtml2pdf can load them.  The markdown sources reference images as
+    ``../figures/generated/foo.png`` which, relative to the thesis/ directory,
+    points to ``docs/figures/generated/foo.png``.
+    """
+    # Already an absolute path or a data URI — pass through untouched
+    if uri.startswith("data:") or os.path.isabs(uri):
+        return uri
+
+    # Resolve relative to the thesis directory
+    candidate = (THESIS_DIR / uri).resolve()
+    if candidate.exists():
+        return str(candidate)
+
+    # Fall back: try relative to the repo root
+    candidate2 = (THESIS_DIR.parent.parent / uri).resolve()
+    if candidate2.exists():
+        return str(candidate2)
+
+    # Return as-is and let xhtml2pdf report the error
+    return uri
+
+
 def convert_html_to_pdf(html_content: str, output_path: Path) -> bool:
     """Use xhtml2pdf/pisa to render HTML → PDF. Returns True on success."""
     with open(output_path, "wb") as pdf_file:
@@ -546,6 +571,7 @@ def convert_html_to_pdf(html_content: str, output_path: Path) -> bool:
             html_content.encode("utf-8"),
             dest=pdf_file,
             encoding="utf-8",
+            link_callback=link_callback,
         )
     return not result.err
 
