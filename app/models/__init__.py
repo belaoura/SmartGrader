@@ -10,3 +10,6 @@ from app.models.result import Result  # noqa: E402, F401
 from app.models.ai_correction import AICorrection  # noqa: E402, F401
 from app.models.user import User  # noqa: E402, F401
 from app.models.group import StudentGroup, StudentGroupMember  # noqa: E402, F401
+from app.models.exam_session import ExamSession, ExamAssignment  # noqa: E402, F401
+from app.models.exam_attempt import ExamAttempt  # noqa: E402, F401
+from app.models.online_answer import OnlineAnswer  # noqa: E402, F401
