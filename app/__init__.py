@@ -37,7 +37,10 @@ def create_app(config_name=None):
     # Initialize extensions
     db.init_app(app)
     migrate.init_app(app, db)
-    CORS(app)
+    origins = app.config.get("ALLOWED_ORIGINS", "*")
+    if origins != "*":
+        origins = [o.strip() for o in origins.split(",")]
+    CORS(app, origins=origins)
     limiter.init_app(app)
 
     # Setup logging
@@ -63,6 +66,24 @@ def create_app(config_name=None):
     # Register blueprints
     from app.routes import register_blueprints
     register_blueprints(app)
+
+    # Serve frontend static files (LAN/Docker mode)
+    if app.config.get("SERVE_STATIC"):
+        import os as _os
+        dist_dir = _os.path.join(_os.path.dirname(_os.path.dirname(__file__)), "frontend", "dist")
+        if _os.path.isdir(dist_dir):
+            from flask import send_from_directory
+
+            @app.route("/assets/<path:filename>")
+            def serve_assets(filename):
+                return send_from_directory(_os.path.join(dist_dir, "assets"), filename)
+
+            @app.route("/", defaults={"path": ""})
+            @app.route("/<path:path>")
+            def serve_frontend(path):
+                if path.startswith("api/"):
+                    return jsonify({"error": "Not found"}), 404
+                return send_from_directory(dist_dir, "index.html")
 
     # Health check
     @app.route("/api/health")

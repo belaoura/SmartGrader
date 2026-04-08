@@ -85,6 +85,10 @@ class Config:
     LOG_LEVEL = "INFO"
     LOG_FILE = os.path.join(BASE_DIR, "logs", "smartgrader.log")
 
+    # Deployment
+    ALLOWED_ORIGINS = os.environ.get("ALLOWED_ORIGINS", "*")
+    SERVE_STATIC = os.environ.get("SERVE_STATIC", "false").lower() == "true"
+
     # Authentication
     JWT_ACCESS_TOKEN_EXPIRES = 900        # 15 minutes
     JWT_REFRESH_TOKEN_EXPIRES = 604800    # 7 days
@@ -109,6 +113,7 @@ class ProductionConfig(Config):
     """Production configuration."""
     DEBUG = False
     LOG_LEVEL = "WARNING"
+    SECRET_KEY = os.environ.get("SECRET_KEY", "change-me-in-production")
 
 
 config_by_name = {
