@@ -1,0 +1,10 @@
+services:
+  smartgrader:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./instance:/app/instance
+      - ./uploads:/app/uploads
+    env_file: .env
+    restart: unless-stopped

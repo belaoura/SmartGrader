@@ -1,0 +1,14 @@
+node_modules/
+frontend/node_modules/
+.git/
+__pycache__/
+*.pyc
+instance/
+uploads/
+logs/
+.env
+.superpowers/
+.playwright-mcp/
+tests/
+legacy/
+docs/
