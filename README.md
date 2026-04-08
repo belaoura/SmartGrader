@@ -44,6 +44,23 @@ npm run dev                   # React app at http://localhost:3000
 
 See [INSTALL.md](INSTALL.md) for detailed setup including CUDA/GPU configuration.
 
+## Deployment
+
+### LAN Mode (Classroom)
+```bash
+cd frontend && npm run build && cd ..
+python run.py --lan
+```
+
+### University Server
+See [deploy/README.md](deploy/README.md) for full guide.
+
+### Docker
+```bash
+cp .env.example .env  # edit SECRET_KEY
+docker-compose up -d
+```
+
 ## Project Structure
 
 ```
