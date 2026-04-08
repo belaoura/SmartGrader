@@ -15,10 +15,21 @@ class ExamAttempt(db.Model):
     question_order = db.Column(db.Text)
     score = db.Column(db.Float)
     percentage = db.Column(db.Float)
+    flagged = db.Column(db.Boolean, default=False)
+    warning_count = db.Column(db.Integer, default=0)
 
     student = db.relationship("Student")
     answers = db.relationship(
         "OnlineAnswer", backref="attempt", cascade="all, delete-orphan", lazy="dynamic"
+    )
+    proctor_events = db.relationship(
+        "ProctorEvent", backref="attempt", cascade="all, delete-orphan", lazy="dynamic"
+    )
+    proctor_snapshots = db.relationship(
+        "ProctorSnapshot", backref="attempt", cascade="all, delete-orphan", lazy="dynamic"
+    )
+    capture_requests = db.relationship(
+        "CaptureRequest", backref="attempt", cascade="all, delete-orphan", lazy="dynamic"
     )
 
     __table_args__ = (
@@ -36,5 +47,7 @@ class ExamAttempt(db.Model):
             "submitted_at": self.submitted_at,
             "score": self.score,
             "percentage": self.percentage,
+            "flagged": self.flagged,
+            "warning_count": self.warning_count,
             "answer_count": self.answers.count(),
         }

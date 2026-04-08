@@ -13,3 +13,4 @@ from app.models.group import StudentGroup, StudentGroupMember  # noqa: E402, F40
 from app.models.exam_session import ExamSession, ExamAssignment  # noqa: E402, F401
 from app.models.exam_attempt import ExamAttempt  # noqa: E402, F401
 from app.models.online_answer import OnlineAnswer  # noqa: E402, F401
+from app.models.proctor import ProctorEvent, ProctorSnapshot, CaptureRequest  # noqa: E402, F401

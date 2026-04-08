@@ -15,6 +15,10 @@ class ExamSession(db.Model):
     save_mode = db.Column(db.String(20), nullable=False)
     randomize = db.Column(db.Boolean, default=False)
     show_result = db.Column(db.String(20), nullable=False)
+    proctoring_enabled = db.Column(db.Boolean, default=False)
+    lockdown_enabled = db.Column(db.Boolean, default=False)
+    cheat_response = db.Column(db.String(20), default="log_only")
+    warning_threshold = db.Column(db.Integer, default=3)
     created_at = db.Column(db.String(30), default=lambda: datetime.now(timezone.utc).isoformat())
 
     exam = db.relationship("Exam", backref="sessions")
@@ -36,6 +40,10 @@ class ExamSession(db.Model):
             "save_mode": self.save_mode,
             "randomize": self.randomize,
             "show_result": self.show_result,
+            "proctoring_enabled": self.proctoring_enabled,
+            "lockdown_enabled": self.lockdown_enabled,
+            "cheat_response": self.cheat_response,
+            "warning_threshold": self.warning_threshold,
             "assignment_count": self.assignments.count(),
             "created_at": self.created_at,
         }
