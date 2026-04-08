@@ -5,6 +5,8 @@ import pytest
 from app import create_app
 from app.models import db as _db
 from app.services.auth_service import create_teacher
+from app.models.student import Student
+from app.models.user import User
 
 
 @pytest.fixture
@@ -40,3 +42,20 @@ def auth_client(client, db):
         content_type="application/json",
     )
     return client
+
+
+@pytest.fixture
+def student_client(client, db):
+    """Provide an authenticated test client (student role)."""
+    student = Student(name="Test Student", matricule="TEST001")
+    db.session.add(student)
+    db.session.commit()
+    user = User(role="student", student_id=student.id)
+    db.session.add(user)
+    db.session.commit()
+    client.post(
+        "/api/auth/scan",
+        data=json.dumps({"matricule": "TEST001"}),
+        content_type="application/json",
+    )
+    return client, student
