@@ -13,6 +13,7 @@ def register_blueprints(app):
     from app.routes.auth import auth_bp
     from app.routes.admin import admin_bp
     from app.routes.groups import groups_bp
+    from app.routes.sessions import sessions_bp
 
     app.register_blueprint(exams_bp, url_prefix="/api")
     app.register_blueprint(questions_bp, url_prefix="/api")
@@ -24,3 +25,4 @@ def register_blueprints(app):
     app.register_blueprint(auth_bp, url_prefix="/api")
     app.register_blueprint(admin_bp, url_prefix="/api")
     app.register_blueprint(groups_bp, url_prefix="/api")
+    app.register_blueprint(sessions_bp, url_prefix="/api")
