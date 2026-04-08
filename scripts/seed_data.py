@@ -502,6 +502,198 @@ def seed():
         print(f"  Results: {results_count} new results seeded")
         print(f"\nDone: {len(EXAMS)} exams, {len(STUDENTS)} students, {results_count} results")
 
+        # --- Online exam seeding ---
+
+        # 1. Create teacher user accounts
+        from app.services.auth_service import create_teacher
+        teachers_created = 0
+        try:
+            create_teacher(
+                email="admin@smartgrader.dz",
+                password="Admin1234!",
+                name="Admin Teacher",
+                is_admin=True,
+            )
+            teachers_created += 1
+        except Exception:
+            pass  # already exists
+
+        try:
+            create_teacher(
+                email="teacher@smartgrader.dz",
+                password="Teacher1234!",
+                name="Regular Teacher",
+                is_admin=False,
+            )
+            teachers_created += 1
+        except Exception:
+            pass  # already exists
+
+        print(f"  Created {teachers_created} teacher accounts (skipped if already exist)")
+
+        # 2. Create User records for each seeded student
+        from app.models.user import User
+        student_users_created = 0
+        for student in Student.query.all():
+            existing = User.query.filter_by(student_id=student.id).first()
+            if not existing:
+                user = User(role="student", student_id=student.id)
+                db.session.add(user)
+                student_users_created += 1
+        db.session.commit()
+        print(f"  Created {student_users_created} student user accounts")
+
+        # 3. Create 2 student groups
+        from app.models.group import StudentGroup, StudentGroupMember
+        from app.services.group_service import create_group, add_members
+
+        students = Student.query.all()
+        group_a_existing = StudentGroup.query.filter_by(name="CS Year 3 - Group A").first()
+        group_b_existing = StudentGroup.query.filter_by(name="CS Year 3 - Group B").first()
+
+        group_a = group_a_existing or create_group("CS Year 3 - Group A")
+        group_b = group_b_existing or create_group("CS Year 3 - Group B")
+
+        if not group_a_existing:
+            add_members(group_a.id, [s.id for s in students[:5]])
+        if not group_b_existing:
+            add_members(group_b.id, [s.id for s in students[5:]])
+
+        groups_created = (0 if group_a_existing else 1) + (0 if group_b_existing else 1)
+        print(f"  Created {groups_created} student groups (Group A: 5 students, Group B: 5 students)")
+
+        # 4. Create 3 exam sessions with different configurations
+        from datetime import datetime, timezone, timedelta
+        from app.services.session_service import create_session, assign_students
+        from app.models.exam_session import ExamSession
+
+        now = datetime.now(timezone.utc)
+
+        # Session 1: Active session with proctoring (exam 1)
+        s1_existing = ExamSession.query.filter_by(exam_id=1).first()
+        if not s1_existing:
+            s1 = create_session(
+                exam_id=1,
+                start_time=(now - timedelta(minutes=30)).isoformat(),
+                end_time=(now + timedelta(hours=2)).isoformat(),
+                display_mode="one_by_one", save_mode="auto_each",
+                show_result="score_and_answers", randomize=False,
+            )
+            s1.proctoring_enabled = True
+            s1.cheat_response = "warn_escalate"
+            s1.warning_threshold = 3
+            db.session.commit()
+            assign_students(s1.id, student_ids=[], group_ids=[group_a.id])
+        else:
+            s1 = s1_existing
+
+        # Session 2: Upcoming session (exam 2)
+        s2_existing = ExamSession.query.filter_by(exam_id=2).first()
+        if not s2_existing:
+            s2 = create_session(
+                exam_id=2,
+                start_time=(now + timedelta(hours=24)).isoformat(),
+                end_time=(now + timedelta(hours=25)).isoformat(),
+                display_mode="all_at_once", save_mode="manual",
+                show_result="score_only", randomize=True,
+            )
+            assign_students(s2.id, student_ids=[], group_ids=[group_a.id, group_b.id])
+        else:
+            s2 = s2_existing
+
+        # Session 3: Ended session with results (exam 3)
+        s3_existing = ExamSession.query.filter_by(exam_id=3).first()
+        if not s3_existing:
+            s3 = create_session(
+                exam_id=3,
+                start_time=(now - timedelta(hours=3)).isoformat(),
+                end_time=(now - timedelta(hours=2)).isoformat(),
+                display_mode="one_by_one", save_mode="auto_each",
+                show_result="score_and_answers",
+            )
+            assign_students(s3.id, student_ids=[], group_ids=[group_b.id])
+        else:
+            s3 = s3_existing
+
+        sessions_created = (0 if s1_existing else 1) + (0 if s2_existing else 1) + (0 if s3_existing else 1)
+        print(f"  Created {sessions_created} exam sessions (active, upcoming, ended)")
+
+        # 5. Create exam attempts + answers for the ended session (s3)
+        from app.models.exam_attempt import ExamAttempt
+        from app.models.online_answer import OnlineAnswer
+        from app.models.exam import Question, Choice
+
+        assignments_s3 = s3.assignments.all()
+        questions_s3 = Question.query.filter_by(exam_id=3).all()
+
+        attempts_created = 0
+        for assignment in assignments_s3:
+            existing_attempt = ExamAttempt.query.filter_by(
+                session_id=s3.id, student_id=assignment.student_id
+            ).first()
+            if existing_attempt:
+                continue
+
+            total_score = 0
+            total_marks = sum(q.marks for q in questions_s3)
+            attempt = ExamAttempt(
+                session_id=s3.id, student_id=assignment.student_id,
+                status="submitted",
+                started_at=(now - timedelta(hours=2, minutes=50)).isoformat(),
+                submitted_at=(now - timedelta(hours=2, minutes=10)).isoformat(),
+            )
+            db.session.add(attempt)
+            db.session.flush()
+
+            for q in questions_s3:
+                choices = q.choices.all()
+                if random.random() < 0.7:
+                    correct = [c for c in choices if c.is_correct]
+                    selected = correct[0] if correct else choices[0]
+                else:
+                    selected = random.choice(choices)
+
+                answer = OnlineAnswer(
+                    attempt_id=attempt.id, question_id=q.id,
+                    selected_choice_id=selected.id,
+                    answered_at=(now - timedelta(hours=2, minutes=random.randint(10, 50))).isoformat(),
+                )
+                db.session.add(answer)
+
+                if selected.is_correct:
+                    total_score += q.marks
+
+            attempt.score = total_score
+            attempt.percentage = round((total_score / total_marks) * 100, 2) if total_marks > 0 else 0
+            attempts_created += 1
+
+        db.session.commit()
+        print(f"  Created {attempts_created} exam attempts with answers for ended session")
+
+        # 6. Create proctoring events for the active session (s1)
+        from app.models.proctor import ProctorEvent
+
+        active_attempts = ExamAttempt.query.filter_by(session_id=s1.id).all()
+        event_types = [
+            ("tab_switch", "high"), ("focus_lost", "medium"),
+            ("copy_paste", "medium"), ("right_click", "low"),
+        ]
+        proctor_events_created = 0
+        for attempt in active_attempts[:2]:  # first 2 students
+            existing_events = ProctorEvent.query.filter_by(attempt_id=attempt.id).count()
+            if existing_events > 0:
+                continue
+            for evt_type, severity in random.sample(event_types, 2):
+                event = ProctorEvent(
+                    attempt_id=attempt.id, event_type=evt_type, severity=severity,
+                )
+                db.session.add(event)
+                proctor_events_created += 1
+                if severity in ("medium", "high"):
+                    attempt.warning_count += 1
+        db.session.commit()
+        print(f"  Created {proctor_events_created} proctoring events for active session")
+
 
 if __name__ == "__main__":
     seed()
