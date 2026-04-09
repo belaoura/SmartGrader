@@ -163,6 +163,7 @@ docs/
   thesis/              # 6 chapters + appendices (Markdown)
   figures/uml/         # 7 PlantUML diagrams
 legacy/                # Original PyQt5 desktop app (archived)
+sgvideo/               # Remotion showcase video (1920x1080 @ 30fps)
 scripts/               # seed_data, create_admin, migrate_data
 ```
 
@@ -189,6 +190,74 @@ The application features a modern glassmorphism UI with light/dark mode:
 - **Teacher Monitor** -- Live session dashboard, proctor events, snapshot requests
 - **Admin Panel** -- Teacher management, CSV student import
 - **Academic Docs** -- Thesis chapters, UML diagrams, bibliography, build tools
+
+## Showcase Video
+
+A 30-second animated showcase of SmartGrader is built with [Remotion](https://www.remotion.dev/) and lives in [`sgvideo/`](sgvideo/). The video uses the same dark theme, colors, and Poppins font as the webapp -- every icon and diagram is a custom SVG component, no external assets required.
+
+### Scenes
+
+| # | Scene | Duration | Description |
+|---|-------|----------|-------------|
+| 1 | **Intro** | 4.5s | Logo entrance with glow pulse, rotating sparkles, animated gradient title |
+| 2 | **Features** | 5.5s | 6 feature cards with staggered spring animation (Exam Management, OMR, AI Grading, Online Exams, Proctoring, Analytics) |
+| 3 | **Stats** | 5.2s | 4 stat cards with count-up animation (191 tests, 15+ models, 40+ endpoints, 4 phases) |
+| 4 | **Chart** | 5.2s | Animated bar chart showing phase completion and test count |
+| 5 | **Architecture** | 5.2s | Layered system diagram: Frontend → Auth → Flask API → AI/ML → Database |
+| 6 | **Outro** | 4.7s | Pulsing logo with radiating rings, "Ready for the Future of Examinations" CTA |
+
+**Total:** 905 frames at 30fps = **~30.2 seconds** at **1920x1080**.
+
+### Setup & Render
+
+```bash
+cd sgvideo
+npm install
+
+# Preview interactively in Remotion Studio (recommended for editing)
+npm run dev
+# Opens http://localhost:3000 with timeline, scrubber, and live preview
+
+# Render the full video to MP4
+npx remotion render SmartGraderShowcase out/smartgrader.mp4
+
+# Render a single still frame (useful for thumbnails)
+npx remotion still SmartGraderShowcase out/thumbnail.png --frame=60
+
+# Render as GIF
+npx remotion render SmartGraderShowcase out/smartgrader.gif --codec=gif
+```
+
+### Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Video framework | Remotion 4.0 |
+| Styling | Tailwind CSS 4 (via `@remotion/tailwind-v4`) |
+| Font | Poppins (via `@remotion/google-fonts`) |
+| Animations | `useCurrentFrame()`, `spring()`, `interpolate()` |
+| Scene sequencing | `<Series>` with `<Series.Sequence>` |
+| Icons | Custom SVG components (no assets) |
+
+### Project Structure
+
+```
+sgvideo/
+  src/
+    Root.tsx                  # Composition registration (1920x1080 @ 30fps)
+    Composition.tsx           # Series of 6 scenes
+    theme.ts                  # Brand colors matching webapp dark mode
+    components/
+      Background.tsx          # Animated gradient orbs + particles
+      Icons.tsx               # 19 custom SVG icon components
+    scenes/
+      IntroScene.tsx          # Logo + title reveal
+      FeaturesScene.tsx       # 6-card grid with spring stagger
+      StatsScene.tsx          # Count-up number cards
+      ChartScene.tsx          # Animated bar chart
+      ArchitectureScene.tsx   # Layered system diagram
+      OutroScene.tsx          # Pulsing logo + CTA
+```
 
 ## API
 
