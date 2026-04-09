@@ -13,26 +13,26 @@ import { PumlPreviewModal } from "@/components/ui/puml-preview-modal";
 
 const SUB_PROJECTS = [
   {
-    id: "SP1", label: "Code Restructuring",
-    desc: "Migrated from monolithic PyQt5 desktop app to a clean Flask API + React SPA with proper layered architecture.",
+    id: "SP1", label: "Auth + Admin",
+    desc: "JWT authentication, teacher/student login, barcode scan, admin panel, CSV student import. 4 new models, 15 endpoints.",
     color: "text-indigo-500", bg: "bg-indigo-500/10", border: "border-indigo-500/30",
     completed: true,
   },
   {
-    id: "SP2", label: "Web UI",
-    desc: "Built a full glassmorphism React 19 frontend with TanStack Query, Recharts dashboards, and responsive design.",
+    id: "SP2", label: "Online Exam Engine",
+    desc: "Student groups, exam sessions with configurable timer, take-exam UI with auto-save, live teacher monitoring dashboard.",
     color: "text-emerald-500", bg: "bg-emerald-500/10", border: "border-emerald-500/30",
     completed: true,
   },
   {
-    id: "SP3", label: "AI Vision",
-    desc: "Integrated Qwen2.5-VL-3B-Instruct with 4-bit NF4 quantisation for OCR of handwritten answers + automated marking.",
+    id: "SP3", label: "Anti-Cheat & Proctoring",
+    desc: "BlazeFace face detection, tab/window event tracking, webcam snapshots, browser lockdown, teacher proctoring dashboard.",
     color: "text-pink-500", bg: "bg-pink-500/10", border: "border-pink-500/30",
     completed: true,
   },
   {
-    id: "SP4", label: "Documentation",
-    desc: "Wrote a complete 6-chapter PFE thesis with 18 academic references, 7 UML diagrams, and pandoc/XeLaTeX build pipeline.",
+    id: "SP4", label: "LAN Mode + Deployment",
+    desc: "University LAN server mode (--lan flag), Docker compose deployment, 191 automated tests, v1.0.0 release.",
     color: "text-amber-500", bg: "bg-amber-500/10", border: "border-amber-500/30",
     completed: true,
   },
@@ -41,63 +41,65 @@ const SUB_PROJECTS = [
 const CHAPTERS = [
   {
     num: "01", title: "General Introduction",
-    pages: "~15", status: "Complete",
+    pages: "~18", status: "Complete",
     file: "01-introduction.md",
-    topics: ["Problem Statement", "Objectives", "Methodology", "Project Scope", "Document Structure"],
-    summary: "Introduces the motivation for SmartGrader: the manual exam-grading bottleneck in Algerian universities. Defines the four sub-project roadmap and positions the work within the PFE framework.",
+    topics: ["Problem Statement", "Objectives", "Methodology", "Project Scope", "4 Sub-Projects", "Document Structure"],
+    summary: "Introduces the motivation for SmartGrader: the manual exam-grading bottleneck in Algerian universities. Defines the four sub-project roadmap (Auth/Admin, Online Exam Engine, Anti-Cheat Proctoring, LAN Deployment) and positions the work within the PFE framework.",
   },
   {
     num: "02", title: "State of the Art",
-    pages: "~25", status: "Complete",
+    pages: "~28", status: "Complete",
     file: "02-state-of-art.md",
-    topics: ["OMR Systems", "OCR Technology", "Vision-Language Models", "LLaVA / Qwen2-VL", "RAG", "Existing Tools"],
-    summary: "Surveys optical mark recognition (OMR) systems, modern OCR approaches, and vision-language models. Compares LLaVA, Qwen2-VL, and GPT-4V. Reviews RAG-based feedback loops for educational AI.",
+    topics: ["OMR Systems", "OCR Technology", "Vision-Language Models", "LLaVA / Qwen2-VL", "RAG", "Online Exam Platforms", "Anti-Cheat Systems"],
+    summary: "Surveys optical mark recognition (OMR) systems, modern OCR approaches, and vision-language models. Compares LLaVA, Qwen2-VL, and GPT-4V. Reviews online exam proctoring solutions and anti-cheat techniques used in academic platforms.",
   },
   {
     num: "03", title: "Analysis & Design",
-    pages: "~30", status: "Complete",
+    pages: "~38", status: "Complete",
     file: "03-analysis-design.md",
-    topics: ["Requirements", "Use-Case Diagrams", "Class Diagram", "Sequence Diagrams", "ER Diagram", "Deployment"],
-    summary: "Captures functional and non-functional requirements. Presents 7 UML diagrams: use-case, class, 3 sequence diagrams, ER diagram, and deployment diagram. Defines the REST API contract.",
+    topics: ["Requirements", "Use-Case Diagrams", "Auth Flow", "Exam Session Flow", "Class Diagram", "Sequence Diagrams", "ER Diagram", "Deployment"],
+    summary: "Captures functional and non-functional requirements for all four phases. Presents 9 UML diagrams including authentication flow, online exam sequence, proctoring interaction, class diagram with ~15 models, ER diagram with full schema, and Docker deployment diagram.",
   },
   {
     num: "04", title: "Implementation",
-    pages: "~35", status: "Complete",
+    pages: "~45", status: "Complete",
     file: "04-implementation.md",
-    topics: ["Flask App Factory", "Scanner Pipeline", "AI Integration", "React Frontend", "SQLAlchemy ORM", "API Routes"],
-    summary: "Details the technical implementation of all four sub-projects. Covers the OpenCV bubble-detection pipeline, Qwen2.5-VL OCR integration, React component architecture, and database schema.",
+    topics: ["JWT Auth", "Admin Panel", "Student Groups", "Exam Sessions", "Timer Engine", "Anti-Cheat", "BlazeFace", "Scanner Pipeline", "AI Integration", "Docker"],
+    summary: "Details the technical implementation of all four sub-projects. Covers JWT auth with PyJWT, exam session engine with auto-save and auto-submit, TensorFlow.js BlazeFace proctoring, the OpenCV bubble-detection pipeline, Qwen2.5-VL OCR integration, and Docker/LAN deployment.",
   },
   {
     num: "05", title: "Testing & Results",
-    pages: "~20", status: "Complete",
+    pages: "~25", status: "Complete",
     file: "05-testing-results.md",
-    topics: ["40 pytest Tests", "Scanner Accuracy 96%", "AI Grading", "Performance Benchmarks", "User Acceptance"],
-    summary: "Reports 40 automated tests across models, services, scanner, and routes. Documents 96% bubble detection accuracy on 50 test sheets. Presents AI grading precision/recall metrics and API response-time benchmarks.",
+    topics: ["191 pytest Tests", "Scanner Accuracy 96%", "Auth Tests", "Session Tests", "Proctor Tests", "AI Grading", "Performance Benchmarks", "User Acceptance"],
+    summary: "Reports 191 automated tests covering models, services, scanner, auth, sessions, and proctoring routes. Documents 96% bubble detection accuracy on 50 test sheets. Presents session engine reliability metrics, anti-cheat detection rates, and API response-time benchmarks.",
   },
   {
     num: "06", title: "Conclusion",
-    pages: "~10", status: "Complete",
+    pages: "~12", status: "Complete",
     file: "06-conclusion.md",
-    topics: ["Achievements", "Limitations", "Future Work", "Reflections", "RAG Improvements"],
-    summary: "Summarises achievements across all sub-projects. Identifies current limitations (GPU requirement, limited language support). Proposes future directions: multilingual OCR, batch processing, LMS integration.",
+    topics: ["Achievements", "v1.0.0 Release", "Limitations", "Future Work", "LMS Integration", "RAG Improvements"],
+    summary: "Summarises achievements across all four sub-projects at v1.0.0. Identifies current limitations (GPU requirement, limited language support). Proposes future directions: multilingual OCR, batch scanning, LMS integration, and improved proctoring with liveness detection.",
   },
   {
     num: "A", title: "Appendices",
-    pages: "~12", status: "Complete",
+    pages: "~15", status: "Complete",
     file: "07-appendices.md",
-    topics: ["API Spec", "DB Schema", "Config Reference", "Sample Sheets", "BibTeX References"],
-    summary: "Provides the full API specification, database schema DDL, configuration reference table, sample answer sheet images, and the complete BibTeX bibliography with 18 academic references.",
+    topics: ["Full API Spec (40+ endpoints)", "DB Schema (15 tables)", "Config Reference", "Docker Compose", "Sample Sheets", "BibTeX References"],
+    summary: "Provides the complete API specification for all 40+ endpoints, database schema DDL for 15 tables, Docker compose configuration, configuration reference table, sample answer sheet images, and the full BibTeX bibliography.",
   },
 ];
 
 const UML_DIAGRAMS = [
-  { name: "System Use-Case",         type: "Use Case",   file: "use-case.puml",          desc: "Teacher and student actors with all system use cases",       color: "text-indigo-500",  bg: "bg-indigo-500/10"  },
-  { name: "Domain Class Diagram",    type: "Class",      file: "class-diagram.puml",     desc: "Exam, Question, Choice, Student, Result ORM relationships",  color: "text-violet-500",  bg: "bg-violet-500/10"  },
-  { name: "Exam Creation Flow",      type: "Sequence",   file: "sequence-scan.puml",     desc: "React → Flask → SQLAlchemy sequence for exam creation",      color: "text-cyan-500",    bg: "bg-cyan-500/10"    },
-  { name: "Scan & Grade Flow",       type: "Sequence",   file: "sequence-scan.puml",     desc: "Upload → Preprocess → Detect → Grade → Save sequence",       color: "text-emerald-500", bg: "bg-emerald-500/10" },
-  { name: "AI Grading Flow",         type: "Sequence",   file: "sequence-ai-grade.puml", desc: "Image → OCR → Evaluate → RAG correction pipeline",           color: "text-pink-500",    bg: "bg-pink-500/10"    },
-  { name: "Entity-Relationship",     type: "ER Diagram", file: "er-diagram.puml",        desc: "Full database schema: 6 tables, FKs, and cardinalities",      color: "text-amber-500",   bg: "bg-amber-500/10"   },
-  { name: "Deployment Architecture", type: "Deployment", file: "deployment.puml",        desc: "Docker/host topology: Flask API, React SPA, GPU node",        color: "text-teal-500",    bg: "bg-teal-500/10"    },
+  { name: "System Use-Case",         type: "Use Case",   file: "use-case.puml",          desc: "Teacher, student, and admin actors with all system use cases including auth and proctoring", color: "text-indigo-500",  bg: "bg-indigo-500/10"  },
+  { name: "Domain Class Diagram",    type: "Class",      file: "class-diagram.puml",     desc: "~15 ORM models: Exam, Question, Choice, Student, Group, Session, Attempt, ProctorEvent", color: "text-violet-500",  bg: "bg-violet-500/10"  },
+  { name: "Auth Flow",               type: "Sequence",   file: "sequence-auth.puml",     desc: "Teacher login and student barcode-scan login → JWT issuance and refresh flow",          color: "text-yellow-500",  bg: "bg-yellow-500/10"  },
+  { name: "Online Exam Flow",        type: "Sequence",   file: "sequence-exam.puml",     desc: "Session start → question delivery → auto-save answer → timer expire → auto-submit",     color: "text-cyan-500",    bg: "bg-cyan-500/10"    },
+  { name: "Scan & Grade Flow",       type: "Sequence",   file: "sequence-scan.puml",     desc: "Upload → Preprocess → Detect → Grade → Save sequence",                                  color: "text-emerald-500", bg: "bg-emerald-500/10" },
+  { name: "AI Grading Flow",         type: "Sequence",   file: "sequence-ai-grade.puml", desc: "Image → OCR → Evaluate → RAG correction pipeline",                                      color: "text-pink-500",    bg: "bg-pink-500/10"    },
+  { name: "Entity-Relationship",     type: "ER Diagram", file: "er-diagram.puml",        desc: "Full database schema: 15 tables, foreign keys, and cardinalities",                       color: "text-amber-500",   bg: "bg-amber-500/10"   },
+  { name: "Deployment Architecture", type: "Deployment", file: "deployment.puml",        desc: "Docker compose topology: Flask API, React SPA, GPU node, LAN server mode",               color: "text-teal-500",    bg: "bg-teal-500/10"    },
+  { name: "Proctoring Interaction",  type: "Sequence",   file: "sequence-proctor.puml",  desc: "BlazeFace detection → event emit → snapshot upload → teacher dashboard update",         color: "text-orange-500",  bg: "bg-orange-500/10"  },
 ];
 
 const KEY_REFS = [
@@ -172,7 +174,7 @@ export default function AcademicDocs() {
       <PageHeader
         title="Academic Thesis"
         description="PFE graduation project — full thesis documentation, UML diagrams, and build instructions."
-        helpText="Browse all 6 thesis chapters, 7 UML diagrams, and the BibTeX bibliography for the SmartGrader final-year project."
+        helpText="Browse all 6 thesis chapters, 9 UML diagrams, and the BibTeX bibliography for the SmartGrader v1.0.0 final-year project."
       />
 
       {/* Sub-project completion overview */}
@@ -224,7 +226,7 @@ export default function AcademicDocs() {
       {/* UML Diagrams */}
       <div className="space-y-4">
         <h3 className="font-heading font-semibold text-lg text-foreground">
-          UML Diagrams <span className="text-sm font-normal opacity-60">(7 PlantUML)</span>
+          UML Diagrams <span className="text-sm font-normal opacity-60">(9 PlantUML)</span>
         </h3>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {UML_DIAGRAMS.map((d, i) => (
@@ -253,7 +255,7 @@ export default function AcademicDocs() {
         <div className="flex items-center gap-3">
           <BookMarked className="h-5 w-5 text-primary" />
           <h3 className="font-heading font-semibold text-lg text-foreground">Bibliography</h3>
-          <span className="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary font-medium">18 references</span>
+          <span className="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary font-medium">22 references</span>
         </div>
         <p className="text-sm text-muted-foreground">
           Complete bibliography in BibTeX format at <code className="font-mono bg-black/20 px-1 rounded text-xs">docs/thesis/bibliography.bib</code>. Key references:
@@ -265,7 +267,7 @@ export default function AcademicDocs() {
               <p className="text-xs leading-relaxed text-muted-foreground">{ref.desc}</p>
             </div>
           ))}
-          <p className="text-xs italic text-muted-foreground">…and 13 more references covering Flask, React, TanStack Query, PyQt5, Pandoc, and Algerian education literature.</p>
+          <p className="text-xs italic text-muted-foreground">…and 17 more references covering Flask, PyJWT, TensorFlow.js, BlazeFace, Docker, React, TanStack Query, Pandoc, and Algerian education literature.</p>
         </div>
       </div>
 

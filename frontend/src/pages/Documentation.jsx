@@ -7,9 +7,142 @@ import {
   Code2, ChevronDown, ChevronRight, ExternalLink, Book, GitBranch,
   Server, Database, Layers, ArrowRight, Zap, Globe, Shield,
   FileText, Users, Brain, ScanLine, BarChart2, Activity,
+  Lock, UserCheck, MonitorPlay, Eye, GraduationCap,
 } from "lucide-react";
 
 const ENDPOINT_GROUPS = [
+  {
+    id: "auth",
+    label: "Authentication",
+    icon: Lock,
+    color: "text-yellow-500",
+    endpoints: [
+      { method: "POST", path: "/api/auth/login",   desc: "Teacher login with email + password, returns JWT",
+        example: `// Request body\n{ "email": "teacher@univ.dz", "password": "secret" }\n\n// Response 200\n{ "access_token": "eyJ...", "refresh_token": "eyJ...", "user": { "id": 1, "role": "teacher" } }` },
+      { method: "POST", path: "/api/auth/scan",    desc: "Student login by scanning barcode/QR on student card",
+        example: `// Request body\n{ "barcode": "20210001" }\n\n// Response 200\n{ "access_token": "eyJ...", "student": { "id": 5, "name": "Amina Benali" } }` },
+      { method: "POST", path: "/api/auth/refresh", desc: "Refresh expired access token using refresh token",
+        example: `// Request body\n{ "refresh_token": "eyJ..." }\n\n// Response 200\n{ "access_token": "eyJ..." }` },
+      { method: "POST", path: "/api/auth/logout",  desc: "Invalidate current session and blacklist the token",
+        example: `// Header: Authorization: Bearer <token>\n// Response: 204 No Content` },
+      { method: "GET",  path: "/api/auth/me",      desc: "Get the currently authenticated user profile",
+        example: `// Response 200\n{ "id": 1, "email": "teacher@univ.dz", "role": "teacher", "name": "Dr. Benali" }` },
+    ],
+  },
+  {
+    id: "admin",
+    label: "Admin",
+    icon: UserCheck,
+    color: "text-rose-500",
+    endpoints: [
+      { method: "POST",   path: "/api/admin/teachers",            desc: "Create a new teacher account (admin only)",
+        example: `// Request body\n{ "name": "Dr. Khelifi", "email": "khelifi@univ.dz", "password": "secure123" }\n// Response: 201 Created` },
+      { method: "GET",    path: "/api/admin/teachers",            desc: "List all teacher accounts",
+        example: `[\n  { "id": 1, "name": "Dr. Khelifi", "email": "khelifi@univ.dz", "created_at": "..." }\n]` },
+      { method: "DELETE", path: "/api/admin/teachers/:id",        desc: "Remove a teacher account by ID",
+        example: `// Response: 204 No Content` },
+      { method: "POST",   path: "/api/admin/students/import",     desc: "Bulk import students from CSV file",
+        example: `// Multipart: file (.csv) with columns: name, matricule, email\n// Response 201\n{ "imported": 45, "skipped": 2, "errors": [] }` },
+    ],
+  },
+  {
+    id: "groups",
+    label: "Student Groups",
+    icon: Users,
+    color: "text-cyan-500",
+    endpoints: [
+      { method: "POST",   path: "/api/groups",                    desc: "Create a new student group",
+        example: `// Request body\n{ "name": "L3 InfoA 2024", "description": "Licence 3 section A" }\n// Response: 201 Created\n{ "id": 3, "name": "L3 InfoA 2024", "member_count": 0 }` },
+      { method: "GET",    path: "/api/groups",                    desc: "List all groups with member counts",
+        example: `[\n  { "id": 3, "name": "L3 InfoA 2024", "member_count": 32 }\n]` },
+      { method: "GET",    path: "/api/groups/:id",                desc: "Get group details with full member list",
+        example: `{ "id": 3, "name": "L3 InfoA 2024", "members": [{ "id": 1, "name": "Amina Benali" }] }` },
+      { method: "DELETE", path: "/api/groups/:id",                desc: "Delete a group (members are not deleted)",
+        example: `// Response: 204 No Content` },
+      { method: "POST",   path: "/api/groups/:id/members",        desc: "Add students to a group by student IDs",
+        example: `// Request body\n{ "student_ids": [1, 2, 5, 12] }\n// Response 200\n{ "added": 4 }` },
+      { method: "DELETE", path: "/api/groups/:id/members/:sid",   desc: "Remove one student from a group",
+        example: `// Response: 204 No Content` },
+    ],
+  },
+  {
+    id: "sessions",
+    label: "Exam Sessions",
+    icon: MonitorPlay,
+    color: "text-violet-500",
+    endpoints: [
+      { method: "POST",   path: "/api/sessions",                  desc: "Create a new online exam session",
+        example: `// Request body\n{ "exam_id": 1, "group_id": 3, "duration_minutes": 60, "start_at": "2024-06-01T09:00:00Z", "proctoring": true }\n// Response: 201 Created` },
+      { method: "GET",    path: "/api/sessions",                  desc: "List all sessions (teacher sees own, student sees assigned)",
+        example: `[\n  { "id": 10, "exam_title": "Math Quiz", "status": "scheduled", "duration_minutes": 60 }\n]` },
+      { method: "GET",    path: "/api/sessions/:id",              desc: "Get full session details and current status",
+        example: `{ "id": 10, "exam_id": 1, "group_id": 3, "status": "active", "started_at": "...", "submissions": 12 }` },
+      { method: "PUT",    path: "/api/sessions/:id",              desc: "Update session settings (before start only)",
+        example: `// Request body\n{ "duration_minutes": 90, "proctoring": false }` },
+      { method: "DELETE", path: "/api/sessions/:id",              desc: "Cancel and delete a session",
+        example: `// Response: 204 No Content` },
+      { method: "POST",   path: "/api/sessions/:id/assign",       desc: "Assign additional students to a session",
+        example: `// Request body\n{ "student_ids": [7, 8] }\n// Response 200\n{ "assigned": 2 }` },
+      { method: "GET",    path: "/api/sessions/:id/monitor",      desc: "Live monitoring data for a running session",
+        example: `{ "active_students": 28, "submitted": 5, "flagged": 2, "time_remaining_seconds": 1820 }` },
+    ],
+  },
+  {
+    id: "student_exam",
+    label: "Student Exam",
+    icon: GraduationCap,
+    color: "text-emerald-500",
+    endpoints: [
+      { method: "GET",  path: "/api/student/exams",               desc: "List all exams assigned to the logged-in student",
+        example: `[\n  { "session_id": 10, "exam_title": "Math Quiz", "status": "assigned", "starts_at": "..." }\n]` },
+      { method: "POST", path: "/api/student/exams/:id/start",     desc: "Start a session — initialises timer and locks browser",
+        example: `// Response 200\n{ "questions": [...], "duration_seconds": 3600, "session_token": "abc123" }` },
+      { method: "GET",  path: "/api/student/exams/:id/status",    desc: "Get current exam status and remaining time",
+        example: `{ "status": "in_progress", "time_remaining_seconds": 2400, "answered": 8, "total": 20 }` },
+      { method: "POST", path: "/api/student/exams/:id/answer",    desc: "Save a single answer (auto-save on selection)",
+        example: `// Request body\n{ "question_id": 5, "choice_id": 18 }\n// Response 200\n{ "saved": true }` },
+      { method: "POST", path: "/api/student/exams/:id/answers",   desc: "Bulk save multiple answers at once",
+        example: `// Request body\n{ "answers": [{ "question_id": 1, "choice_id": 3 }, ...] }\n// Response 200\n{ "saved": 20 }` },
+      { method: "POST", path: "/api/student/exams/:id/submit",    desc: "Final submission — ends exam, triggers grading",
+        example: `// Response 200\n{ "submitted_at": "...", "score": 16, "max_score": 20 }` },
+      { method: "GET",  path: "/api/student/exams/:id/result",    desc: "View result after exam ends (if teacher released)",
+        example: `{ "score": 16, "max_score": 20, "percentage": 80.0, "passed": true, "answers": { "1": "B", ... } }` },
+    ],
+  },
+  {
+    id: "proctor_student",
+    label: "Proctoring (Student)",
+    icon: Eye,
+    color: "text-orange-500",
+    endpoints: [
+      { method: "POST", path: "/api/proctor/event",               desc: "Report a cheat-detection event from the client side",
+        example: `// Request body\n{ "session_id": 10, "type": "tab_switch", "detail": "User switched to another tab", "timestamp": "..." }\n// Response: 204` },
+      { method: "POST", path: "/api/proctor/snapshot",            desc: "Upload a webcam snapshot for proctoring review",
+        example: `// Multipart: file (image/jpeg) + session_id\n// Response 200\n{ "snapshot_id": 42, "flagged": false }` },
+      { method: "GET",  path: "/api/proctor/status",              desc: "Get proctoring config for the active session",
+        example: `{ "webcam_required": true, "snapshot_interval_seconds": 30, "lockdown_mode": true }` },
+    ],
+  },
+  {
+    id: "proctor_teacher",
+    label: "Proctoring (Teacher)",
+    icon: Shield,
+    color: "text-pink-500",
+    endpoints: [
+      { method: "GET",  path: "/api/proctor/events",              desc: "List all cheat events for a session (query ?session_id=)",
+        example: `[\n  { "id": 1, "student": "Amina Benali", "type": "tab_switch", "timestamp": "...", "flagged": false }\n]` },
+      { method: "GET",  path: "/api/proctor/snapshots",           desc: "List webcam snapshots for a session",
+        example: `[\n  { "id": 42, "student_id": 5, "taken_at": "...", "flagged": false, "url": "/api/proctor/snapshots/42/image" }\n]` },
+      { method: "GET",  path: "/api/proctor/summary",             desc: "Proctoring summary — event counts and risk scores per student",
+        example: `[\n  { "student_id": 5, "name": "Amina", "events": 3, "snapshots": 6, "risk_score": 0.4 }\n]` },
+      { method: "POST", path: "/api/proctor/capture/:sid",        desc: "Request an on-demand webcam snapshot from a student",
+        example: `// Response 202 Accepted — snapshot will arrive via /api/proctor/snapshot` },
+      { method: "POST", path: "/api/proctor/flag/:aid",           desc: "Manually flag or unflag an attempt for review",
+        example: `// Request body\n{ "flagged": true, "reason": "Suspicious tab switching pattern" }` },
+      { method: "GET",  path: "/api/proctor/snapshots/:id/image", desc: "Download the raw webcam snapshot image",
+        example: `// Response: image/jpeg binary stream` },
+    ],
+  },
   {
     id: "exams",
     label: "Exams",
@@ -117,6 +250,12 @@ const TECH_STACK = [
   { name: "TanStack Query",    version: "5",          desc: "Server-state caching & sync",          color: "bg-orange-500/10  text-orange-600"  },
   { name: "Recharts",          version: "2",          desc: "SVG charts for result visualisation",  color: "bg-pink-500/10    text-pink-600"    },
   { name: "BitsAndBytes",      version: "0.43",       desc: "4-bit NF4 model quantisation",         color: "bg-indigo-500/10  text-indigo-600"  },
+  { name: "PyJWT",             version: "2.8",        desc: "JSON Web Token auth for Flask API",      color: "bg-yellow-500/10  text-yellow-600"  },
+  { name: "bcrypt",            version: "4.1",        desc: "Password hashing for teacher accounts",  color: "bg-amber-500/10   text-amber-600"   },
+  { name: "Flask-Limiter",     version: "3.5",        desc: "Rate limiting for API endpoints",        color: "bg-rose-500/10    text-rose-600"    },
+  { name: "TensorFlow.js",     version: "4",          desc: "In-browser ML runtime for face detection","color": "bg-orange-500/10 text-orange-600" },
+  { name: "BlazeFace",         version: "0.0.7",      desc: "Lightweight face detection model (TFJS)", color: "bg-fuchsia-500/10 text-fuchsia-600" },
+  { name: "html5-qrcode",      version: "2.3",        desc: "Barcode & QR scanner for student login",  color: "bg-lime-500/10    text-lime-600"    },
 ];
 
 const METHOD_STYLES = {
@@ -226,7 +365,7 @@ export default function Documentation() {
     {
       icon: Book,
       label: "Installation Guide",
-      desc: "Step-by-step guide: Python env, CUDA setup, npm install, run.py",
+      desc: "Step-by-step guide: Python env, CUDA setup, npm install, Docker, run.py — v1.0.0",
       color: "text-emerald-500",
       bg: "bg-emerald-500/10",
       action: "Open",
@@ -235,7 +374,7 @@ export default function Documentation() {
     {
       icon: Users,
       label: "User Manual",
-      desc: "End-user manual for teachers: exams, scanning, results, export",
+      desc: "End-user manual for teachers: auth, exams, sessions, proctoring, scanning, results",
       color: "text-cyan-500",
       bg: "bg-cyan-500/10",
       action: "Open",
@@ -247,8 +386,8 @@ export default function Documentation() {
     <div className="space-y-6">
       <PageHeader
         title="API Reference & Docs"
-        description="Complete documentation for the SmartGrader REST API, architecture, and tech stack."
-        helpText="Browse all 15+ API endpoints grouped by resource, explore the system architecture, and view the full technology stack."
+        description="Complete documentation for the SmartGrader REST API, architecture, and tech stack — v1.0.0."
+        helpText="Browse all 40+ API endpoints grouped by resource, explore the 5-layer system architecture, and view the full technology stack."
       />
 
       {/* Tab bar */}
@@ -298,14 +437,16 @@ export default function Documentation() {
         <div className="space-y-6">
           <div className="glass rounded-xl p-6 space-y-6">
             <h3 className="font-heading font-semibold text-lg text-foreground">
-              3-Tier System Architecture
+              5-Layer System Architecture
             </h3>
             {/* Flow diagram */}
-            <div className="flex flex-col md:flex-row items-center justify-center gap-4">
+            <div className="flex flex-col md:flex-row items-center justify-center gap-4 flex-wrap">
               {[
-                { icon: Globe,    label: "React Frontend",  sub: "Vite · React 19 · TanStack Query",   color: "border-cyan-500/30    bg-cyan-500/10",   text: "text-cyan-600"    },
-                { icon: Server,   label: "Flask API",       sub: "Python 3.10 · Flask 3.1 · Blueprints", color: "border-indigo-500/30  bg-indigo-500/10", text: "text-indigo-500"  },
-                { icon: Database, label: "SQLite + AI",     sub: "SQLAlchemy 2.0 · Qwen2.5-VL-3B",     color: "border-emerald-500/30 bg-emerald-500/10", text: "text-emerald-600" },
+                { icon: Globe,    label: "React Frontend",  sub: "Vite · React 19 · TanStack Query · TensorFlow.js",   color: "border-cyan-500/30    bg-cyan-500/10",   text: "text-cyan-600"    },
+                { icon: Lock,     label: "Auth Layer",      sub: "PyJWT · bcrypt · Flask-Limiter",     color: "border-yellow-500/30  bg-yellow-500/10", text: "text-yellow-600"  },
+                { icon: Server,   label: "Flask API",       sub: "Python 3.10 · Flask 3.1 · Blueprints · 40+ endpoints", color: "border-indigo-500/30  bg-indigo-500/10", text: "text-indigo-500"  },
+                { icon: Eye,      label: "Proctor Layer",   sub: "BlazeFace · event tracking · snapshots", color: "border-orange-500/30  bg-orange-500/10", text: "text-orange-500"  },
+                { icon: Database, label: "SQLite + AI",     sub: "SQLAlchemy 2.0 · ~15 models · Qwen2.5-VL-3B", color: "border-emerald-500/30 bg-emerald-500/10", text: "text-emerald-600" },
               ].map((tier, i) => {
                 const Icon = tier.icon;
                 return (
@@ -315,8 +456,8 @@ export default function Documentation() {
                       <span className="font-heading font-semibold text-sm text-foreground">{tier.label}</span>
                       <span className="text-xs text-muted-foreground">{tier.sub}</span>
                     </div>
-                    {i < 2 && <ArrowRight className="h-6 w-6 shrink-0 hidden md:block opacity-40" />}
-                    {i < 2 && <ArrowRight className="h-6 w-6 shrink-0 md:hidden rotate-90 opacity-40" />}
+                    {i < 4 && <ArrowRight className="h-6 w-6 shrink-0 hidden md:block opacity-40" />}
+                    {i < 4 && <ArrowRight className="h-6 w-6 shrink-0 md:hidden rotate-90 opacity-40" />}
                   </div>
                 );
               })}
@@ -325,9 +466,12 @@ export default function Documentation() {
 
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {[
-              { title: "Layered Design",     icon: Layers,  desc: "Routes → Services → Models. Each layer has a single responsibility. Routes are thin HTTP handlers; all business logic lives in services." },
-              { title: "Pure Scanner Modules", icon: ScanLine, desc: "Scanner modules (preprocessor, marker_finder, detector, grid_mapper, answer_reader) are pure image processing with zero DB dependencies." },
-              { title: "Custom Exceptions",  icon: Shield,  desc: "app/errors.py defines ScannerError, GradingError, NotFoundError with HTTP status codes for consistent JSON error responses." },
+              { title: "Layered Design",        icon: Layers,  desc: "Routes → Services → Models. Each layer has a single responsibility. Routes are thin HTTP handlers; all business logic lives in services." },
+              { title: "JWT Auth Middleware",    icon: Lock,    desc: "Every protected route validates a Bearer JWT via PyJWT. Roles (teacher/student/admin) are encoded in the token payload and enforced at the route level." },
+              { title: "Online Exam Engine",     icon: MonitorPlay, desc: "Sessions bind an exam to a student group with a configurable timer. Student answers auto-save every selection; the engine auto-submits on timeout." },
+              { title: "Anti-Cheat Proctoring",  icon: Eye,     desc: "Client-side TensorFlow.js + BlazeFace detects face presence. Tab-switch and window-blur events are tracked. Periodic webcam snapshots are stored for review." },
+              { title: "Pure Scanner Modules",   icon: ScanLine, desc: "Scanner modules (preprocessor, marker_finder, detector, grid_mapper, answer_reader) are pure image processing with zero DB dependencies." },
+              { title: "Custom Exceptions",      icon: Shield,  desc: "app/errors.py defines ScannerError, GradingError, NotFoundError, AuthError with HTTP status codes for consistent JSON error responses." },
             ].map((c, i) => {
               const Icon = c.icon;
               return (
@@ -349,20 +493,37 @@ export default function Documentation() {
   __init__.py          # Flask app factory (create_app)
   config.py            # All configuration values
   errors.py            # Custom exceptions with HTTP codes
-  models/              # SQLAlchemy ORM (Exam, Student, Result)
+  models/              # ~15 SQLAlchemy ORM models
+    exam.py            → Exam, Question, Choice
+    student.py         → Student, StudentAnswer
+    result.py          → Result
+    auth.py            → Teacher, TokenBlacklist
+    group.py           → Group, GroupMembership
+    session.py         → ExamSession, SessionAttempt
+    proctor.py         → ProctorEvent, ProctorSnapshot
   services/            # Business logic layer
     exam_service.py
     grading_service.py
     scanner_service.py
+    session_service.py
+    proctor_service.py
   scanner/             # Pure image processing
     preprocessor.py    → Deskew, crop, grayscale, threshold
     marker_finder.py   → Triangle alignment marker detection
     detector.py        → Contour-based bubble detection
     grid_mapper.py     → Map bubbles to question/choice grid
     answer_reader.py   → Read filled answers from grid
-  routes/              # Flask blueprints (thin HTTP layer)
+  routes/              # Flask blueprints (40+ endpoints)
+    auth.py            → /api/auth/*
+    admin.py           → /api/admin/*
+    groups.py          → /api/groups/*
+    sessions.py        → /api/sessions/*
+    student_exam.py    → /api/student/exams/*
+    proctor.py         → /api/proctor/*
   ai/                  # Qwen2.5-VL integration (Sub-Project 3)
-frontend/              # React + Vite SPA`}</pre>
+frontend/              # React + Vite SPA
+  src/pages/           # Dashboard, Exams, Scanner, Sessions,
+                       # Proctoring, StudentExam, Help, Docs...`}</pre>
           </div>
         </div>
       )}

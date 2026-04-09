@@ -5,26 +5,37 @@ import {
   FileText, ScanLine, Users, BarChart2, Brain, Settings,
   LayoutDashboard, CheckCircle2, AlertCircle, Keyboard,
   Info, MessageSquare, ArrowRight, Star, Code2, Globe,
+  Lock, MonitorPlay, Eye, GraduationCap, UserCheck, Server,
 } from "lucide-react";
 
 const QUICK_STEPS = [
   {
-    step: 1, icon: FileText,    color: "text-indigo-500", bg: "bg-indigo-500/10", border: "border-indigo-500/30",
+    step: 1, icon: Lock,         color: "text-yellow-500", bg: "bg-yellow-500/10", border: "border-yellow-500/30",
+    title: "Log In",
+    desc: "Teachers log in with email + password. Students scan their student-card barcode on the login screen. JWT tokens are issued automatically.",
+  },
+  {
+    step: 2, icon: FileText,    color: "text-indigo-500", bg: "bg-indigo-500/10", border: "border-indigo-500/30",
     title: "Create an Exam",
     desc: "Go to the Exams page, click \"New Exam\", enter a title and description, then add your MCQ questions with 2–6 answer choices each.",
   },
   {
-    step: 2, icon: ScanLine,   color: "text-cyan-500",   bg: "bg-cyan-500/10",   border: "border-cyan-500/30",
-    title: "Generate & Print Answer Sheets",
-    desc: "From the exam detail page, generate a printable A4 answer sheet. Print it and distribute to students during the exam.",
+    step: 3, icon: MonitorPlay, color: "text-violet-500",  bg: "bg-violet-500/10",  border: "border-violet-500/30",
+    title: "Create a Session (Online)",
+    desc: "Go to Sessions, create a new session, pick the exam and a student group, set the duration and optionally enable proctoring. Click Start when ready.",
   },
   {
-    step: 3, icon: CheckCircle2, color: "text-orange-500", bg: "bg-orange-500/10", border: "border-orange-500/30",
-    title: "Scan Completed Sheets",
-    desc: "Go to the Scanner page, upload a photo or scan of the completed answer sheet, select the exam, and let SmartGrader detect the filled bubbles automatically.",
+    step: 4, icon: ScanLine,   color: "text-cyan-500",   bg: "bg-cyan-500/10",   border: "border-cyan-500/30",
+    title: "Generate & Print Answer Sheets (Paper)",
+    desc: "For paper exams, generate a printable A4 answer sheet from the exam detail page. Scan completed sheets on the Scanner page after the exam.",
   },
   {
-    step: 4, icon: BarChart2,  color: "text-emerald-500", bg: "bg-emerald-500/10", border: "border-emerald-500/30",
+    step: 5, icon: CheckCircle2, color: "text-orange-500", bg: "bg-orange-500/10", border: "border-orange-500/30",
+    title: "Monitor & Grade",
+    desc: "Watch the live session monitor as students answer. Optical scanning and AI grading handle paper sheets. Online sessions grade automatically on submission.",
+  },
+  {
+    step: 6, icon: BarChart2,  color: "text-emerald-500", bg: "bg-emerald-500/10", border: "border-emerald-500/30",
     title: "View Results & Statistics",
     desc: "Check the Results page for individual student scores, pass/fail status, and the Dashboard for class-wide averages and charts.",
   },
@@ -90,6 +101,87 @@ const FEATURE_GUIDES = [
           <li><strong className="text-foreground">Search & filter:</strong> Find students by name or matricule</li>
         </ul>
         <p>Students are matched to scan results automatically based on the matricule written on the answer sheet (AI OCR feature).</p>
+      </div>
+    ),
+  },
+  {
+    id: "auth", icon: Lock, color: "text-yellow-500", title: "Authentication",
+    content: (
+      <div className="space-y-2 text-sm text-muted-foreground">
+        <p>SmartGrader uses JWT-based authentication with two login flows:</p>
+        <div className="space-y-2">
+          <div className="p-3 rounded-lg bg-yellow-500/5 border border-yellow-500/20">
+            <p className="font-medium text-yellow-600 text-xs mb-1">Teacher Login</p>
+            <p>Navigate to the Login page, enter your email and password. On success you receive a JWT access token (15 min) and a refresh token (7 days). Tokens are stored in localStorage and refreshed automatically.</p>
+          </div>
+          <div className="p-3 rounded-lg bg-indigo-500/5 border border-indigo-500/20">
+            <p className="font-medium text-indigo-600 text-xs mb-1">Student Barcode Scan</p>
+            <p>Students click "Scan Card" on the login screen. The browser activates the camera and reads the barcode or QR code on the student card (matricule number). No password is required — the system matches the matricule to an enrolled student.</p>
+          </div>
+        </div>
+        <p>The Admin panel (accessible to admin-role teachers) can create/delete teacher accounts and bulk-import students from a CSV file.</p>
+      </div>
+    ),
+  },
+  {
+    id: "groups", icon: Users, color: "text-cyan-500", title: "Student Groups",
+    content: (
+      <div className="space-y-2 text-sm text-muted-foreground">
+        <p>Groups let you organise students into cohorts (e.g. "L3 InfoA 2024") for assignment to exam sessions:</p>
+        <ul className="list-disc list-inside space-y-1 ml-2">
+          <li><strong className="text-foreground">Create group:</strong> Name + optional description</li>
+          <li><strong className="text-foreground">Add members:</strong> Search for students and add by ID, or import from CSV</li>
+          <li><strong className="text-foreground">Remove member:</strong> Click the remove icon next to a student in the group detail view</li>
+          <li><strong className="text-foreground">Delete group:</strong> Removes the group only — students remain in the system</li>
+        </ul>
+        <p>A student can belong to multiple groups. Assigning a session to a group gives every member access to that exam.</p>
+      </div>
+    ),
+  },
+  {
+    id: "sessions", icon: MonitorPlay, color: "text-violet-500", title: "Online Exam Sessions",
+    content: (
+      <div className="space-y-2 text-sm text-muted-foreground">
+        <p>Sessions are the core of the online exam engine:</p>
+        <ul className="list-disc list-inside space-y-1 ml-2">
+          <li><strong className="text-foreground">Create session:</strong> Pick an exam, a student group, set duration in minutes, optionally enable proctoring</li>
+          <li><strong className="text-foreground">Assign extra students:</strong> Add individual students beyond the group</li>
+          <li><strong className="text-foreground">Start session:</strong> Click Start — students see the exam immediately in their dashboard</li>
+          <li><strong className="text-foreground">Monitor live:</strong> The monitor panel shows how many students are active, answered, and flagged in real time</li>
+          <li><strong className="text-foreground">Auto-submit:</strong> When the timer expires, all in-progress attempts are automatically submitted</li>
+        </ul>
+        <p>Session statuses: <code className="font-mono bg-black/20 px-1 rounded text-xs">scheduled → active → ended</code>. Results are available immediately after the session ends.</p>
+      </div>
+    ),
+  },
+  {
+    id: "proctoring", icon: Eye, color: "text-orange-500", title: "Proctoring & Anti-Cheat",
+    content: (
+      <div className="space-y-2 text-sm text-muted-foreground">
+        <p>When proctoring is enabled on a session, SmartGrader activates multiple detection layers:</p>
+        <ul className="list-disc list-inside space-y-1 ml-2">
+          <li><strong className="text-foreground">Face detection:</strong> TensorFlow.js + BlazeFace runs in the browser — alerts when no face is detected or multiple faces appear</li>
+          <li><strong className="text-foreground">Tab/window events:</strong> Any tab switch, window blur, or fullscreen exit is logged as a cheat event with timestamp</li>
+          <li><strong className="text-foreground">Webcam snapshots:</strong> Periodic automatic snapshots (configurable interval) are uploaded for teacher review</li>
+          <li><strong className="text-foreground">Browser lockdown:</strong> Right-click, copy-paste, and developer tools are disabled during the exam</li>
+        </ul>
+        <p>Teachers review the Proctoring dashboard to see a per-student event timeline, snapshots, and risk score. Individual attempts can be manually flagged for further review.</p>
+      </div>
+    ),
+  },
+  {
+    id: "student_view", icon: GraduationCap, color: "text-emerald-500", title: "Student View",
+    content: (
+      <div className="space-y-2 text-sm text-muted-foreground">
+        <p>Once logged in via barcode scan, students see their personalised exam dashboard:</p>
+        <ul className="list-disc list-inside space-y-1 ml-2">
+          <li><strong className="text-foreground">Assigned exams:</strong> List of available and upcoming sessions with start time and duration</li>
+          <li><strong className="text-foreground">Take exam:</strong> Full-screen exam view — one question per page or all questions scrollable (configurable)</li>
+          <li><strong className="text-foreground">Timer:</strong> Countdown displayed prominently; colour turns amber at 5 minutes, red at 1 minute</li>
+          <li><strong className="text-foreground">Auto-save:</strong> Every answer selection is saved to the server immediately — no data loss on disconnect</li>
+          <li><strong className="text-foreground">Submit:</strong> Students can submit early; the session auto-submits at timer expiry</li>
+          <li><strong className="text-foreground">Result:</strong> After the teacher releases results, students can view their score and per-question feedback</li>
+        </ul>
       </div>
     ),
   },
@@ -167,6 +259,31 @@ const FAQ = [
     a: "Install Python 3.10+ and Node.js 18+. Run: pip install -r requirements.txt && python run.py for the backend (http://localhost:5000), and cd frontend && npm install && npm run dev for the frontend (http://localhost:5173).",
     icon: Code2,
   },
+  {
+    q: "How do students log in?",
+    a: "Students use barcode scanning. On the login page, click \"Scan Student Card\" to activate the camera. Hold the student card barcode or QR code up to the camera. The html5-qrcode library reads the matricule and logs the student in automatically — no password needed.",
+    icon: Lock,
+  },
+  {
+    q: "How do I set up an online exam?",
+    a: "1. Create an exam and add questions. 2. Create a student group and add your students. 3. Go to Sessions → New Session, select the exam and group, set the duration, enable proctoring if needed. 4. Click Start when the exam period begins. Students will see it in their dashboard immediately.",
+    icon: MonitorPlay,
+  },
+  {
+    q: "How does anti-cheat work?",
+    a: "SmartGrader uses a multi-layer approach: TensorFlow.js BlazeFace runs in the browser to detect face presence via webcam. Any tab-switch, window-blur, or fullscreen exit is recorded as a cheat event. Periodic webcam snapshots are uploaded to the server. Right-click and copy-paste are disabled. Teachers review all events in the Proctoring dashboard with per-student risk scores.",
+    icon: Eye,
+  },
+  {
+    q: "How do I deploy SmartGrader on a university LAN?",
+    a: "Run python run.py --lan to start the server in LAN mode. This binds Flask to 0.0.0.0 so all devices on the local network can connect. Share the server IP with students (e.g., http://192.168.1.10:5000). For larger deployments, use docker-compose up which starts the API and builds the frontend automatically.",
+    icon: Server,
+  },
+  {
+    q: "What happens if a student disconnects during an exam?",
+    a: "Every answer selection is saved immediately to the server (POST /api/student/exams/:id/answer). If a student disconnects, all previously saved answers are preserved. When they reconnect and open the exam, it resumes from where they left off with the timer continuing. On timer expiry, the system auto-submits all saved answers — no answers are lost.",
+    icon: AlertCircle,
+  },
 ];
 
 const SHORTCUTS = [
@@ -237,7 +354,7 @@ export default function Help() {
           <Zap className="h-5 w-5 text-primary" />
           <h3 className="font-heading font-semibold text-lg text-foreground">Quick Start Guide</h3>
         </div>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {QUICK_STEPS.map((s, i) => {
             const Icon = s.icon;
             return (
@@ -333,7 +450,7 @@ export default function Help() {
           <div className="space-y-3">
             <div className="flex items-center justify-between">
               <span className="text-xs text-muted-foreground">Version</span>
-              <span className="text-xs font-mono font-bold text-primary">v0.3.0</span>
+              <span className="text-xs font-mono font-bold text-primary">v1.0.0</span>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-xs text-muted-foreground">Type</span>
@@ -362,13 +479,13 @@ export default function Help() {
               <span className="font-heading font-semibold text-sm text-foreground">Project Summary</span>
             </div>
             <p className="text-xs leading-relaxed text-muted-foreground">
-              SmartGrader automates the exam-grading workflow for Algerian university instructors.
-              It generates printable MCQ answer sheets, optically scans completed sheets using computer vision,
-              and uses a vision-language AI model to grade handwritten short answers with a teacher-in-the-loop
-              RAG correction feedback system.
+              SmartGrader automates the full exam lifecycle for Algerian university instructors —
+              from JWT-authenticated teacher/student login and online exam sessions with live proctoring,
+              to optical MCQ scanning, AI-powered short-answer grading, and LAN/Docker deployment.
+              191 automated tests. v1.0.0.
             </p>
             <div className="flex flex-wrap gap-1.5 mt-1">
-              {["Flask API", "React SPA", "OpenCV", "Qwen2.5-VL", "RAG", "SQLAlchemy"].map((tag) => (
+              {["Flask API", "React SPA", "JWT Auth", "Online Exams", "Anti-Cheat", "OpenCV", "Qwen2.5-VL", "Docker"].map((tag) => (
                 <span key={tag} className="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary">{tag}</span>
               ))}
             </div>
