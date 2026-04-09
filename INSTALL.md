@@ -46,11 +46,16 @@ Edit `.env` and set at minimum:
 
 ```
 SECRET_KEY=<long-random-string>
-JWT_SECRET=<another-long-random-string>
 FLASK_ENV=development
 ```
 
-All other values have safe defaults for development.
+Generate a random secret key:
+```bash
+python -m scripts.generate_secret
+# Copy the output and paste it as SECRET_KEY
+```
+
+All other values have safe defaults for development. You do NOT need to change anything else to get started.
 
 ## 4. Database Setup
 
@@ -65,6 +70,11 @@ This creates:
 - 59 questions with 2-5 choices each
 - 10 students with Algerian university emails
 - 50+ grading results with randomized scores
+- 2 teacher accounts (admin + regular teacher)
+- 10 student user accounts (linked to students above)
+- 2 student groups (Group A and Group B, 5 students each)
+- 3 exam sessions (1 active, 1 upcoming, 1 ended with results)
+- Exam attempts with answers and scores for the ended session
 
 To reset the database:
 
@@ -76,10 +86,24 @@ python -m scripts.seed_data
 ## 5. Create the First Admin Account
 
 ```bash
-python -m scripts.create_admin
+python -m scripts.create_admin --email admin@school.dz --password admin12345 --name "Admin Teacher"
 ```
 
-Follow the prompts to set admin email and password. This account can then create teacher accounts from the Admin Panel UI.
+This creates an admin teacher account. You can also use any email/password you want (password must be 8+ characters).
+
+> **Note:** If you ran `python -m scripts.seed_data`, it already created two teacher accounts for you:
+> - **Admin:** `admin@smartgrader.dz` / `admin12345`
+> - **Teacher:** `teacher@smartgrader.dz` / `teacher123`
+
+### Default Login Credentials (after seeding)
+
+| Role | Login Method | Credentials |
+|------|-------------|-------------|
+| Admin Teacher | Email + Password | `admin@smartgrader.dz` / `admin12345` |
+| Regular Teacher | Email + Password | `teacher@smartgrader.dz` / `teacher123` |
+| Student | Matricule (Student tab) | `2026001` through `2026010` |
+
+> **Students don't need a password.** They log in by typing their matricule number in the Student tab, or by scanning their barcode card with a webcam/USB scanner.
 
 ## 6. CUDA and GPU Setup (for AI Grading)
 
@@ -138,14 +162,16 @@ npm install
 
 ```bash
 # Terminal 1: Flask backend
-python run.py
-# API runs at http://localhost:5000
+python run.py --port 5050
+# API runs at http://localhost:5050
 
 # Terminal 2: React frontend
 cd frontend
 npm run dev
-# App runs at http://localhost:3000
+# App runs at http://localhost:3000 (proxies API to backend automatically)
 ```
+
+> **Windows users:** Port 5000 is often blocked by Windows 11. Use `--port 5050` or any other free port. The frontend's Vite proxy is configured in `frontend/vite.config.js` — update the proxy target port if you change the backend port.
 
 ### LAN Mode (Classroom -- single process)
 
@@ -192,7 +218,7 @@ sudo nginx -t && sudo systemctl reload nginx
 ```bash
 # Copy and edit environment file
 cp .env.example .env
-# Edit SECRET_KEY, JWT_SECRET, FLASK_ENV=production
+# Edit SECRET_KEY, FLASK_ENV=production
 
 # Build and start
 docker-compose up -d
@@ -244,8 +270,12 @@ bash docs/thesis/build.sh
 Windows 11 reserves port 5000. Use a different port:
 
 ```bash
-# In run.py, change port=5000 to port=5005
-# Update frontend/vite.config.js proxy to match
+python run.py --port 5050
+```
+
+Then update `frontend/vite.config.js` to match:
+```javascript
+proxy: { "/api": "http://127.0.0.1:5050" }
 ```
 
 ### AI model out of memory

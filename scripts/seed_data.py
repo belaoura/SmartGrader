@@ -510,7 +510,7 @@ def seed():
         try:
             create_teacher(
                 email="admin@smartgrader.dz",
-                password="Admin1234!",
+                password="admin12345",
                 name="Admin Teacher",
                 is_admin=True,
             )
@@ -521,7 +521,7 @@ def seed():
         try:
             create_teacher(
                 email="teacher@smartgrader.dz",
-                password="Teacher1234!",
+                password="teacher123",
                 name="Regular Teacher",
                 is_admin=False,
             )

@@ -57,9 +57,9 @@ An intelligent exam management and grading platform with computer vision OMR sca
 | Deployment | Gunicorn, Nginx, systemd, Docker, docker-compose |
 | Docs | Markdown, PlantUML, Pandoc, xhtml2pdf |
 
-## Quick Start
+## Quick Start (5 minutes)
 
-### Development Mode
+### 1. Install & Setup
 
 ```bash
 # Clone
@@ -68,32 +68,59 @@ cd SmartGrader
 
 # Backend
 pip install -r requirements.txt
-python -m scripts.create_admin          # create first admin account
-python -m scripts.seed_data             # seed 7 exams, 10 students, 50+ results
-python run.py                           # Flask API at http://localhost:5000
 
-# Frontend (separate terminal)
-cd frontend
-npm install
-npm run dev                             # React app at http://localhost:3000
+# Frontend
+cd frontend && npm install && cd ..
 ```
 
-### LAN Mode (Classroom)
+### 2. Create Admin Account & Seed Demo Data
 
-Serves the built frontend from Flask -- one process, one URL for the whole class.
+```bash
+# Create your first admin teacher account
+python -m scripts.create_admin --email admin@school.dz --password admin12345 --name "Admin Teacher"
+
+# Load demo data: 7 exams, 10 students, online exam sessions, results
+python -m scripts.seed_data
+```
+
+### 3. Start the App
+
+```bash
+# Terminal 1: Backend (use port 5050 if 5000 is blocked on Windows)
+python run.py --port 5050
+
+# Terminal 2: Frontend
+cd frontend && npm run dev
+```
+
+### 4. Open & Login
+
+Open **http://localhost:3000** in your browser.
+
+| Role | How to Login | Credentials |
+|------|-------------|-------------|
+| **Teacher (Admin)** | Email + Password | `admin@school.dz` / `admin12345` |
+| **Teacher** | Email + Password | `teacher@smartgrader.dz` / `teacher123` (created by seed) |
+| **Student** | Student tab → type matricule | `2026001` through `2026010` |
+
+> **Note:** Students login by typing their matricule number (or scanning their barcode card). No password needed.
+
+### Alternative: LAN Mode (Classroom)
+
+One command serves everything — share the URL with students:
 
 ```bash
 cd frontend && npm run build && cd ..
-python run.py --lan
-# Everything at http://<your-ip>:5000
+python run.py --lan --port 5050
+# Prints: "Students can connect at http://192.168.x.x:5050"
 ```
 
-### Docker
+### Alternative: Docker
 
 ```bash
-cp .env.example .env          # edit SECRET_KEY, FLASK_ENV, etc.
+cp .env.example .env          # edit SECRET_KEY
 docker-compose up -d
-# App at http://localhost (Nginx on port 80)
+# App at http://localhost:5000
 ```
 
 See [INSTALL.md](INSTALL.md) for full setup including CUDA/GPU, university server deployment, and SSL configuration.
